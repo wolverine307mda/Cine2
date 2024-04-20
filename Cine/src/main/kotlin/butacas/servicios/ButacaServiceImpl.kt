@@ -1,4 +1,8 @@
 package org.example.butacas.servicios
 
-class ButacaServiceImpl : ButacaService {
+import org.example.butacas.repositorio.ButacaRepositorio
+
+class ButacaServiceImpl(
+    var butacaRepositorio: ButacaRepositorio
+) : ButacaService {
 }
