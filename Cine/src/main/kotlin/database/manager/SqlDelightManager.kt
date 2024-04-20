@@ -1,4 +1,8 @@
 package org.example.database.manager
 
-class SqlDelightManager {
+import org.example.butacas.storage.VentaStorage
+
+class SqlDelightManager(
+    var fileService: VentaStorage //Para importar una lista de sillas que meter en la BD
+){
 }

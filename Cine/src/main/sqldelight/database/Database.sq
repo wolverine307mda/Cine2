@@ -48,7 +48,6 @@ CREATE TABLE IF NOT EXISTS LineaVentaEntity (
 -- Tabla para almacenar las cuentas --
 CREATE TABLE IF NOT EXISTS CuentaEntity (
     nombre TEXT PRIMARY KEY,
-    contrasena TEXT NOT NULL,
     isDeleted INTEGER,
     createdAt TEXT NOT NULL,
     updatedAt TEXT NOT NULL
