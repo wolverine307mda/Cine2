@@ -61,3 +61,25 @@ f
 6src/main/kotlin/productos/servicio/ProductoServicio.kt,c\3\c37fd142cd60d10c507c6f7b32222c83dca24111
 j
 :src/main/kotlin/productos/servicio/ProductoServicioImpl.kt,8\5\8517c704277cd4b4af8b3d2383d54f2d8c387959
+S
+#src/main/sqldelight/database/sql.sq,b\2\b2bcd087db8947eeaddd42d531166da3f37cce4e
+O
+src/main/sqldelight/database.sq,e\2\e21dddb9b95a47916ab0710091b864e686163a7e
+m
+=src/main/kotlin/database/manager/SqlDelightDatabaseManager.kt,e\5\e5c6876f76037b2c43959ad31838f9f3f01bed31
+e
+5src/main/kotlin/database/manager/SqlDelightManager.kt,a\3\a3b3b9cbdda55e8e4dd2a9c7c34f1092f37cc155
+c
+3src/main/kotlin/database/manager/DatabaseManager.kt,e\7\e74f9f865cf9c29e71e2e870e2b7dfb6e5d4b91c
+O
+src/main/sqldelight/Database.sq,7\2\7209fc7cc6c1df9eec3556ad06e83cdaf5de7d97
+y
+Ibuild/generated/sqldelight/code/AppDatabase/main/database/ButacaEntity.kt,a\2\a275658d7d7fec76152adbc5c6bb31ccfd918b6b
+~
+Nbuild/generated/sqldelight/code/AppDatabase/main/database/ComplementoEntity.kt,1\b\1be0a71db4c8e184d543c66a8311fdfd14a7f53d
+y
+Ibuild/generated/sqldelight/code/AppDatabase/main/database/CuentaEntity.kt,8\d\8dab9ad198f6bf358233000f32f516da116a5481
+}
+Mbuild/generated/sqldelight/code/AppDatabase/main/database/LineaVentaEntity.kt,e\5\e5fae754d1bfe5e0cea30cb41df17eff5f391d51
+x
+Hbuild/generated/sqldelight/code/AppDatabase/main/database/VentaEntity.kt,f\b\fb7a02b6dd190a445df8ebd272f7cb0b93f03047

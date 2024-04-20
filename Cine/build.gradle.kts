@@ -5,7 +5,7 @@ plugins {
     id("com.google.devtools.ksp") version "1.9.23-1.0.20"
 }
 
-group = "org.Cine"
+group = "org.cine"
 version = "1.0"
 
 repositories {
@@ -50,7 +50,7 @@ sqldelight {
         // Nombre de la base de datos
         create("AppDatabase") {
             // Paquete donde se generan las clases
-            packageName.set("org.examples.database")
+            packageName.set("org.cine.database")
         }
     }
 }
