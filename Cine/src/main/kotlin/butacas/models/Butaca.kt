@@ -4,9 +4,9 @@ import java.time.LocalDateTime
 
 data class Butaca (
     var id : String, //Solo un string con ambas la fila y la columnna para que sea facil buscar
-    var estado : Estado,
-    var ocupamiento: Ocupamiento,
-    var tipo : Tipo,
+    var estado : Estado?,
+    var ocupamiento: Ocupamiento?,
+    var tipo : Tipo?,
     var createdAt : LocalDateTime = LocalDateTime.now(),
     var updatedAt : LocalDateTime = LocalDateTime.now(),
     var isDeleted : Boolean = false

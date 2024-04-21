@@ -52,3 +52,20 @@ CREATE TABLE IF NOT EXISTS CuentaEntity (
     createdAt TEXT NOT NULL,
     updatedAt TEXT NOT NULL
 );
+
+insertButaca:
+INSERT INTO ButacaEntity (id, tipo, estado, ocupamiento,isDeleted, createdAt, updatedAt)
+VALUES (?, ?, ?, ?, ?, ?,?);
+
+removeAllButacas:
+DELETE FROM ButacaEntity;
+
+removeAllCuentas:
+DELETE FROM CuentaEntity;
+
+removeAllProductos:
+DELETE FROM ComplementoEntity;
+
+removeAllVentas:
+DELETE FROM VentaEntity;
+DELETE FROM LineaVentaEntity;

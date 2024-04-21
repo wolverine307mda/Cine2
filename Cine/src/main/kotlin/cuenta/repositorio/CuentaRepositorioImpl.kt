@@ -1,4 +1,8 @@
 package org.example.cuenta.repositorio
 
-class CuentaRepositorioImpl : CuentaRepositorio {
+import org.example.database.manager.DataBaseManager
+
+class CuentaRepositorioImpl(
+    val dataBaseManager: DataBaseManager
+) : CuentaRepositorio {
 }

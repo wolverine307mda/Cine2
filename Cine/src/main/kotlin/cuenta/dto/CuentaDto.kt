@@ -1,4 +1,10 @@
 package org.example.cuenta.dto
 
-data class CuentaDto {
-}
+import java.time.LocalDateTime
+
+data class CuentaDTO(
+    var nombre: String,
+    var createdAt: String = LocalDateTime.now().toString(),
+    var updatedAt: String = LocalDateTime.now().toString(),
+    var isDeleted: Int = 0
+)

@@ -7,7 +7,7 @@ data class Producto (
     val id : UUID = UUID.randomUUID(),
     var nombre : String,
     var stock : Int,
-    var tipo : TipoProducto,
+    var tipo : TipoProducto?,
     var createdAt : LocalDateTime = LocalDateTime.now(),
     var updatedAt : LocalDateTime = LocalDateTime.now(),
     var isDeleted : Boolean = false

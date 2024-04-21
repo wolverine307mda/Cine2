@@ -3,6 +3,7 @@ plugins {
     id("app.cash.sqldelight") version "2.0.2"
     kotlin("plugin.serialization") version "1.9.23"
     id("com.google.devtools.ksp") version "1.9.23-1.0.20"
+    id("org.jetbrains.dokka") version "1.9.20"
 }
 
 group = "org.cine"
@@ -16,6 +17,8 @@ dependencies {
     testImplementation(kotlin("test"))
     //SqlDelight
     implementation("app.cash.sqldelight:sqlite-driver:2.0.2")
+    //ScriptRunner
+    implementation("org.mybatis:mybatis:3.5.13")
     // Result
     implementation("com.michael-bull.kotlin-result:kotlin-result:2.0.0")
     // Koin
@@ -35,7 +38,8 @@ dependencies {
     testImplementation("io.mockk:mockk:1.13.10")
     // Koin Test
     testImplementation("io.insert-koin:koin-test-junit5")
-
+    //Dokka
+    implementation("org.jetbrains.dokka:dokka-gradle-plugin:1.9.20")
 }
 
 tasks.test {
