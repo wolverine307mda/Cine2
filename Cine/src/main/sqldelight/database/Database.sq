@@ -57,6 +57,10 @@ insertButaca:
 INSERT INTO ButacaEntity (id, tipo, estado, ocupamiento,isDeleted, createdAt, updatedAt)
 VALUES (?, ?, ?, ?, ?, ?,?);
 
+insertComplemento:
+INSERT INTO ComplementoEntity (id, nombre, precio, tipo, createdAt, updatedAt, isDeleted)
+VALUES (?, ?, ?, ?, ?, ?,?);
+
 removeAllButacas:
 DELETE FROM ButacaEntity;
 
