@@ -4,10 +4,10 @@ import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import org.example.butacas.errors.ButacaError
+import org.example.butacas.mappers.elegirEstado
+import org.example.butacas.mappers.elegirOcupamiento
+import org.example.butacas.mappers.elegirTipo
 import org.example.butacas.models.Butaca
-import org.example.butacas.models.Estado
-import org.example.butacas.models.Ocupamiento
-import org.example.butacas.models.Tipo
 import org.example.butacas.validator.ButacaValidator
 import org.example.database.manager.logger
 import org.koin.core.annotation.Singleton
@@ -39,32 +39,6 @@ class ButacaStorageCSVImpl(
         }catch (e : Exception){
             logger.debug { "Hubo un error al cargar las butacas del archivo ${file.name}" }
             return Err(ButacaError.ButacaStorageError("Hubo un error al cargar las butacas del archivo ${file.name}"))
-        }
-    }
-
-    private fun elegirTipo(s: String): Tipo? {
-        return when(s){
-            "Normal" -> Tipo.NORMAL
-            "VIP" -> Tipo.VIP
-            else -> null
-        }
-    }
-
-    private fun elegirOcupamiento(s: String): Ocupamiento? {
-        return when(s){
-            "Ocupada" -> Ocupamiento.OCUPADA
-            "Reservada" -> Ocupamiento.RESERVADA
-            "Libre" -> Ocupamiento.LIBRE
-            else -> null
-        }
-    }
-
-    private fun elegirEstado(s: String): Estado? {
-        return when(s){
-            "Activa" -> Estado.ACTIVA
-            "Fuera de Servicio" -> Estado.FUERA_SERVICIO
-            "En Mantenimiento" -> Estado.EN_MANTENIMIENTO
-            else -> null
         }
     }
 }

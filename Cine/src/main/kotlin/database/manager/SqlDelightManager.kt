@@ -8,7 +8,6 @@ import org.cine.database.AppDatabase
 import org.example.butacas.storage.ButacaStorage
 import org.example.butacas.validator.ButacaValidator
 import org.example.config.Config
-import org.koin.core.annotation.Property
 import org.koin.core.annotation.Singleton
 import org.lighthousegames.logging.logging
 import java.io.File
@@ -18,7 +17,6 @@ val logger = logging()
 
 @Singleton
 class SqlDelightManager(
-    private val _databaseInMemory: String = "true",
     private val butacaStorage: ButacaStorage,
     private val butacaValidator: ButacaValidator,
     private val config : Config
@@ -123,7 +121,7 @@ class SqlDelightManager(
 /**
  * Trasforma un boolean en un Long
  */
-    private fun Boolean.toLong(): Long {
+fun Boolean.toLong(): Long {
         return if (this) 0
         else 1
     }

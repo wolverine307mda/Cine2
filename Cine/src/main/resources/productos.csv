@@ -1,1 +1,18 @@
-Lista de productos...
+nombre,stock,tipo,isDeleted
+"Coca-Cola",100,"Bebida",false
+"Pepsi",80,"Bebida",false
+"Sprite",120,"Bebida",false
+"Pizza",50,"Comida",false
+"Hamburguesa",60,"Comida",false
+"Hot Dog",70,"Comida",false
+"Cerveza",90,"Bebida",false
+"Vino",40,"Bebida",false
+"Galletas",110,"Comida",false
+"Agua",150,"Bebida",false
+"Refresco de Limón",70,"Bebida",false
+"Patatas Fritas",80,"Comida",false
+"Helado",60,"Comida",false
+"Jugo de Naranja",100,"Bebida",false
+"Pizza Pepperoni",40,"Comida",false
+"Refresco de Manzana",90,"Bebida",false
+"Palomitas de Maíz",120,"Comida",false

@@ -69,3 +69,12 @@ DELETE FROM ComplementoEntity;
 removeAllVentas:
 DELETE FROM VentaEntity;
 DELETE FROM LineaVentaEntity;
+
+getButacaById:
+SELECT * FROM ButacaEntity WHERE ? = id;
+
+getAllButacas:
+SELECT * FROM ButacaEntity;
+
+selectLastButacaInserted:
+SELECT * FROM ButacaEntity WHERE id = last_insert_rowid();

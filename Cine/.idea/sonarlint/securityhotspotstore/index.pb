@@ -3,8 +3,6 @@
 build.gradle.kts,d\b\dbcff70658daf80b53ce624f6adcaa529df5ed8d
 G
 src/main/kotlin/Main.kt,d\8\d83ae3847b7d408136086cc5e9e95f5f7c126ed5
-\
-,src/main/kotlin/productos/data/productos.csv,e\7\e72c2e33e4b0539efd1c5316f21db1f789d94516
 X
 (src/main/kotlin/butacas/models/Butaca.kt,c\e\ce7a1303980fe16cb07ff88b44914d1f85388f9a
 h
@@ -15,10 +13,6 @@ b
 2src/main/kotlin/butacas/servicios/ButacaService.kt,f\f\ffa77fe18d8eba11369b0ff5f2393f8a6410b5a6
 f
 6src/main/kotlin/butacas/servicios/ButacaServiceImpl.kt,d\7\d7ec07c897a961d6fde08ef5b2a84970d1f1ea68
-Y
-)src/main/kotlin/database/data/butacas.csv,0\1\0175fe66604cc113ae945aef326e6ef79ac1452d
-]
--src/main/kotlin/cine/servicios/CineService.kt,4\a\4a0809931c6acc2e56f1a16b33de1c114b069cf7
 \
 ,src/main/kotlin/productos/models/Producto.kt,3\1\3129c43b6b8c3ea1dfb62fa0f6c5ea97a317119a
 m
@@ -43,8 +37,6 @@ W
 'src/main/kotlin/cuenta/models/Cuenta.kt,0\7\07c58c1bd92fe97742ddca67202ef939a9ee3203
 P
  src/main/kotlin/config/Config.kt,0\4\043aa446d40a768add682fb019dcec7856967ae3
-R
-"src/main/kotlin/modulos/Modulos.kt,7\5\75715e665ec842d6d94a5da029d0eb943f3382fa
 `
 0src/main/kotlin/ventas/servicio/VentaServicio.kt,7\2\72c0c5f12331a7716757da8dfdf2bbb2195d51be
 d
@@ -97,8 +89,6 @@ d
 4src/main/kotlin/butacas/validator/ButacaValidator.kt,8\6\865fafac4e01ee40f31a6ead324e076d9b9ac8f6
 q
 Abuild/generated/ksp/main/kotlin/org/koin/ksp/generated/Default.kt,2\f\2f9662f69e3fa8ed751e566515322f4c3924e5a2
-W
-'src/main/kotlin/cine/app/CineService.kt,b\0\b097434f6ab03b4ad9a4f8abf235c3b6326e5fad
 `
 0src/main/kotlin/butacas/mappers/ButacaMappers.kt,8\a\8a62268814ceadae6bd0ba0d7ff3ba24db30ace1
 S
@@ -107,3 +97,7 @@ h
 8src/main/kotlin/productos/validador/ProductoValidador.kt,a\5\a55663ab2906b08fb929b53e26e6179435cefd92
 p
 @src/main/kotlin/productos/repositorio/ProductoRepositorioImpl.kt,0\6\068ea35765abbb4ee215a2ec2c810b09eb86c404
+Å
+Qbuild/generated/sqldelight/code/AppDatabase/main/org/cine/database/AppDatabase.kt,7\a\7a1535801053ad5557e64d79be4fc166467a79ed
+\
+,src/main/kotlin/cuenta/errors/CuentaError.kt,0\6\06f5f12d890a18a064b59ce8c91badd3a4897890
