@@ -19,9 +19,9 @@ class ProductoServicioImpl(
         productoValidador.validate(producto) //Para esegurarse que es un producto válido
             .onSuccess {
                 productosRepositorio.save(producto)?.let {
-                    return Err(ProductoError.ProductoStorageError("El producto no se pudo guardar en la base de datos"))
+                    return Ok(producto)
                 }
-                return Ok(producto)
+                return Err(ProductoError.ProductoStorageError("El producto no se pudo guardar en la base de datos"))
             }
         return Err(ProductoError.ProductoStorageError("No se pudo guardar el producto con id: ${producto.id}"))
     }

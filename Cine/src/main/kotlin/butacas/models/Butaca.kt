@@ -3,10 +3,10 @@ package org.example.butacas.models
 import java.time.LocalDateTime
 
 data class Butaca (
-    var id : String, //Solo un string con ambas la fila y la columnna para que sea facil buscar
-    var tipo : Tipo?,
+    var id : String,
     var estado : Estado?,
     var ocupamiento: Ocupamiento?,
+    var tipo : Tipo?,
     var createdAt : LocalDateTime = LocalDateTime.now(),
     var updatedAt : LocalDateTime = LocalDateTime.now(),
     var isDeleted : Boolean = false
@@ -14,18 +14,14 @@ data class Butaca (
 
 }
 
-enum class Estado (nombre : String){
-    ACTIVA("Activa"),
-    EN_MANTENIMIENTO("En Mantenimiento"),
-    FUERA_SERVICIO("Fuera de Servicio")
+enum class Estado{
+    ACTIVA, EN_MANTENIMIENTO, FUERA_SERVICIO
 }
 
-enum class Ocupamiento(nombre : String){
-    LIBRE("Libre"),
-    RESERVADA("Reservada"),
-    OCUPADA("Ocupada")
+enum class Ocupamiento{
+    LIBRE, RESERVADA, OCUPADA
 }
 
-enum class Tipo(nombre : String){
-    VIP("Vip"),NORMAL("Normal")
+enum class Tipo(val precio : Int){
+    VIP(8), NORMAL(5)
 }

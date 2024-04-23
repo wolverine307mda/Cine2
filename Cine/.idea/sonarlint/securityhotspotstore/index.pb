@@ -77,8 +77,6 @@ d
 4src/main/kotlin/productos/mappers/ProductoMappers.kt,b\e\bef2432347f5f4dde22a6fda33bc0a8302b6fcf5
 ^
 .src/main/kotlin/ventas/mappers/VentaMappers.kt,1\4\14ccec51ab81c81d8dc5f01985f872640c1cb67f
-f
-6src/main/kotlin/ventas/mappers/LineaProductoMappers.kt,9\4\945af2f969b246bbdefdada1365886137c0d1f87
 h
 8src/main/kotlin/butacas/storage/ButacaStorageJSONImpl.kt,d\7\d76733b25e320019b5a8f6ececaffbfcdaac5acb
 ]
@@ -103,3 +101,7 @@ Qbuild/generated/sqldelight/code/AppDatabase/main/org/cine/database/AppDatabase.
 ,src/main/kotlin/cuenta/errors/CuentaError.kt,0\6\06f5f12d890a18a064b59ce8c91badd3a4897890
 a
 1src/main/kotlin/productos/errors/ProductoError.kt,c\b\cb05c3a556ca35aa511bf572072e23ef7f8614df
+c
+3src/main/kotlin/ventas/validators/VentaValidator.kt,e\0\e041080b0e4abc564b07045254653620a383887e
+h
+8src/main/kotlin/ventas/validators/LineaVentaValidator.kt,4\9\49b27ebcd7b4ca6515b8748a84d9ca4172c8032c

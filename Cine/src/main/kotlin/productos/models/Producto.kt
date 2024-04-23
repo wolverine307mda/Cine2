@@ -14,8 +14,6 @@ data class Producto(
     var isDeleted: Boolean = false
 )
 
-enum class TipoProducto (var nombre: String){
-    BEBIDA("Bebida"),
-    COMIDA("Comida"),
-    OTROS("Otros")
+enum class TipoProducto{
+    BEBIDA, COMIDA, OTROS
 }

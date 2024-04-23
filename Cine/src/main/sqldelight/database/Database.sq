@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS ComplementoEntity (
 
 -- Tabla para almacenar información de las ventas
 CREATE TABLE IF NOT EXISTS VentaEntity (
-    id TEXT PRIMARY KEY UNIQUE,
+    id TEXT PRIMARY KEY,
     id_butaca TEXT NOT NULL, -- Tendriamos que crear otra tabla si decidimos hacer lo de multiples sillas --
     id_socio TEXT NOT NULL,
     isDeleted INTEGER NOT NULL,
@@ -30,32 +30,43 @@ CREATE TABLE IF NOT EXISTS VentaEntity (
     updatedAt TEXT NOT NULL,
 
     FOREIGN KEY (id_butaca) REFERENCES ButacaEntity(id),
-    FOREIGN KEY (id_socio) REFERENCES CuentaEntity(nombre)
+    FOREIGN KEY (id_socio) REFERENCES CuentaEntity(id)
 );
 
 -- Tabla para almacenar los complementos asociados a una venta
 CREATE TABLE IF NOT EXISTS LineaVentaEntity (
    id TEXT PRIMARY KEY,
-   id_complemento TEXT,
+   id_venta TEXT NOT NULL,
+   id_complemento TEXT NOT NULL,
    cantidad INTEGER NOT NULL,
    precio REAL NOT NULL,
    isDeleted INTEGER NOT NULL ,
    createdAt TEXT NOT NULL,
    updatedAt TEXT NOT NULL,
-   FOREIGN KEY (id_complemento) REFERENCES ComplementoEntity(id)
+   FOREIGN KEY (id_complemento) REFERENCES ComplementoEntity(id),
+   FOREIGN KEY (id_venta) REFERENCES VentaEntity(id)
 );
 
 -- Tabla para almacenar las cuentas --
 CREATE TABLE IF NOT EXISTS CuentaEntity (
-    nombre TEXT PRIMARY KEY,
+    id TEXT PRIMARY KEY,
     isDeleted INTEGER NOT NULL,
     createdAt TEXT NOT NULL,
     updatedAt TEXT NOT NULL
 );
 
+butacaExists:
+SELECT COUNT(*) > 0 FROM ButacaEntity WHERE id = ?;
+
 insertButaca:
 INSERT INTO ButacaEntity (id, tipo, estado, ocupamiento,isDeleted, createdAt, updatedAt)
 VALUES (?, ?, ?, ?, ?, ?,?);
+
+updateButaca:
+UPDATE ButacaEntity SET estado = ?, ocupamiento = ?, updatedAt = ?, tipo = ?, isDeleted = ? WHERE id = ?;
+
+deleteButaca:
+UPDATE ButacaEntity SET isDeleted = 1 WHERE id = ?;
 
 insertComplemento:
 INSERT INTO ComplementoEntity (id, nombre, precio, stock, tipo, createdAt, updatedAt, isDeleted)
@@ -80,5 +91,50 @@ SELECT * FROM ButacaEntity WHERE ? = id;
 getAllButacas:
 SELECT * FROM ButacaEntity;
 
-selectLastButacaInserted:
-SELECT * FROM ButacaEntity WHERE id = last_insert_rowid();
+countButacas:
+SELECT COUNT(*) FROM ButacaEntity;
+
+getAllVentas:
+SELECT * FROM VentaEntity;
+
+getLineaVentaByVentaId:
+SELECT * FROM LineaVentaEntity WHERE ? = id_venta;
+
+getVentaById:
+SELECT * FROM VentaEntity WHERE ? = id;
+
+insertVenta:
+INSERT INTO VentaEntity (id,id_butaca,id_socio,updatedAt,createdAt,isDeleted)
+VALUES (?,?,?,?,?,?);
+
+insertLineaVenta:
+INSERT INTO LineaVentaEntity (id,id_venta, id_complemento,precio,cantidad,updatedAt,createdAt,isDeleted)
+VALUES (?,?,?,?,?,?,?,?);
+
+existsVenta:
+SELECT COUNT(*) > 0 FROM VentaEntity WHERE id = ?;
+
+countVentas:
+SELECT COUNT(*) FROM VentaEntity;
+
+countLineasVenta:
+SELECT COUNT(*) FROM LineaVentaEntity WHERE id = ?;
+
+getLineaVentaById:
+SELECT * FROM LineaVentaEntity WHERE id = ?;
+
+updateVenta:
+UPDATE VentaEntity
+SET id_butaca = ?, id_socio = ?, isDeleted = ?, updatedAt = ? WHERE id = ?;
+
+updateLineaVenta:
+UPDATE LineaVentaEntity
+SET id_complemento = ?, isDeleted = ?, cantidad = ?, updatedAt = ?, precio = ? WHERE id = ?;
+
+deleteVenta:
+UPDATE VentaEntity
+SET isDeleted = 1 WHERE id = ?;
+
+deleteLineaVenta:
+UPDATE LineaVentaEntity
+SET isDeleted = 1 WHERE id = ?;
