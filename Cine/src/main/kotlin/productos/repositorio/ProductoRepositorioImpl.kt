@@ -21,21 +21,21 @@ class ProductoRepositorioImpl(
     }
 
     override fun save(producto: Producto): Producto? {
-        db.insertComplemento(
-            id = producto.id,
-            nombre = producto.nombre,
-            precio = producto.precio,
-            stock = producto.stock.toLong(),
-            tipo = producto.tipo.toString(),
-            createdAt = producto.createdAt.toString(),
-            updatedAt = producto.updatedAt.toString(),
-            isDeleted = producto.isDeleted.toLong()
-        )
-        return findById(producto.id).also {
-            it?.let {
-                logger.debug { "Añadido el producto: '${producto.nombre}' al inventario" }
-            }
+        logger.debug { "Añadiendo el producto: '${producto.nombre}' al inventario" }
+        if (findById(producto.id) == null){
+            db.insertComplemento(
+                id = producto.id,
+                nombre = producto.nombre,
+                precio = producto.precio,
+                stock = producto.stock.toLong(),
+                tipo = producto.tipo.toString(),
+                createdAt = producto.createdAt.toString(),
+                updatedAt = producto.updatedAt.toString(),
+                isDeleted = producto.isDeleted.toLong()
+            )
+            return producto
         }
+        return null
     }
 
     override fun update(id: String, butaca: Producto): Producto? {

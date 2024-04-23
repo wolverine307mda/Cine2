@@ -15,7 +15,7 @@ fun ButacaEntity.toButaca() : Butaca{
         tipo = elegirTipo(this.tipo),
         createdAt = LocalDateTime.parse(this.createdAt),
         updatedAt = LocalDateTime.parse(this.createdAt),
-        isDeleted = this.isDeleted!!.toInt() == 0
+        isDeleted = this.isDeleted.toInt() == 0
     )
 }
 
@@ -39,8 +39,8 @@ fun elegirOcupamiento(s: String): Ocupamiento? {
 fun elegirEstado(s: String): Estado? {
     return when(s){
         "ACTIVA" -> Estado.ACTIVA
-        "FUERA DE SERVICIO" -> Estado.FUERA_SERVICIO
-        "EN MANTENIMIENTO" -> Estado.EN_MANTENIMIENTO
+        "FUERA_SERVICIO" -> Estado.FUERA_SERVICIO
+        "EN_MANTENIMIENTO" -> Estado.EN_MANTENIMIENTO
         else -> null
     }
 }
