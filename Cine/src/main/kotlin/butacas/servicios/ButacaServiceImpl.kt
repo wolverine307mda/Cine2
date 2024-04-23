@@ -30,4 +30,6 @@ class ButacaServiceImpl(
     override fun findById(id : String): Result<Butaca, ButacaError> {
         TODO("Not yet implemented")
     }
+
+
 }
