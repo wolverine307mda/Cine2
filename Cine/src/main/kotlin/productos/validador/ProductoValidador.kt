@@ -11,8 +11,9 @@ import org.koin.core.annotation.Singleton
 class ProductoValidador (){
     fun validate(producto: Producto) : Result<Producto, ProductoError>{
         return when{
-            producto.tipo == null -> Err(ProductoError.ProductoInvalido("Tipo inválido"))
+            producto.tipo == null -> Err(ProductoError.ProductoInvalido("Categoria inválida"))
             producto.stock < 0 -> Err(ProductoError.ProductoInvalido("El stock no puede ser menos de 0"))
+            producto.precio < 0 -> Err(ProductoError.ProductoInvalido("El precio no puede ser menos de 0"))
             else -> Ok(producto)
         }
     }
