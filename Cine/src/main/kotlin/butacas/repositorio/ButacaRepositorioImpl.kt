@@ -15,9 +15,10 @@ class ButacaRepositorioImpl (
     private val db = sqlDelightManager.databaseQueries
 
     override fun findAll(): List<Butaca> {
-        return db.getAllButacas().executeAsList().map {
-            it.toButaca()
-        }
+        logger.debug { "Obteniendo todos los productos" }
+        return db.getAllButacas()
+            .executeAsList()
+            .map { it.toButaca() }
     }
 
     override fun findById(id: String): Butaca? {

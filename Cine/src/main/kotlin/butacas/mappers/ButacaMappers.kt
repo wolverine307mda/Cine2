@@ -5,7 +5,6 @@ import org.example.butacas.models.Butaca
 import org.example.butacas.models.Estado
 import org.example.butacas.models.Ocupamiento
 import org.example.butacas.models.Tipo
-import org.example.ventas.mappers.toVenta
 import java.time.LocalDateTime
 
 fun ButacaEntity.toButaca() : Butaca{
@@ -16,13 +15,13 @@ fun ButacaEntity.toButaca() : Butaca{
         tipo = elegirTipo(this.tipo),
         createdAt = LocalDateTime.parse(this.createdAt),
         updatedAt = LocalDateTime.parse(this.createdAt),
-        isDeleted = this.isDeleted!!.toInt() == 1
+        isDeleted = this.isDeleted!!.toInt() == 0
     )
 }
 
 fun elegirTipo(s: String): Tipo? {
     return when(s){
-        "Normal" -> Tipo.NORMAL
+        "NORMAL" -> Tipo.NORMAL
         "VIP" -> Tipo.VIP
         else -> null
     }
@@ -30,18 +29,18 @@ fun elegirTipo(s: String): Tipo? {
 
 fun elegirOcupamiento(s: String): Ocupamiento? {
     return when(s){
-        "Ocupada" -> Ocupamiento.OCUPADA
-        "Reservada" -> Ocupamiento.RESERVADA
-        "Libre" -> Ocupamiento.LIBRE
+        "OCUPADA" -> Ocupamiento.OCUPADA
+        "RESERVADA" -> Ocupamiento.RESERVADA
+        "LIBRE" -> Ocupamiento.LIBRE
         else -> null
     }
 }
 
 fun elegirEstado(s: String): Estado? {
     return when(s){
-        "Activa" -> Estado.ACTIVA
-        "Fuera de Servicio" -> Estado.FUERA_SERVICIO
-        "En Mantenimiento" -> Estado.EN_MANTENIMIENTO
+        "ACTIVA" -> Estado.ACTIVA
+        "FUERA DE SERVICIO" -> Estado.FUERA_SERVICIO
+        "EN MANTENIMIENTO" -> Estado.EN_MANTENIMIENTO
         else -> null
     }
 }

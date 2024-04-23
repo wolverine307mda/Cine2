@@ -9,8 +9,6 @@ import org.koin.core.context.GlobalContext.startKoin
 import org.koin.fileProperties
 import org.koin.ksp.generated.defaultModule
 import org.koin.test.verify.verify
-import kotlin.io.path.Path
-import kotlin.io.path.exists
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -41,6 +39,6 @@ class Dummy : KoinComponent {
         db.initialize()
 
         val cineApp = CineApp()
-        cineApp.inicioDeVenta()
+        cineApp.iniciarCine()
     }
 }

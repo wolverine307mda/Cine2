@@ -7,11 +7,13 @@ import org.example.butacas.errors.ButacaError
 import org.example.butacas.mappers.elegirEstado
 import org.example.butacas.mappers.elegirOcupamiento
 import org.example.butacas.mappers.elegirTipo
+import org.example.butacas.mappers.toButaca
 import org.example.butacas.models.Butaca
 import org.example.butacas.validator.ButacaValidator
 import org.example.database.manager.logger
 import org.koin.core.annotation.Singleton
 import java.io.File
+import java.time.LocalDateTime
 
 @Singleton
 class ButacaStorageCSVImpl(
