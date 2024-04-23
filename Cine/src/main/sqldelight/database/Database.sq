@@ -82,3 +82,11 @@ SELECT * FROM ButacaEntity;
 
 selectLastButacaInserted:
 SELECT * FROM ButacaEntity WHERE id = last_insert_rowid();
+
+updateButaca:
+UPDATE ButacaEntity
+SET tipo = ?,
+    estado = ?,
+    ocupamiento = ?,
+    updatedAt = ?
+WHERE id = ?;

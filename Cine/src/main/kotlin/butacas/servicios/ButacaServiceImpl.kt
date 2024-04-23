@@ -27,9 +27,31 @@ class ButacaServiceImpl(
         else return Err(ButacaError.ButacaStorageError("No hay ninguna butaca en la base de datos"))
     }
 
-    override fun findById(id : String): Result<Butaca, ButacaError> {
-        TODO("Not yet implemented")
+    override fun findById(id: String): Result<Butaca, ButacaError> {
+        val butaca = butacaRepositorio.findById(id)
+        return if (butaca != null) {
+            Ok(butaca)
+        } else {
+            Err(ButacaError.ButacaNotFoundError("La butaca con ID $id no existe"))
+        }
     }
+
+
+    override fun update(id: String, butaca: Butaca): Result<Butaca, ButacaError> {
+        val existingButaca = butacaRepositorio.findById(id)
+        return if (existingButaca != null) {
+            val updatedButaca = butaca.copy(id = id)
+            val result = butacaRepositorio.update(id, updatedButaca)
+            if (result != null) {
+                Ok(updatedButaca)
+            } else {
+                Err(ButacaError.ButacaStorageError("No se pudo actualizar la butaca"))
+            }
+        } else {
+            Err(ButacaError.ButacaNotFoundError("La butaca con ID $id no existe"))
+        }
+    }
+
 
 
 }

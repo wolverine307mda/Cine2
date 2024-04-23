@@ -47,7 +47,20 @@ class ButacaRepositorioImpl (
     }
 
     override fun update(id: String, butaca: Butaca): Butaca? {
-        TODO("Not yet implemented")
+        val existingButaca = findById(id)
+        if (existingButaca != null) {
+            db.updateButaca(
+                tipo = butaca.tipo!!.name,
+                estado = butaca.estado!!.name,
+                ocupamiento = butaca.ocupamiento!!.name,
+                updatedAt = LocalDateTime.now().toString(),
+                id = id.uppercase()
+            )
+            return findById(id)
+        } else {
+            logger.debug { "La butaca con id $id no existe, no se puede actualizar" }
+            return null
+        }
     }
 
     override fun delete(id: String): Butaca? {

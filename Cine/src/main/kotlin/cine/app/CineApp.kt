@@ -23,20 +23,25 @@ class CineApp : KoinComponent {
         println("Bienvenido al cine")
         println()
 
-        // iniciamos el servicio de butacas
-        butacaServicio.findAll()
-            .onSuccess { butacas ->
-                //butacas.forEach { println(it) } // ACTIVAR SI DESEA VER LAS BUTACAS Y SUS ESTADOS
-                menuInicio(butacas)
-            }
+        menuInicio()
     }
 
-    private fun menuInicio(butacas: List<Butaca>) {
+    private fun menuInicio() {
+        var butacas: List<Butaca>? = null
         var opcion: String?
+
         println("""¿Qué desea hacer? 
         |1. Ver butacas
         |2. Reservar butacas
         |3. Salir""".trimMargin())
+
+        // Manejo del resultado del servicio findAll()
+        val findAllResult = butacaServicio.findAll()
+        findAllResult.onSuccess { butacasEncontradas ->
+            butacas = butacasEncontradas
+        }.onFailure { error ->
+            println("Error al obtener las butacas: ${error.message}")
+        }
 
         do {
             // Solicitar al usuario que ingrese una opción
@@ -44,14 +49,14 @@ class CineApp : KoinComponent {
             // Leer la opción ingresada por el usuario
             opcion = readln()
             when (opcion) {
-                "1" -> verEstadoDelCine(butacas) // Mostrar butacas
-                "2" -> menuIniciarSesion(butacas) // Reservar butacas
+                "1" -> verEstadoDelCine(butacas ?: emptyList()) // Pasamos una lista vacía si butacas es nulo
+                "2" -> buscarButacaParaReservar(butacas ?: emptyList()) // Pasamos una lista vacía si butacas es nulo
                 "3" -> salir() // Salir de la aplicación
                 else -> println("Opción inválida")
             }
         } while (opcion !in listOf("1", "2", "3"))
     }
-    private fun menuIniciarSesion(butacas: List<Butaca>) {
+    private fun menuIniciarSesion() {
         var opcion: String?
         println("""¿Qué desea hacer? 
         |1. Iniciar sesión
@@ -71,33 +76,33 @@ class CineApp : KoinComponent {
             }
         } while (opcion !in listOf("1", "2", "3"))
     }
-
     private fun registrarse() {
         TODO("Not yet implemented")
     }
     private fun iniciarSesion() {
         TODO("Not yet implemented")
     }
-
     // Función para mostrar las butacas
     private fun verEstadoDelCine(butacas: List<Butaca>) {
         var contador = 0
         for (butaca in butacas) {
-            when (butaca.ocupamiento.toString()) {
-                "LIBRE" -> if (butaca.tipo.toString() == "VIP") print(" 🔵 ") else print(" 🟢 ")
-                "RESERVADA" -> print(" 🟡 ")
-                "OCUPADA" -> print(" 🟠 ")
-                else -> (" 🔴 ") // Agregamos un caso para el valor nulo o desconocido
+            when (butaca.estado.toString()) {
+                "ACTIVA" -> when (butaca.ocupamiento.toString()){
+                    "LIBRE" -> if (butaca.tipo.toString() == "VIP") print(" 🔵 ") else print(" 🟢 ")
+                    "RESERVADA" -> print(" 🟡 ")
+                    "OCUPADA" -> print(" 🟠 ")
+                }
+                else -> (" 🔴 ") // Agregamos un caso de que esté en mantenimiento o fuera de servicio
             }
             contador++
             if (contador % 5 == 0) {
                 println()
             }
         }
+        menuInicio()
     }
-
     //
-    private fun BuscarButacaParaReservar(butacas: List<Butaca>) {
+    private fun buscarButacaParaReservar(butacas: List<Butaca>) {
         var fila: String
         var columna: Int
 
@@ -124,18 +129,33 @@ class CineApp : KoinComponent {
                         // Reservamos la butaca
                         reservarButaca(numeroButaca)
                     }
-                    else -> println("La butaca $numeroButaca no está disponible para reservar.")
+                    else -> {
+                        println("La butaca $numeroButaca no está disponible para reservar.")
+                        buscarButacaParaReservar(butacas)
+                    }
                 }
             }
             .onFailure {
                 println("La butaca $numeroButaca no existe.")
+                buscarButacaParaReservar(butacas)
             }
-        menuInicio(butacas)
+        menuInicio()
     }
 
+    // Actualizar el estado de la butaca a RESERVADA
     private fun reservarButaca(numeroButaca: String) {
-        // Actualizar el estado de la butaca a RESERVADA
+        butacaServicio.findById(numeroButaca).onSuccess { butaca ->
+            val butacaReservada = butaca.copy(ocupamiento = Ocupamiento.OCUPADA)
+            butacaServicio.update(numeroButaca, butacaReservada).onSuccess { _ ->
+                println("La butaca $numeroButaca ha sido reservada con éxito.")
+            }.onFailure { error ->
+                println("Error al reservar la butaca $numeroButaca: ${error.message}")
+            }
+        }.onFailure {
+            println("La butaca $numeroButaca no existe.")
+        }
     }
+
     private fun salir() {
         println("Gracias por su visita")
         // Finaliza la aplicación
