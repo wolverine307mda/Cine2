@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS ButacaEntity (
    tipo TEXT NOT NULL, -- Normal o VIP
    estado TEXT NOT NULL, -- Libre, ocupada o fuera de servicio
    ocupamiento TEXT NOT NULL,
-   isDeleted INTEGER,
+   isDeleted INTEGER NOT NULL ,
    createdAt TEXT NOT NULL,
    updatedAt TEXT NOT NULL
 );
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS ComplementoEntity (
     precio REAL NOT NULL,
     stock INTEGER NOT NULL,
     tipo TEXT NOT NULL,
-    isDeleted INTEGER,
+    isDeleted INTEGER NOT NULL,
     createdAt TEXT NOT NULL,
     updatedAt TEXT NOT NULL
 );
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS VentaEntity (
     id TEXT PRIMARY KEY UNIQUE,
     id_butaca TEXT NOT NULL, -- Tendriamos que crear otra tabla si decidimos hacer lo de multiples sillas --
     id_socio TEXT NOT NULL,
-    isDeleted INTEGER,
+    isDeleted INTEGER NOT NULL,
     createdAt TEXT NOT NULL,
     updatedAt TEXT NOT NULL,
 
@@ -35,21 +35,20 @@ CREATE TABLE IF NOT EXISTS VentaEntity (
 
 -- Tabla para almacenar los complementos asociados a una venta
 CREATE TABLE IF NOT EXISTS LineaVentaEntity (
-   id_venta TEXT,
+   id TEXT PRIMARY KEY,
    id_complemento TEXT,
    cantidad INTEGER NOT NULL,
-   isDeleted INTEGER ,
+   precio REAL NOT NULL,
+   isDeleted INTEGER NOT NULL ,
    createdAt TEXT NOT NULL,
    updatedAt TEXT NOT NULL,
-   FOREIGN KEY (id_venta) REFERENCES VentaEntity(id),
-   FOREIGN KEY (id_complemento) REFERENCES ComplementoEntity(id),
-   PRIMARY KEY (id_venta, id_complemento)
+   FOREIGN KEY (id_complemento) REFERENCES ComplementoEntity(id)
 );
 
 -- Tabla para almacenar las cuentas --
 CREATE TABLE IF NOT EXISTS CuentaEntity (
     nombre TEXT PRIMARY KEY,
-    isDeleted INTEGER,
+    isDeleted INTEGER NOT NULL,
     createdAt TEXT NOT NULL,
     updatedAt TEXT NOT NULL
 );

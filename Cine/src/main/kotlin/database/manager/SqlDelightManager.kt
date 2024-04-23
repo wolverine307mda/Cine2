@@ -83,8 +83,7 @@ class SqlDelightManager(
             butacaStorage
                 .cargar(File(url.toURI()))
                 .onSuccess {
-                    it.drop(1)
-                    .forEach {
+                    it.forEach {
                         butacaValidator.validate(it)
                             .onSuccess {  databaseQueries.insertButaca(
                                 id = it.id.uppercase(),

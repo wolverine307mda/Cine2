@@ -26,7 +26,9 @@ class ButacaStorageCSVImpl(
     override fun cargar(file: File) : Result<List<Butaca>, ButacaError>{
         try {
             return Ok(
-                file.readLines().map {
+                file.readLines()
+                    .drop(1)
+                    .map {
                     val butaca = it.split(',')
                     Butaca(
                         id = butaca[0],

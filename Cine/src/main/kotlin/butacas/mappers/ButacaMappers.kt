@@ -5,13 +5,18 @@ import org.example.butacas.models.Butaca
 import org.example.butacas.models.Estado
 import org.example.butacas.models.Ocupamiento
 import org.example.butacas.models.Tipo
+import org.example.ventas.mappers.toVenta
+import java.time.LocalDateTime
 
 fun ButacaEntity.toButaca() : Butaca{
     return Butaca(
         id = this.id,
         estado = elegirEstado(this.estado),
         ocupamiento = elegirOcupamiento(this.ocupamiento),
-        tipo = elegirTipo(this.tipo)
+        tipo = elegirTipo(this.tipo),
+        createdAt = LocalDateTime.parse(this.createdAt),
+        updatedAt = LocalDateTime.parse(this.createdAt),
+        isDeleted = this.isDeleted!!.toInt() == 1
     )
 }
 
