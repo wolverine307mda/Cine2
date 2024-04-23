@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS ComplementoEntity (
     id TEXT PRIMARY KEY,
     nombre TEXT NOT NULL,
     precio REAL NOT NULL,
+    stock INTEGER NOT NULL,
     tipo TEXT NOT NULL,
     isDeleted INTEGER,
     createdAt TEXT NOT NULL,
@@ -58,8 +59,8 @@ INSERT INTO ButacaEntity (id, tipo, estado, ocupamiento,isDeleted, createdAt, up
 VALUES (?, ?, ?, ?, ?, ?,?);
 
 insertComplemento:
-INSERT INTO ComplementoEntity (id, nombre, precio, tipo, createdAt, updatedAt, isDeleted)
-VALUES (?, ?, ?, ?, ?, ?,?);
+INSERT INTO ComplementoEntity (id, nombre, precio, stock, tipo, createdAt, updatedAt, isDeleted)
+VALUES (?, ?, ?, ?, ?, ?,?, ?);
 
 removeAllButacas:
 DELETE FROM ButacaEntity;

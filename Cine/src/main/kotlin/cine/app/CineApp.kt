@@ -1,8 +1,13 @@
 package cine.app
 
+import com.github.michaelbull.result.*
+import org.example.butacas.errors.ButacaError
+import org.example.butacas.errors.ProductoError
+import org.example.butacas.models.Butaca
 import org.example.butacas.models.Ocupamiento
 import org.example.butacas.models.Tipo
 import org.example.butacas.repositorio.ButacaRepositorioImpl
+import org.example.butacas.servicios.ButacaService
 import org.example.cuenta.servicio.CuentaServicio
 import org.example.productos.servicio.ProductoServicio
 import org.example.ventas.servicio.VentaServicio
@@ -14,7 +19,7 @@ class CineApp : KoinComponent {
     private val cuentaServicio: CuentaServicio by inject()
     private val ventaServicio: VentaServicio by inject()
     private val productoServicio: ProductoServicio by inject()
-    private val butacaRepositorio: ButacaRepositorioImpl by inject()
+    private val butacaServicio : ButacaService by inject()
 
     fun inicioDeVenta() {
 
@@ -47,22 +52,24 @@ class CineApp : KoinComponent {
     // Función para mostrar las butacas al usuario
     private fun verButacas() {
         // Obtener todas las butacas de la base de datos
-        val butacasList = butacaRepositorio.findAll()
-
-        // Crear una lista de símbolos para representar el estado de cada butaca
-        val listaSimbolos = butacasList.map { butaca ->
-            // Determinar el símbolo para representar el estado de la butaca
-            when (butaca.ocupamiento) {
-                Ocupamiento.LIBRE -> if (butaca.tipo == Tipo.VIP) " 🟢 " else " 🟡 "
-                Ocupamiento.RESERVADA -> " 🟠 "
-                Ocupamiento.OCUPADA -> " 🔴 "
-                else -> "   " // Agregamos un caso para el valor nulo o desconocido
+        butacaServicio.findAll().onSuccess {
+            // Crear una lista de símbolos para representar el estado de cada butaca
+            val listaSimbolos = it.map { butaca ->
+                // Determinar el símbolo para representar el estado de la butaca
+                when (butaca.ocupamiento) {
+                    Ocupamiento.LIBRE -> if (butaca.tipo == Tipo.VIP) " 🟢 " else " 🟡 "
+                    Ocupamiento.RESERVADA -> " 🟠 "
+                    Ocupamiento.OCUPADA -> " 🔴 "
+                    else -> "   " // Agregamos un caso para el valor nulo o desconocido
+                }
             }
-        }
 
-        // Imprimir la lista de símbolos como una matriz
-        listaSimbolos.chunked(7).forEach { fila ->
-            println(fila.joinToString(""))
+            // Imprimir la lista de símbolos como una matriz
+            listaSimbolos.chunked(7).forEach { fila ->
+                println(fila.joinToString(""))
+            }
+        }.onFailure {
+            println(it.message) //Imprimirá el mensaje del error
         }
 
         menuCine()
@@ -75,7 +82,7 @@ class CineApp : KoinComponent {
         // ingrese el número de fila (A-E)
         do {
             print("Ingrese el número de fila (A-E): ")
-            fila = readLine()?.toUpperCase() ?: ""
+            fila = readLine()?.uppercase() ?: ""
         } while (fila !in "ABCDE")
 
         // ingrese el número de columna (1-7)
@@ -89,13 +96,19 @@ class CineApp : KoinComponent {
         val numeroButaca = "$fila$columna"
 
         // Buscar la butaca
-        val butaca = butacaRepositorio.findById(numeroButaca)
-        if (butaca != null && butaca.ocupamiento == Ocupamiento.LIBRE) {
-            // Reservamos la butaca
-            println("Butaca $numeroButaca reservada exitosamente.")
-        } else {
-            println("La butaca $numeroButaca no está disponible para reservar.")
-        }
+        butacaServicio
+            .findById(numeroButaca)
+            .onSuccess {
+                if (it.ocupamiento == Ocupamiento.LIBRE) {
+                // Reservamos la butaca
+                println("Butaca $numeroButaca reservada exitosamente.")
+                } else {
+                    println("La butaca $numeroButaca no está disponible para reservar.")
+                }
+            }
+            .onFailure {
+                println("La butaca $numeroButaca no existe.")
+            }
         menuCine()
     }
 

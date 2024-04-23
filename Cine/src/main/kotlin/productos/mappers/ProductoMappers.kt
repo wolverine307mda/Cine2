@@ -9,7 +9,8 @@ fun ComplementoEntity.toProducto(): Producto {
         id = this.id,
         nombre = this.nombre,
         precio = this.precio,
-        tipo = elegirTipo(this.tipo)
+        tipo = elegirTipo(this.tipo),
+        stock = this.stock.toInt()
     )
 }
 

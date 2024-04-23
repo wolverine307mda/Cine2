@@ -7,4 +7,6 @@ import java.io.File
 
 interface ButacaService {
     fun getFromFile(file : File) : Result<List<Butaca>, ButacaError>
+    fun findAll() : Result<List<Butaca>, ButacaError>
+    fun findById(id : String) : Result<Butaca,ButacaError>
 }

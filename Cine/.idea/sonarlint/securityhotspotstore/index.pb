@@ -101,3 +101,5 @@ p
 Qbuild/generated/sqldelight/code/AppDatabase/main/org/cine/database/AppDatabase.kt,7\a\7a1535801053ad5557e64d79be4fc166467a79ed
 \
 ,src/main/kotlin/cuenta/errors/CuentaError.kt,0\6\06f5f12d890a18a064b59ce8c91badd3a4897890
+a
+1src/main/kotlin/productos/errors/ProductoError.kt,c\b\cb05c3a556ca35aa511bf572072e23ef7f8614df
