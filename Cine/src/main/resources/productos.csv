@@ -1,18 +1,18 @@
-nombre,stock,tipo,isDeleted
-"Coca-Cola",100,"Bebida",false
-"Pepsi",80,"Bebida",false
-"Sprite",120,"Bebida",false
-"Pizza",50,"Comida",false
-"Hamburguesa",60,"Comida",false
-"Hot Dog",70,"Comida",false
-"Cerveza",90,"Bebida",false
-"Vino",40,"Bebida",false
-"Galletas",110,"Comida",false
-"Agua",150,"Bebida",false
-"Refresco de Limón",70,"Bebida",false
-"Patatas Fritas",80,"Comida",false
-"Helado",60,"Comida",false
-"Jugo de Naranja",100,"Bebida",false
-"Pizza Pepperoni",40,"Comida",false
-"Refresco de Manzana",90,"Bebida",false
-"Palomitas de Maíz",120,"Comida",false
+"Coca-Cola",100,"Bebida",false,1.50
+"Pepsi",80,"Bebida",false,1.25
+"Sprite",120,"Bebida",false,1.75
+"Pizza",50,"Comida",false,8.99
+"Hamburguesa",60,"Comida",false,6.49
+"Hot Dog",70,"Comida",false,4.99
+"Cerveza",90,"Bebida",false,2.99
+"Vino",40,"Bebida",false,12.99
+"Galletas",110,"Comida",false,3.49
+"Agua",150,"Bebida",false,0.99
+"Refresco de Limón",70,"Bebida",false,1.75
+"Patatas Fritas",80,"Comida",false,2.49
+"Helado",60,"Comida",false,4.99
+"Jugo de Naranja",100,"Bebida",false,2.25
+"Pizza Pepperoni",40,"Comida",false,9.99
+"Refresco de Manzana",90,"Bebida",false,1.75
+"Palomitas de Maíz",120,"Comida",false,3.99
+

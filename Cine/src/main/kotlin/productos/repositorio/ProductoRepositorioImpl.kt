@@ -1,6 +1,7 @@
 package org.example.productos.repositorio
 
 import org.example.database.manager.SqlDelightManager
+import org.example.database.manager.logger
 import org.example.database.manager.toLong
 import org.example.productos.models.Producto
 import org.koin.core.annotation.Singleton
@@ -30,7 +31,11 @@ class ProductoRepositorioImpl(
             updatedAt = producto.updatedAt.toString(),
             isDeleted = producto.isDeleted.toLong()
         )
-        return findById(producto.id)
+        return findById(producto.id).also {
+            it?.let {
+                logger.debug { "Añadido el producto: '${producto.nombre}' al inventario" }
+            }
+        }
     }
 
     override fun update(id: String, butaca: Producto): Producto? {

@@ -36,17 +36,12 @@ class ButacaRepositorioImpl (
             ocupamiento = butaca.ocupamiento!!.name,
             createdAt = LocalDateTime.now().toString(),
             updatedAt = LocalDateTime.now().toString(),
-            isDeleted = butaca.isDeleted.toLong() )
-        logger.debug { "Añadida la butaca con id: ${butaca.id}" }
-        return try { //Porque puede dar una excepcionn si no hay nada en la base de datos
-            if (db.selectLastButacaInserted().executeAsOne().id != butaca.id){
-                //Si la ultima butaca metida no coincide con la que acabamos de intentar meter
-                logger.debug { "No se pudo guardar la butaca con id: ${butaca.id}" }
-                return null
-            }else return butaca //Si la ha metido correctamente
-        }catch (e : Exception){
-            logger.debug { "No se pudo guardar la butaca con id: ${butaca.id}: ${e.message}" }
-            null
+            isDeleted = butaca.isDeleted.toLong()
+        )
+        return findById(butaca.id).also {
+            it?.let {
+            logger.debug { "Añadida la butaca con id: ${butaca.id}" }
+            }
         }
     }
 
