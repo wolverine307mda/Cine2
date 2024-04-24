@@ -21,10 +21,18 @@ class CineApp : KoinComponent {
     var butacas: List<Butaca>? = null
     var productos: List<Producto>? = null
 
+    init {
+        productoServicio
+            .cargarTodosProductos()
+            .onSuccess {
+                it.forEach {
+                    productoServicio.save(it)
+                }
+            }
+    }
+
     fun iniciarCine() {
         println("\nBienvenido al cine\n")
-        actualizarProductos()
-        productos?.forEach { println(it)}
         menuInicio()
 
     }

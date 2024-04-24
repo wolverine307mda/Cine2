@@ -35,9 +35,6 @@ fun main() {
 
 class Dummy : KoinComponent {
     fun run(){
-        val db : SqlDelightManager by inject()
-        db.initialize()
-
         val cineApp = CineApp()
         cineApp.iniciarCine()
     }

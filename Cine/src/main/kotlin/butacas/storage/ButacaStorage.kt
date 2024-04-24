@@ -7,5 +7,5 @@ import java.io.File
 
 interface ButacaStorage {
     fun cargar(file : File) : Result<List<Butaca>,ButacaError>
-    fun exportar(list: List<Butaca>) : Boolean
+    fun exportar(list: List<Butaca>) : Result<Unit,ButacaError>
 }

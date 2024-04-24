@@ -11,19 +11,19 @@ fun ComplementoEntity.toProducto(): Producto {
         id = this.id,
         nombre = this.nombre,
         precio = this.precio,
-        tipo = elegirTipo(this.tipo),
+        tipo = elegirTipoProducto(this.tipo),
         stock = this.stock.toInt(),
         createdAt = LocalDateTime.parse(this.createdAt),
         updatedAt = LocalDateTime.parse(this.createdAt),
-        isDeleted = this.isDeleted.toInt() == 0
+        isDeleted = this.isDeleted.toInt() == 1
     )
 }
 
-private fun elegirTipo(s: String): TipoProducto? {
+fun elegirTipoProducto(s: String): TipoProducto? {
     return when (s) {
-        "Bebida" -> TipoProducto.BEBIDA
-        "Comida" -> TipoProducto.COMIDA
-        "Otros" -> TipoProducto.OTROS
+        "BEBIDA" -> TipoProducto.BEBIDA
+        "COMIDA" -> TipoProducto.COMIDA
+        "OTROS" -> TipoProducto.OTROS
         else -> null
     }
 }

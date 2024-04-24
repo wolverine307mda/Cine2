@@ -9,4 +9,5 @@ interface ProductoServicio {
     fun findAll() : Result<List<Producto>, ProductoError>
     fun findById(id : String) : Result<Producto, ProductoError>
     fun update(id: String, producto: Producto): Result<Producto, ProductoError>
+    fun cargarTodosProductos() : Result<List<Producto>,ProductoError>
 }

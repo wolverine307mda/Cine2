@@ -101,11 +101,9 @@ Qbuild/generated/sqldelight/code/AppDatabase/main/org/cine/database/AppDatabase.
 ,src/main/kotlin/cuenta/errors/CuentaError.kt,0\6\06f5f12d890a18a064b59ce8c91badd3a4897890
 a
 1src/main/kotlin/productos/errors/ProductoError.kt,c\b\cb05c3a556ca35aa511bf572072e23ef7f8614df
-c
-3src/main/kotlin/ventas/validators/VentaValidator.kt,e\0\e041080b0e4abc564b07045254653620a383887e
-h
-8src/main/kotlin/ventas/validators/LineaVentaValidator.kt,4\9\49b27ebcd7b4ca6515b8748a84d9ca4172c8032c
 ^
 .src/main/kotlin/ventas/storage/VentaStorage.kt,f\e\fe46aaf97d0dd905cabb1c7beeb4d39cb0f985de
 f
 6src/main/kotlin/ventas/storage/VentaStorageHTMLImpl.kt,e\7\e764ccb556c801fd4e83a5decaaa857fc7188140
+Š
+Zbuild/generated/sqldelight/code/AppDatabase/main/org/cine/database/Cine/AppDatabaseImpl.kt,d\9\d9b3fa426d20910fe819c2b4bd4c4a580ec5494d

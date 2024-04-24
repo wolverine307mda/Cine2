@@ -1,19 +1,22 @@
 package org.example.productos.servicio
 
-import com.github.michaelbull.result.Err
-import com.github.michaelbull.result.Ok
-import com.github.michaelbull.result.Result
-import com.github.michaelbull.result.onSuccess
+import com.github.michaelbull.result.*
 import org.example.butacas.errors.ProductoError
+import org.example.butacas.storage.ProductoStorage
+import org.example.config.Config
+import org.example.database.manager.logger
 import org.example.productos.models.Producto
 import org.example.productos.repositorio.ProductosRepositorio
 import org.example.productos.validador.ProductoValidador
 import org.koin.core.annotation.Singleton
+import java.io.File
 
 @Singleton
 class ProductoServicioImpl(
     private var productosRepositorio: ProductosRepositorio,
-    private var productoValidador: ProductoValidador
+    private var productoValidador: ProductoValidador,
+    private var productoStorage: ProductoStorage,
+    private var config: Config
 ) : ProductoServicio {
     override fun save(producto: Producto) : Result<Producto, ProductoError> {
         productoValidador.validate(producto) //Para esegurarse que es un producto válido
@@ -54,5 +57,13 @@ class ProductoServicioImpl(
         } else {
             Err(ProductoError.ProductoNotFoundError("El producto con ID $id no existe"))
         }
+    }
+
+    override fun cargarTodosProductos() : Result<List<Producto>,ProductoError>{
+        logger.debug { "Importando datos de productos" }
+        val url = ClassLoader.getSystemResource(config.productoImportFile)
+        if (url != null){
+            return productoStorage.cargar(File(url.toURI()))
+        }else return Err(ProductoError.ProductoStorageError("Hubo un problema cargando la lista de productos"))
     }
 }

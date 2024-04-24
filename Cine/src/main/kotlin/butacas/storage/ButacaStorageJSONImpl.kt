@@ -12,7 +12,7 @@ class ButacaStorageJSONImpl : ButacaStorage {
         /*No está implementado*/
     }
 
-    override fun exportar(list: List<Butaca>): Boolean {
+    override fun exportar(list: List<Butaca>): Result<Unit,ButacaError> {
         TODO("Not yet implemented")
     }
 }

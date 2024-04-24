@@ -19,7 +19,9 @@ class Config(
     @Property("storage.data")
     _storageData: String = "data",
     @Property("butacas.butacaSampleFile")
-    _butacaSampleFile : String = "butacas.csv"
+    _butacaSampleFile : String = "butacas.csv",
+    @Property("productos.productoImportFile")
+    _productoImportFile : String = "productos.csv"
 ) {
     val databaseUrl: String = _databaseUrl
     val databaseInitTables: Boolean = _databaseInitTables.toBoolean()
@@ -27,6 +29,7 @@ class Config(
     val databaseInMemory: Boolean = _databaseInMemory.toBoolean()
     val storageData: String = _storageData
     val butacaSampleFile : String = _butacaSampleFile
+    val productoImportFile : String = _productoImportFile
 
     init {
         try {

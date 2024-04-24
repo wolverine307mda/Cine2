@@ -19,9 +19,9 @@ class ButacaStorageCSVImpl(
     var butacaValidator: ButacaValidator
 ) : ButacaStorage {
 
-    override fun exportar(list: List<Butaca>): Boolean {
+    override fun exportar(list: List<Butaca>): Result<Unit,ButacaError> {
         println("Una función para exportar una lista de butacas en CSV")
-        return true
+        return Ok(Unit)
     }
 
     override fun cargar(file: File) : Result<List<Butaca>, ButacaError>{

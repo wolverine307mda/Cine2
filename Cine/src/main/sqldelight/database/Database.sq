@@ -96,7 +96,7 @@ getAllProductos:
 SELECT * FROM ComplementoEntity;
 
 productoExists:
-SELECT COUNT(*) > 0 FROM ComplementoEntity WHERE id = ?;
+SELECT COUNT(*) > 0 FROM ComplementoEntity WHERE id = ? LIMIT 1;
 
 getProductoById:
 SELECT * FROM ComplementoEntity WHERE id = ?;
