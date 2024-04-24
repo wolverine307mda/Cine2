@@ -25,4 +25,34 @@ class ProductoServicioImpl(
             }
         return Err(ProductoError.ProductoStorageError("No se pudo guardar el producto con id: ${producto.id}"))
     }
+
+    override fun findAll(): Result<List<Producto>, ProductoError> {
+        val result = productosRepositorio.findAll()
+        if (result.isNotEmpty()) return Ok(result)
+        else return Err(ProductoError.ProductoStorageError("No hay ningún producto en la base de datos"))
+    }
+
+    override fun findById(id: String): Result<Producto, ProductoError> {
+        val producto = productosRepositorio.findById(id)
+        return if (producto != null) {
+            Ok(producto)
+        } else {
+            Err(ProductoError.ProductoNotFoundError("El producto con ID $id no existe"))
+        }
+    }
+
+    override fun update(id: String, producto: Producto): Result<Producto, ProductoError> {
+        val existingProducto = productosRepositorio.findById(id)
+        return if (existingProducto != null) {
+            val updatedProducto = producto.copy(id = id)
+            val result = productosRepositorio.update(id, updatedProducto)
+            if (result != null) {
+                Ok(updatedProducto)
+            } else {
+                Err(ProductoError.ProductoStorageError("No se pudo actualizar el Producto"))
+            }
+        } else {
+            Err(ProductoError.ProductoNotFoundError("El producto con ID $id no existe"))
+        }
+    }
 }
