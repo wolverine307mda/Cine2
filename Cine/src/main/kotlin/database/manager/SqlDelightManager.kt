@@ -8,6 +8,7 @@ import org.cine.database.AppDatabase
 import org.example.butacas.storage.ButacaStorage
 import org.example.butacas.validator.ButacaValidator
 import org.example.config.Config
+import org.example.cuenta.mappers.toLong
 import org.koin.core.annotation.Singleton
 import org.lighthousegames.logging.logging
 import java.io.File
@@ -116,11 +117,3 @@ class SqlDelightManager(
         }
     }
 }
-
-/**
- * Trasforma un boolean en un Long
- */
-fun Boolean.toLong(): Long {
-        return if (this) 0
-        else 1
-    }

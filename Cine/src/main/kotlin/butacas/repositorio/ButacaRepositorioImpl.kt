@@ -2,9 +2,9 @@ package org.example.butacas.repositorio
 
 import org.example.butacas.mappers.toButaca
 import org.example.butacas.models.Butaca
+import org.example.cuenta.mappers.toLong
 import org.example.database.manager.SqlDelightManager
 import org.example.database.manager.logger
-import org.example.database.manager.toLong
 import org.koin.core.annotation.Singleton
 import java.time.LocalDateTime
 
@@ -60,6 +60,13 @@ class ButacaRepositorioImpl (
                 isDeleted = butaca.isDeleted.toLong(),
                 id = id
             )
+            return butaca.copy(
+                id = id,
+                estado = butaca.estado,
+                ocupamiento = butaca.ocupamiento,
+                updatedAt = LocalDateTime.now(),
+                isDeleted = butaca.isDeleted
+            )
         }
         return null
     }
@@ -68,6 +75,10 @@ class ButacaRepositorioImpl (
         logger.debug { "Borrando butaca con id: $id" }
         findById(id)?.let {
             db.deleteButaca(id)
+            return it.copy(
+                isDeleted = true,
+                updatedAt = LocalDateTime.now()
+            )
         }
         return null
     }

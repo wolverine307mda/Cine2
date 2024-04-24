@@ -13,4 +13,5 @@ class VentaServicioImpl (
     var ventaRepositorio: VentaRepositorio,
     var ventaStorage: VentaStorage
 ) : VentaServicio {
+
 }

@@ -1,8 +1,8 @@
 package org.example.productos.repositorio
 
+import org.example.cuenta.mappers.toLong
 import org.example.database.manager.SqlDelightManager
 import org.example.database.manager.logger
-import org.example.database.manager.toLong
 import org.example.productos.mappers.toProducto
 import org.example.productos.models.Producto
 import org.koin.core.annotation.Singleton

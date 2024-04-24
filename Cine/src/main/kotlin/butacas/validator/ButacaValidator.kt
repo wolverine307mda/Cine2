@@ -9,8 +9,8 @@ import org.koin.core.annotation.Singleton
 
 @Singleton
 class ButacaValidator {
-    fun validate(butaca: Butaca): Result<Butaca, ButacaError> {
-        return when {
+    fun validate(butaca: Butaca) : Result<Butaca,ButacaError>{
+        return when{
             butaca.id.isBlank() -> Err(ButacaError.ButacaInvalida("La butaca con id: ${butaca.id} no es válida"))
             butaca.tipo == null -> Err(ButacaError.ButacaInvalida("La butaca con id: ${butaca.id} no es válida"))
             butaca.estado == null -> Err(ButacaError.ButacaInvalida("La butaca con id: ${butaca.id} no es válida"))
@@ -18,5 +18,4 @@ class ButacaValidator {
             else -> Ok(butaca)
         }
     }
-
 }

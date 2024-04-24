@@ -105,3 +105,7 @@ c
 3src/main/kotlin/ventas/validators/VentaValidator.kt,e\0\e041080b0e4abc564b07045254653620a383887e
 h
 8src/main/kotlin/ventas/validators/LineaVentaValidator.kt,4\9\49b27ebcd7b4ca6515b8748a84d9ca4172c8032c
+^
+.src/main/kotlin/ventas/storage/VentaStorage.kt,f\e\fe46aaf97d0dd905cabb1c7beeb4d39cb0f985de
+f
+6src/main/kotlin/ventas/storage/VentaStorageHTMLImpl.kt,e\7\e764ccb556c801fd4e83a5decaaa857fc7188140

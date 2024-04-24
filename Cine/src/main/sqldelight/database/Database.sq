@@ -158,4 +158,3 @@ SET isDeleted = 1 WHERE id = ?;
 deleteLineaVenta:
 UPDATE LineaVentaEntity
 SET isDeleted = 1 WHERE id = ?;
-

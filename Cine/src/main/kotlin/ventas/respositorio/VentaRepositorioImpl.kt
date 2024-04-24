@@ -1,10 +1,10 @@
 package org.example.ventas.respositorio
 
 import org.example.butacas.repositorio.ButacaRepositorio
+import org.example.cuenta.mappers.toLong
 import org.example.cuenta.repositorio.CuentaRepositorio
 import org.example.database.manager.SqlDelightManager
 import org.example.database.manager.logger
-import org.example.database.manager.toLong
 import org.example.productos.repositorio.ProductosRepositorio
 import org.example.ventas.mappers.toLineaVenta
 import org.example.ventas.mappers.toVenta
@@ -104,6 +104,15 @@ class VentaRepositorioImpl(
             venta.lineasVenta.forEach {
                 updateLineasVenta(id, it)
             }
+            return Venta(
+                updatedAt = LocalDateTime.now(),
+                createdAt = it.createdAt,
+                butaca = venta.butaca,
+                isDeleted = venta.isDeleted,
+                id = id,
+                cliente = it.cliente,
+                lineasVenta = it.lineasVenta
+            )
         }
         return null
     }
@@ -126,6 +135,15 @@ class VentaRepositorioImpl(
             it.lineasVenta.forEach {
                 db.deleteLineaVenta(it.id)
             }
+            return Venta(
+                updatedAt = LocalDateTime.now(),
+                createdAt = it.createdAt,
+                butaca = it.butaca,
+                isDeleted = true,
+                id = id,
+                cliente = it.cliente,
+                lineasVenta = it.lineasVenta
+            )
         }
         return null
     }
