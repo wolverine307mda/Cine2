@@ -91,9 +91,10 @@ class SqlDelightManager(
                                 tipo = it.tipo!!.name,
                                 estado = it.estado!!.name,
                                 ocupamiento = it.ocupamiento!!.name,
-                                createdAt = LocalDateTime.now().toString(),
-                                updatedAt = LocalDateTime.now().toString(),
-                                isDeleted = it.isDeleted.toLong() )
+                                createdAt = it.updatedAt.toString(),
+                                updatedAt = it.updatedAt.toString(),
+                                isDeleted = it.isDeleted.toLong()
+                            )
                                 logger.debug { "Añadida la butaca con id: ${it.id}" }
                             }
                             .onFailure { logger.debug { it.message } }

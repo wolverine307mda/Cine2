@@ -26,7 +26,7 @@ fun Cuenta.toCuentaDto() : CuentaDTO{
  * Trasforma un boolean en un Long
  */
 fun Boolean.toLong(): Long {
-    return if (this) 0
-    else 1
+    if (this) return 1
+    else return 0
 }
 

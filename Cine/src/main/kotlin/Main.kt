@@ -1,6 +1,7 @@
 package org.example
 
 import cine.app.CineApp
+import org.example.cuenta.mappers.toLong
 import org.example.database.manager.SqlDelightManager
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.core.component.KoinComponent
@@ -30,7 +31,6 @@ fun main() {
     }
     val dummy = Dummy()
     dummy.run()
-
 }
 
 class Dummy : KoinComponent {

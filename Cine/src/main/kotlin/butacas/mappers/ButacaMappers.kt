@@ -15,7 +15,7 @@ fun ButacaEntity.toButaca() : Butaca{
         tipo = elegirTipo(this.tipo),
         createdAt = LocalDateTime.parse(this.createdAt),
         updatedAt = LocalDateTime.parse(this.createdAt),
-        isDeleted = this.isDeleted.toInt() == 0
+        isDeleted = this.isDeleted.toInt() == 1
     )
 }
 

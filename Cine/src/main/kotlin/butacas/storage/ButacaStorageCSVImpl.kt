@@ -12,6 +12,7 @@ import org.example.butacas.validator.ButacaValidator
 import org.example.database.manager.logger
 import org.koin.core.annotation.Singleton
 import java.io.File
+import java.time.LocalDateTime
 
 @Singleton
 class ButacaStorageCSVImpl(
@@ -34,7 +35,10 @@ class ButacaStorageCSVImpl(
                         id = butaca[0],
                         estado = elegirEstado(butaca[1]),
                         ocupamiento = elegirOcupamiento(butaca[2]),
-                        tipo = elegirTipo(butaca[3])
+                        tipo = elegirTipo(butaca[3]),
+                        isDeleted = false,
+                        updatedAt = LocalDateTime.now(),
+                        createdAt = LocalDateTime.now()
                     )
                 }
             )
