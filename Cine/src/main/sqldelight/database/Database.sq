@@ -68,9 +68,17 @@ UPDATE ButacaEntity SET estado = ?, ocupamiento = ?, updatedAt = ?, tipo = ?, is
 deleteButaca:
 UPDATE ButacaEntity SET isDeleted = 1 WHERE id = ?;
 
+deleteProducto:
+UPDATE ButacaEntity SET isDeleted = 1 WHERE id = ?;
+
 insertComplemento:
 INSERT INTO ComplementoEntity (id, nombre, precio, stock, tipo, createdAt, updatedAt, isDeleted)
 VALUES (?, ?, ?, ?, ?, ?,?, ?);
+
+updateComplemento:
+UPDATE ComplementoEntity
+SET nombre = ?, precio = ?, stock = ?, tipo = ?, updatedAt = ?, isDeleted = ?
+WHERE id = ?;
 
 removeAllButacas:
 DELETE FROM ButacaEntity;
@@ -80,6 +88,18 @@ DELETE FROM CuentaEntity;
 
 removeAllProductos:
 DELETE FROM ComplementoEntity;
+
+countProductos:
+SELECT COUNT(*) FROM ComplementoEntity;
+
+getAllProductos:
+SELECT * FROM ComplementoEntity;
+
+productoExists:
+SELECT COUNT(*) > 0 FROM ComplementoEntity WHERE id = ?;
+
+getProductoById:
+SELECT * FROM ComplementoEntity WHERE id = ?;
 
 removeAllVentas:
 DELETE FROM VentaEntity;
@@ -138,3 +158,4 @@ SET isDeleted = 1 WHERE id = ?;
 deleteLineaVenta:
 UPDATE LineaVentaEntity
 SET isDeleted = 1 WHERE id = ?;
+

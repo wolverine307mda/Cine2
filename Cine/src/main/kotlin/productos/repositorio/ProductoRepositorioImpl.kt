@@ -3,8 +3,10 @@ package org.example.productos.repositorio
 import org.example.database.manager.SqlDelightManager
 import org.example.database.manager.logger
 import org.example.database.manager.toLong
+import org.example.productos.mappers.toProducto
 import org.example.productos.models.Producto
 import org.koin.core.annotation.Singleton
+import java.time.LocalDateTime
 
 @Singleton
 class ProductoRepositorioImpl(
@@ -13,11 +15,21 @@ class ProductoRepositorioImpl(
     private val db = sqlDelightManager.databaseQueries
 
     override fun findAll(): List<Producto> {
-        TODO("Not yet implemented")
+        logger.debug { "Buscando todos los productos en la base de datos" }
+        if (db.countProductos().executeAsOne() > 0){
+            return db.getAllProductos().executeAsList().map {
+                it.toProducto()
+            }
+        }
+        return emptyList()
     }
 
     override fun findById(id: String): Producto? {
-        TODO("Not yet implemented")
+        logger.debug { "Buscando un producto con id: $id" }
+        if (db.productoExists(id).executeAsOne()){
+            return db.getProductoById(id).executeAsOne().toProducto()
+        }
+        return null
     }
 
     override fun save(producto: Producto): Producto? {
@@ -38,12 +50,28 @@ class ProductoRepositorioImpl(
         return null
     }
 
-    override fun update(id: String, butaca: Producto): Producto? {
-        TODO("Not yet implemented")
+    override fun update(id: String, producto: Producto): Producto? {
+        logger.debug { "Actualizando el producto con id: $id"}
+        findById(id)?.let {
+            db.updateComplemento(
+                nombre = producto.nombre,
+                precio = producto.precio,
+                stock = producto.stock.toLong(),
+                tipo = producto.tipo!!.name,
+                updatedAt = LocalDateTime.now().toString(),
+                isDeleted = producto.isDeleted.toLong(),
+                id = id
+            )
+        }
+        return null
     }
 
     override fun delete(id: String): Producto? {
-        TODO("Not yet implemented")
+        logger.debug { "Borrando Producto con id: $id" }
+        findById(id)?.let {
+            db.deleteProducto(id)
+        }
+        return null
     }
 
 }

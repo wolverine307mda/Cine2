@@ -6,6 +6,7 @@ import org.example.butacas.models.Butaca
 import org.example.butacas.models.Ocupamiento
 import org.example.butacas.servicios.ButacaService
 import org.example.cuenta.servicio.CuentaServicio
+import org.example.productos.models.Producto
 import org.example.productos.servicio.ProductoServicio
 import org.example.ventas.servicio.VentaServicio
 import org.koin.core.component.KoinComponent
@@ -17,17 +18,19 @@ class CineApp : KoinComponent {
     private val ventaServicio: VentaServicio by inject()
     private val productoServicio: ProductoServicio by inject()
     private val butacaServicio : ButacaService by inject()
+    var butacas: List<Butaca>? = null
+    var productos: List<Producto>? = null
 
     fun iniciarCine() {
-        println()
-        println("Bienvenido al cine")
-        println()
-
+        println("\nBienvenido al cine\n")
+        actualizarProductos()
+        productos?.forEach { println(it)}
         menuInicio()
+
     }
 
+
     private fun menuInicio() {
-        var butacas: List<Butaca>? = null
         var opcion: String?
 
         println("""¿Qué desea hacer? 
@@ -35,23 +38,13 @@ class CineApp : KoinComponent {
         |2. Reservar butacas
         |3. Salir""".trimMargin())
 
-        // Manejo del resultado del servicio findAll()
-        val findAllResult = butacaServicio.findAll()
-        findAllResult.onSuccess { butacasEncontradas ->
-            butacas = butacasEncontradas
-        }.onFailure { error ->
-            println("Error al obtener las butacas: ${error.message}")
-        }
-
         do {
-            // Solicitar al usuario que ingrese una opción
             print("Ingrese una opción:")
-            // Leer la opción ingresada por el usuario
             opcion = readln()
             when (opcion) {
-                "1" -> verEstadoDelCine(butacas ?: emptyList()) // Pasamos una lista vacía si butacas es nulo
-                "2" -> buscarButacaParaReservar(butacas ?: emptyList()) // Pasamos una lista vacía si butacas es nulo
-                "3" -> salir() // Salir de la aplicación
+                "1" -> verEstadoDelCine()
+                "2" -> buscarButacaParaReservar()
+                "3" -> salir()
                 else -> println("Opción inválida")
             }
         } while (opcion !in listOf("1", "2", "3"))
@@ -82,30 +75,10 @@ class CineApp : KoinComponent {
     private fun iniciarSesion() {
         TODO("Not yet implemented")
     }
-    // Función para mostrar las butacas
-    private fun verEstadoDelCine(butacas: List<Butaca>) {
-        var contador = 0
-        for (butaca in butacas) {
-            when (butaca.estado.toString()) {
-                "ACTIVA" -> when (butaca.ocupamiento.toString()){
-                    "LIBRE" -> if (butaca.tipo.toString() == "VIP") print(" 🔵 ") else print(" 🟢 ")
-                    "RESERVADA" -> print(" 🟡 ")
-                    "OCUPADA" -> print(" 🟠 ")
-                }
-                else -> (" 🔴 ") // Agregamos un caso de que esté en mantenimiento o fuera de servicio
-            }
-            contador++
-            if (contador % 5 == 0) {
-                println()
-            }
-        }
-        menuInicio()
-    }
-    //
-    private fun buscarButacaParaReservar(butacas: List<Butaca>) {
+    private fun buscarButacaParaReservar() {
         var fila: String
         var columna: Int
-
+        actualizarButacas()
         // ingrese el número de fila (A-E)
         do {
             print("Ingrese el número de fila (A-E): ")
@@ -131,19 +104,22 @@ class CineApp : KoinComponent {
                     }
                     else -> {
                         println("La butaca $numeroButaca no está disponible para reservar.")
-                        buscarButacaParaReservar(butacas)
+                        buscarButacaParaReservar()
                     }
                 }
             }
             .onFailure {
                 println("La butaca $numeroButaca no existe.")
-                buscarButacaParaReservar(butacas)
+                buscarButacaParaReservar()
             }
         menuInicio()
     }
 
-    // Actualizar el estado de la butaca a RESERVADA
+
+
+
     private fun reservarButaca(numeroButaca: String) {
+        actualizarButacas()
         butacaServicio.findById(numeroButaca).onSuccess { butaca ->
             val butacaReservada = butaca.copy(ocupamiento = Ocupamiento.OCUPADA)
             butacaServicio.update(numeroButaca, butacaReservada).onSuccess { _ ->
@@ -155,7 +131,42 @@ class CineApp : KoinComponent {
             println("La butaca $numeroButaca no existe.")
         }
     }
-
+    private fun actualizarProductos() {
+        val findAllResult = productoServicio.findAll()
+        findAllResult.onSuccess { productosEncontrados ->
+            productos = productosEncontrados
+        }.onFailure { error ->
+            println("Error al obtener los Productos: ${error.message}")
+        }
+    }
+    private fun actualizarButacas() {
+        // Manejo del resultado del servicio findAll()
+        val findAllResult = butacaServicio.findAll()
+        findAllResult.onSuccess { butacasEncontradas ->
+            butacas = butacasEncontradas
+        }.onFailure { error ->
+            println("Error al obtener las butacas: ${error.message}")
+        }
+    }
+    private fun verEstadoDelCine() {
+        actualizarButacas()
+        var contador = 0
+        for (butaca in butacas!!) {
+            when (butaca.estado.toString()) {
+                "ACTIVA" -> when (butaca.ocupamiento.toString()){
+                    "LIBRE" -> if (butaca.tipo.toString() == "VIP") print(" 🔵 ") else print(" 🟢 ")
+                    "RESERVADA" -> print(" 🟡 ")
+                    "OCUPADA" -> print(" 🟠 ")
+                }
+                else -> (" 🔴 ") // Agregamos un caso de que esté en mantenimiento o fuera de servicio
+            }
+            contador++
+            if (contador % 5 == 0) {
+                println()
+            }
+        }
+        menuInicio()
+    }
     private fun salir() {
         println("Gracias por su visita")
         // Finaliza la aplicación

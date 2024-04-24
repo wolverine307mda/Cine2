@@ -15,7 +15,7 @@ fun ComplementoEntity.toProducto(): Producto {
         stock = this.stock.toInt(),
         createdAt = LocalDateTime.parse(this.createdAt),
         updatedAt = LocalDateTime.parse(this.createdAt),
-        isDeleted = this.isDeleted.toInt() == 1
+        isDeleted = this.isDeleted.toInt() == 0
     )
 }
 
