@@ -1,5 +1,6 @@
 package cine.app
 
+import com.github.michaelbull.result.fold
 import com.github.michaelbull.result.onFailure
 import com.github.michaelbull.result.onSuccess
 import org.example.butacas.models.Butaca
@@ -12,6 +13,7 @@ import org.example.ventas.servicio.VentaServicio
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.time.LocalDateTime
+import java.util.regex.Pattern
 
 class CineApp : KoinComponent {
     // Inyección de dependencia para los servicios necesarios
@@ -20,6 +22,9 @@ class CineApp : KoinComponent {
     private val productoServicio: ProductoServicio by inject()
     private val butacaServicio : ButacaService by inject()
     var butacas: List<Butaca>? = null
+    var productos: List<Producto>? = null
+    private var inicioSesion:Boolean = false
+
 
     private fun sortButacas(): List<Butaca> {
         val sorted = mutableListOf<Butaca>()
@@ -39,8 +44,6 @@ class CineApp : KoinComponent {
 
     }
 
-    var productos: List<Producto>? = null
-
     init {
         productoServicio
             .cargarTodosProductos()
@@ -54,51 +57,28 @@ class CineApp : KoinComponent {
     fun iniciarCine() {
         println("\nBienvenido al cine\n")
         menuInicio()
-
     }
-
 
     private fun menuInicio() {
         var opcion: String?
 
         println("""¿Qué desea hacer? 
-        |1. Ver butacas
-        |2. Reservar butacas
-        |3. Salir
-        |4. Exportar las butacas""".trimMargin())
+        |1. Reservar butacas
+        |2. Exportar las butacas
+        |3. Salir""".trimMargin())
 
         do {
             print("Ingrese una opción:")
             opcion = readln()
             when (opcion) {
-                "1" -> verEstadoDelCine()
-                "2" -> buscarButacaParaReservar()
+                "1" -> buscarButacaParaReservar()
+                "2" -> exportarButacas() //Exportar las butacas en un fichero JSON
                 "3" -> salir()
-                "4" -> exportarButacas() //Exportar las butacas en un fichero JSON
                 else -> println("Opción inválida")
             }
         } while (opcion !in listOf("1", "2", "3", "4"))
     }
-    private fun menuIniciarSesion() {
-        var opcion: String?
-        println("""¿Qué desea hacer? 
-        |1. Iniciar sesión
-        |2. Registrarse
-        |3. Salir""".trimMargin())
 
-        do {
-            // Solicitar al usuario que ingrese una opción
-            print("Ingrese una opción:")
-            // Leer la opción ingresada por el usuario
-            opcion = readln()
-            when (opcion) {
-                "1" -> iniciarSesion() // Iniciar sesión
-                "2" -> registrarse() // Registrarse
-                "3" -> salir() // Salir de la aplicación
-                else -> println("Opción inválida")
-            }
-        } while (opcion !in listOf("1", "2", "3"))
-    }
 
     private fun exportarButacas() {
         val fechaRegex = "^\\d{4}/\\d{2}/\\d{2}\$".toRegex()
@@ -127,16 +107,75 @@ class CineApp : KoinComponent {
         else true
     }
 
+    private fun menuIniciarSesion() {
+        var opcion: String? = null
+        println("""¿Qué desea hacer? 
+        |1. Iniciar sesión
+        |2. Registrarse
+        |3. Salir""".trimMargin())
+
+        do {
+            // Solicitar al usuario que ingrese una opción
+            print("Ingrese una opción:")
+            // Leer la opción ingresada por el usuario
+            opcion = readln()
+            when (opcion) {
+                "1" -> iniciarSesion() // Iniciar sesión
+                "2" -> registrarse() // Registrarse
+                "3" -> salir() // Salir de la aplicación
+                else -> println("Opción inválida")
+            }
+        } while (opcion !in listOf("1", "2", "3"))
+    }
+
+    fun iniciarSesion() {
+        // Patrón de expresión regular para el formato especificado
+        val regex = Pattern.compile("[A-Za-z]{3}\\d{3}")
+
+        var idIngresado: String
+        var inicioSesionExitoso = false // Variable para controlar si se ha iniciado sesión con éxito
+
+        do {
+            // Solicitar al usuario que ingrese el ID
+            print("Ingrese su ID (formato: LLLNNN): ")
+            idIngresado = readlnOrNull() ?: ""
+
+            // Comprobar si el ID ingresado coincide con el patrón
+            if (!regex.matcher(idIngresado).matches()) {
+                println("El formato del ID no es válido.")
+                continue
+            }
+
+            // Buscar la cuenta con el ID ingresado
+            cuentaServicio.findById(idIngresado).fold(
+                { cuenta ->
+                    println("Inicio de sesión exitoso. ¡Bienvenido, User con ID=${cuenta.id}!")
+                    inicioSesionExitoso = true // Marcar que se ha iniciado sesión con éxito
+                },
+                { error ->
+                    println("El ID ingresado no corresponde a ninguna cuenta.")
+                    println("¿Desea registrarse? (S/N): ")
+                    val respuesta = readlnOrNull()?.uppercase()
+                    if (respuesta == "S") {
+                        registrarse()
+                    } else {
+                        println("Volviendo a inicio de sesión...")
+                    }
+                }
+            )
+        } while (!inicioSesionExitoso) // Continuar el bucle hasta que se inicie sesión con éxito
+    }
+
     private fun registrarse() {
         TODO("Not yet implemented")
     }
-    private fun iniciarSesion() {
-        TODO("Not yet implemented")
-    }
+
+
     private fun buscarButacaParaReservar() {
+        actualizarButacas()
+        verEstadoDelCine()
         var fila: String
         var columna: Int
-        actualizarButacas()
         // ingrese el número de fila (A-E)
         do {
             print("Ingrese el número de fila (A-E): ")
@@ -150,7 +189,6 @@ class CineApp : KoinComponent {
         } while (columna !in 1..7)
         // juntamos la fila y la columna
         val numeroButaca = "$fila$columna"
-
         // Buscar la butaca
         butacaServicio
             .findById(numeroButaca)
@@ -158,7 +196,11 @@ class CineApp : KoinComponent {
                 when (butaca.ocupamiento) {
                     Ocupamiento.LIBRE -> {
                         // Reservamos la butaca
+                        do {
+                            menuIniciarSesion()
+                        } while (inicioSesion)
                         reservarButaca(numeroButaca)
+                        menuInicio() // Llama a menuInicio() solo si la reserva tiene éxito
                     }
                     else -> {
                         println("La butaca $numeroButaca no está disponible para reservar.")
@@ -172,10 +214,6 @@ class CineApp : KoinComponent {
             }
         menuInicio()
     }
-
-
-
-
     private fun reservarButaca(numeroButaca: String) {
         actualizarButacas()
         butacaServicio.findById(numeroButaca).onSuccess { butaca ->
@@ -189,6 +227,8 @@ class CineApp : KoinComponent {
             println("La butaca $numeroButaca no existe.")
         }
     }
+
+
     private fun actualizarProductos() {
         val findAllResult = productoServicio.findAll()
         findAllResult.onSuccess { productosEncontrados ->
@@ -209,8 +249,23 @@ class CineApp : KoinComponent {
     private fun verEstadoDelCine() {
         actualizarButacas()
         if (butacas != null) butacas = sortButacas()
-        var contador = 0
-        for (butaca in butacas!!) {
+        var columna = 1
+        println("""
+        |A continuación se mostraran las butacas por colores:
+        |   🔵-> VIP.
+        |   🟢-> NORMALES.
+        |   🟡-> RESERVADAS.
+        |   🟠-> OCUPADAS.
+        |   🔴-> FUERA DE SERVICIO O MANTENIMIENTO.
+        |   
+    """.trimMargin())
+        print("   A   B   C   D   E")
+        for ((contador, butaca) in butacas!!.withIndex()) {
+            if (contador % 5 == 0) {
+                println()
+                print(columna)
+                columna++
+            }
             when (butaca.estado.toString()) {
                 "ACTIVA" -> when (butaca.ocupamiento.toString()){
                     "LIBRE" -> if (butaca.tipo.toString() == "VIP") print(" 🔵 ") else print(" 🟢 ")
@@ -219,12 +274,9 @@ class CineApp : KoinComponent {
                 }
                 else -> (" 🔴 ") // Agregamos un caso de que esté en mantenimiento o fuera de servicio
             }
-            contador++
-            if (contador % 5 == 0) {
-                println()
-            }
         }
-        menuInicio()
+        println()
+        println()
     }
     private fun salir() {
         println("Gracias por su visita")
