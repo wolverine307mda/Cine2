@@ -107,3 +107,15 @@ f
 6src/main/kotlin/ventas/storage/VentaStorageHTMLImpl.kt,e\7\e764ccb556c801fd4e83a5decaaa857fc7188140
 Š
 Zbuild/generated/sqldelight/code/AppDatabase/main/org/cine/database/Cine/AppDatabaseImpl.kt,d\9\d9b3fa426d20910fe819c2b4bd4c4a580ec5494d
+X
+(src/main/kotlin/butacas/dto/ButacaDto.kt,d\6\d6edc1d369438d8ce32e9c1d91fedadfdeac2e08
+[
++data/butacas/butacas25_4_2024_11_28_28.json,c\b\cb008b5572e4ee5f8dac477a256d45206d0ebaef
+[
++data/butacas/butacas25-4-2024 11_29_54.json,6\e\6ea640118e8667537ef7b000c0943b9caea123cb
+Z
+*data/butacas/butacas25-4-2024 12_54_5.json,5\4\54c3f17ff07bd14fa6fa484bac3a22adf8ee7134
+[
++data/butacas/butacas25-4-2024 12_54_52.json,6\4\641848e8567a7002940c4b63f0f4141c889cf5ce
+[
++data/butacas/butacas25-4-2024 12_57_27.json,c\0\c0cb03e672f967d85c253dd1456a34df496ad066

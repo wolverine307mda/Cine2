@@ -1,6 +1,7 @@
 package org.example.butacas.mappers
 
 import database.ButacaEntity
+import org.example.butacas.dto.ButacaDto
 import org.example.butacas.models.Butaca
 import org.example.butacas.models.Estado
 import org.example.butacas.models.Ocupamiento
@@ -43,4 +44,15 @@ fun elegirEstado(s: String): Estado? {
         "EN_MANTENIMIENTO" -> Estado.EN_MANTENIMIENTO
         else -> null
     }
+}
+
+fun Butaca.toButacaDTO() : ButacaDto{
+    return ButacaDto(
+        id = this.id,
+        tipo = this.tipo!!.name,
+        estado = this.estado!!.name,
+        ocupamiento = this.ocupamiento!!.name,
+        createdAt = "${this.createdAt.dayOfMonth}/${this.createdAt.monthValue}/${this.createdAt.year} ${this.createdAt.hour}:${this.createdAt.minute}:${this.createdAt.second}",
+        updatedAt = "${this.updatedAt.dayOfMonth}/${this.updatedAt.monthValue}/${this.updatedAt.year} ${this.updatedAt.hour}:${this.updatedAt.minute}:${this.updatedAt.second}"
+    )
 }

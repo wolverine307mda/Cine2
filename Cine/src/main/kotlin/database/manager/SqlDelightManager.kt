@@ -6,6 +6,7 @@ import com.github.michaelbull.result.onSuccess
 import database.DatabaseQueries
 import org.cine.database.AppDatabase
 import org.example.butacas.storage.ButacaStorage
+import org.example.butacas.storage.ButacaStorageCSVImpl
 import org.example.butacas.validator.ButacaValidator
 import org.example.config.Config
 import org.example.cuenta.mappers.toLong
@@ -17,7 +18,7 @@ val logger = logging()
 
 @Singleton
 class SqlDelightManager(
-    private val butacaStorage: ButacaStorage,
+    private val butacaStorageCSVImpl: ButacaStorageCSVImpl,
     private val butacaValidator: ButacaValidator,
     private val config : Config
 ) {
@@ -80,7 +81,7 @@ class SqlDelightManager(
         logger.debug { "Importando datos de butacas" }
         val url = ClassLoader.getSystemResource(config.butacaSampleFile)
         if (url != null){
-            butacaStorage
+            butacaStorageCSVImpl
                 .cargar(File(url.toURI()))
                 .onSuccess {
                     it.forEach {

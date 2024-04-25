@@ -21,7 +21,7 @@ class ButacaStorageCSVImpl(
 
     override fun exportar(list: List<Butaca>): Result<Unit,ButacaError> {
         println("Una función para exportar una lista de butacas en CSV")
-        return Ok(Unit)
+        return Err(ButacaError.ButacaStorageError("Esta función no está implementada"))
     }
 
     override fun cargar(file: File) : Result<List<Butaca>, ButacaError>{

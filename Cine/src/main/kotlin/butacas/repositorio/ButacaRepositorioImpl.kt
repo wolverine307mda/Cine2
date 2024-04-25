@@ -24,6 +24,16 @@ class ButacaRepositorioImpl (
         return emptyList()
     }
 
+    override fun findAllBasedOnDate(date: LocalDateTime): List<Butaca> {
+        logger.debug { "Buscando todas las butacas en la base de datos antes de ${date.dayOfMonth}/${date.monthValue}/${date.year}" }
+        if (db.countButacaBasedOnDate(date.toString()).executeAsOne() > 0){
+            return db.getButacaBasedOnDate(date.toString()).executeAsList().map {
+                it.toButaca()
+            }
+        }
+        return emptyList()
+    }
+
     override fun findById(id: String): Butaca? {
         logger.debug { "Buscando una butaca con id: $id" }
         if (db.butacaExists(id).executeAsOne()){

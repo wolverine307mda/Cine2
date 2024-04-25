@@ -62,6 +62,14 @@ class ProductoRepositorioImpl(
                 isDeleted = producto.isDeleted.toLong(),
                 id = id
             )
+            return it.copy(
+                nombre = producto.nombre,
+                precio = producto.precio,
+                stock = producto.stock,
+                tipo = producto.tipo!!,
+                updatedAt = LocalDateTime.now(),
+                isDeleted = producto.isDeleted,
+            )
         }
         return null
     }
@@ -70,6 +78,10 @@ class ProductoRepositorioImpl(
         logger.debug { "Borrando Producto con id: $id" }
         findById(id)?.let {
             db.deleteProducto(id)
+            return it.copy(
+                isDeleted = true,
+                updatedAt = LocalDateTime.now()
+            )
         }
         return null
     }

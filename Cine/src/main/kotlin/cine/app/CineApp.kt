@@ -11,6 +11,7 @@ import org.example.productos.servicio.ProductoServicio
 import org.example.ventas.servicio.VentaServicio
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.time.LocalDateTime
 
 class CineApp : KoinComponent {
     // Inyección de dependencia para los servicios necesarios
@@ -19,6 +20,25 @@ class CineApp : KoinComponent {
     private val productoServicio: ProductoServicio by inject()
     private val butacaServicio : ButacaService by inject()
     var butacas: List<Butaca>? = null
+
+    private fun sortButacas(): List<Butaca> {
+        val sorted = mutableListOf<Butaca>()
+        val letters = listOf('A','B','C','D','E')
+        val numbers = listOf(1, 2, 3, 4, 5, 6, 7) // Changed to list of individual numbers
+
+        for (number in numbers) {
+            for (letter in letters) {
+                butacas?.firstOrNull {
+                    it.id[0] == letter && it.id.substring(1).toIntOrNull() == number
+                }?.let {
+                    sorted.add(it)
+                }
+            }
+        }
+        return sorted
+
+    }
+
     var productos: List<Producto>? = null
 
     init {
@@ -44,7 +64,8 @@ class CineApp : KoinComponent {
         println("""¿Qué desea hacer? 
         |1. Ver butacas
         |2. Reservar butacas
-        |3. Salir""".trimMargin())
+        |3. Salir
+        |4. Exportar las butacas""".trimMargin())
 
         do {
             print("Ingrese una opción:")
@@ -53,9 +74,10 @@ class CineApp : KoinComponent {
                 "1" -> verEstadoDelCine()
                 "2" -> buscarButacaParaReservar()
                 "3" -> salir()
+                "4" -> exportarButacas() //Exportar las butacas en un fichero JSON
                 else -> println("Opción inválida")
             }
-        } while (opcion !in listOf("1", "2", "3"))
+        } while (opcion !in listOf("1", "2", "3", "4"))
     }
     private fun menuIniciarSesion() {
         var opcion: String?
@@ -77,6 +99,34 @@ class CineApp : KoinComponent {
             }
         } while (opcion !in listOf("1", "2", "3"))
     }
+
+    private fun exportarButacas() {
+        val fechaRegex = "^\\d{4}/\\d{2}/\\d{2}\$".toRegex()
+        var input : String
+        println("Pon que fecha quieres consultar")
+        input = readln()
+        do {
+            if (!(input.matches(fechaRegex) && checkDateValidity(input))){
+                println("Fecha incorrecta")
+                input = readln()
+            }
+        }while (!(input.matches(fechaRegex) && checkDateValidity(input)))
+        val fechaCorrecta = input.split('/').map { it.toInt() }
+        val fecha = LocalDateTime.of(fechaCorrecta[0],fechaCorrecta[1],fechaCorrecta[2],0,0,0)
+        butacaServicio.exportAllToFile(date = fecha).onSuccess {
+            println("Exportadas con éxito")
+        }.onFailure {
+            println("No se han podido exportar: ${it.message}")
+        }
+        menuInicio()
+    }
+
+    private fun checkDateValidity(input: String): Boolean {
+        val fecha = input.split('/').map { it.toInt() }
+        return if (fecha[1] !in (1..12) || fecha[2] !in (1..31)) false
+        else true
+    }
+
     private fun registrarse() {
         TODO("Not yet implemented")
     }
@@ -158,6 +208,7 @@ class CineApp : KoinComponent {
     }
     private fun verEstadoDelCine() {
         actualizarButacas()
+        if (butacas != null) butacas = sortButacas()
         var contador = 0
         for (butaca in butacas!!) {
             when (butaca.estado.toString()) {

@@ -1,28 +1,30 @@
 CREATE TABLE IF NOT EXISTS ButacaEntity (
-   id TEXT NOT NULL PRIMARY KEY,
+   id TEXT NOT NULL,
    tipo TEXT NOT NULL, -- Normal o VIP
    estado TEXT NOT NULL, -- Libre, ocupada o fuera de servicio
    ocupamiento TEXT NOT NULL,
    isDeleted INTEGER NOT NULL ,
    createdAt TEXT NOT NULL,
-   updatedAt TEXT NOT NULL
+   updatedAt TEXT NOT NULL,
+   PRIMARY KEY(id,updatedAt)
 );
 
 -- Tabla para almacenar información de los complementos
 CREATE TABLE IF NOT EXISTS ComplementoEntity (
-    id TEXT PRIMARY KEY,
+    id TEXT NOT NULL,
     nombre TEXT NOT NULL,
     precio REAL NOT NULL,
     stock INTEGER NOT NULL,
     tipo TEXT NOT NULL,
     isDeleted INTEGER NOT NULL,
     createdAt TEXT NOT NULL,
-    updatedAt TEXT NOT NULL
+    updatedAt TEXT NOT NULL,
+    PRIMARY KEY(id,updatedAt)
 );
 
 -- Tabla para almacenar información de las ventas
 CREATE TABLE IF NOT EXISTS VentaEntity (
-    id TEXT PRIMARY KEY,
+    id TEXT NOT NULL,
     id_butaca TEXT NOT NULL, -- Tendriamos que crear otra tabla si decidimos hacer lo de multiples sillas --
     id_socio TEXT NOT NULL,
     isDeleted INTEGER NOT NULL,
@@ -30,12 +32,13 @@ CREATE TABLE IF NOT EXISTS VentaEntity (
     updatedAt TEXT NOT NULL,
 
     FOREIGN KEY (id_butaca) REFERENCES ButacaEntity(id),
-    FOREIGN KEY (id_socio) REFERENCES CuentaEntity(id)
+    FOREIGN KEY (id_socio) REFERENCES CuentaEntity(id),
+    PRIMARY KEY(id,updatedAt)
 );
 
 -- Tabla para almacenar los complementos asociados a una venta
 CREATE TABLE IF NOT EXISTS LineaVentaEntity (
-   id TEXT PRIMARY KEY,
+   id TEXT NOT NULL,
    id_venta TEXT NOT NULL,
    id_complemento TEXT NOT NULL,
    cantidad INTEGER NOT NULL,
@@ -44,16 +47,32 @@ CREATE TABLE IF NOT EXISTS LineaVentaEntity (
    createdAt TEXT NOT NULL,
    updatedAt TEXT NOT NULL,
    FOREIGN KEY (id_complemento) REFERENCES ComplementoEntity(id),
-   FOREIGN KEY (id_venta) REFERENCES VentaEntity(id)
+   FOREIGN KEY (id_venta) REFERENCES VentaEntity(id),
+   PRIMARY KEY(id,updatedAt)
 );
 
 -- Tabla para almacenar las cuentas --
 CREATE TABLE IF NOT EXISTS CuentaEntity (
-    id TEXT PRIMARY KEY,
+    id TEXT NOT NULL,
     isDeleted INTEGER NOT NULL,
     createdAt TEXT NOT NULL,
-    updatedAt TEXT NOT NULL
+    updatedAt TEXT NOT NULL,
+    PRIMARY KEY(id,updatedAt)
 );
+
+getButacaById:
+SELECT * FROM ButacaEntity WHERE ? = id AND MAX(SUBSTR(updatedAt, 1, 10));
+
+getAllButacas:
+SELECT *
+FROM ButacaEntity WHERE (id,updatedAt) IN
+( SELECT id, MAX(updatedAt)
+  FROM ButacaEntity
+  GROUP BY id
+);
+
+countButacas:
+SELECT COUNT(*) FROM ButacaEntity;
 
 butacaExists:
 SELECT COUNT(*) > 0 FROM ButacaEntity WHERE id = ?;
@@ -70,6 +89,12 @@ UPDATE ButacaEntity SET isDeleted = 1 WHERE id = ?;
 
 deleteProducto:
 UPDATE ButacaEntity SET isDeleted = 1 WHERE id = ?;
+
+getButacaBasedOnDate:
+SELECT * FROM ButacaEntity WHERE SUBSTR(createdAt, 1, 10) < SUBSTR(?, 1, 10);
+
+countButacaBasedOnDate:
+SELECT COUNT(*) FROM ButacaEntity WHERE SUBSTR(createdAt, 1, 10) < SUBSTR(?, 1, 10);
 
 insertComplemento:
 INSERT INTO ComplementoEntity (id, nombre, precio, stock, tipo, createdAt, updatedAt, isDeleted)
@@ -105,15 +130,6 @@ removeAllVentas:
 DELETE FROM VentaEntity;
 DELETE FROM LineaVentaEntity;
 
-getButacaById:
-SELECT * FROM ButacaEntity WHERE ? = id;
-
-getAllButacas:
-SELECT * FROM ButacaEntity;
-
-countButacas:
-SELECT COUNT(*) FROM ButacaEntity;
-
 getAllVentas:
 SELECT * FROM VentaEntity;
 
@@ -139,9 +155,6 @@ SELECT COUNT(*) FROM VentaEntity;
 
 countLineasVenta:
 SELECT COUNT(*) FROM LineaVentaEntity WHERE id = ?;
-
-getLineaVentaById:
-SELECT * FROM LineaVentaEntity WHERE id = ?;
 
 updateVenta:
 UPDATE VentaEntity

@@ -3,6 +3,7 @@ package org.example.butacas.servicios
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
+import com.github.michaelbull.result.onSuccess
 import org.example.butacas.errors.ButacaError
 import org.example.butacas.models.Butaca
 import org.example.butacas.repositorio.ButacaRepositorio
@@ -10,6 +11,7 @@ import org.example.butacas.storage.ButacaStorage
 import org.example.butacas.validator.ButacaValidator
 import org.koin.core.annotation.Singleton
 import java.io.File
+import java.time.LocalDateTime
 
 @Singleton
 class ButacaServiceImpl(
@@ -52,6 +54,17 @@ class ButacaServiceImpl(
         }
     }
 
+    override fun findAllByDate(date: LocalDateTime): Result<List<Butaca>, ButacaError> {
+        val result = butacaRepositorio.findAllBasedOnDate(date)
+        if (result.isNotEmpty()) return Ok(result)
+        else return Err(ButacaError.ButacaStorageError("No hay ninguna butaca en la base de datos"))
+    }
 
+    override fun exportAllToFile(date: LocalDateTime): Result<Unit, ButacaError> {
+        val list = butacaRepositorio.findAllBasedOnDate(date)
+        if (list.isEmpty()) return Err(
+            ButacaError.ButacaStorageError("No hay butacas creadas antes de ${date.dayOfMonth}/${date.monthValue}/${date.year}")
+        )else return butacaStorage.exportar(list)
+    }
 
 }
