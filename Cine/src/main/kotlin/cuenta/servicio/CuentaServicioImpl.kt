@@ -1,4 +1,27 @@
 package org.example.cuenta.servicio
 
-class CuentaServicioImpl : CuentaServicio {
+import com.github.michaelbull.result.Err
+import com.github.michaelbull.result.Ok
+import com.github.michaelbull.result.Result
+import org.example.butacas.errors.CuentaError
+import org.example.cuenta.models.Cuenta
+import org.example.cuenta.repositorio.CuentaRepositorio
+
+class CuentaServicioImpl(
+    private var cuentaRepositorio: CuentaRepositorio,
+): CuentaServicio {
+    override fun findAll(): Result<List<Cuenta>, CuentaError> {
+        val result = cuentaRepositorio.findAll()
+        if (result.isNotEmpty()) return Ok(result)
+        else return Err(CuentaError.CuentaStorageError("No hay ninguna butaca en la base de datos"))
+    }
+
+    override fun findById(id: String): Result<Cuenta, CuentaError> {
+        val cuenta = cuentaRepositorio.findById(id)
+        return if (cuenta != null) {
+            Ok(cuenta)
+        } else {
+            Err(CuentaError.CuentaNotFoundError("La butaca con ID $id no existe"))
+        }
+    }
 }
