@@ -119,3 +119,7 @@ Z
 +data/butacas/butacas25-4-2024 12_54_52.json,6\4\641848e8567a7002940c4b63f0f4141c889cf5ce
 [
 +data/butacas/butacas25-4-2024 12_57_27.json,c\0\c0cb03e672f967d85c253dd1456a34df496ad066
+[
++data/butacas/butacas25-4-2024 17_38_44.json,d\6\d680e7ffe1a0477bc8b032c1cac3bfbb0e26fcf6
+Y
+)data/butacas/butacas25-4-2024 23_2_5.json,0\5\0594400eb1b88c9f45ac576c792987ae6d6cdd5f

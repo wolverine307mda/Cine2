@@ -76,7 +76,7 @@ class CuentaRepositorioImpl(
                     statement.setString(1, cuentaDTO.id)
                     statement.setInt(2, cuentaDTO.isDeleted)
                     statement.setString(3, cuentaDTO.createdAt)
-                    statement.setString(4, cuentaDTO.updatedAt)
+                    statement.setString(4, timeStamp.toString())
                     statement.executeUpdate()
                 }
                 return cuenta //Si no existe y no falla
@@ -91,23 +91,21 @@ class CuentaRepositorioImpl(
         logger.debug { "Actualizando cuenta con id: $id" }
         findById(id)?.let {
             try {
-                val timeStamp = LocalDateTime.now()
-                var cuentaDTO = it.toCuentaDto()
-                var cuentaNueva = cuenta
-                dataBaseManager.use { db ->
-                    val sql =
-                        "UPDATE CuentaEntity SET isDeleted, createdAt = ?, updatedAt = ? WHERE id = ?"
-                    val statement = db.connection?.prepareStatement(sql)!!
-                    statement.setInt(1, cuentaDTO.isDeleted)
-                    statement.setString(2, cuentaDTO.createdAt)
-                    statement.setString(3, timeStamp.toString())
-                    statement.setString(4,id)
-                    statement.executeUpdate()
-                    cuentaNueva = cuenta.copy(
-                        updatedAt = timeStamp
-                    )
-                }
-                return cuentaNueva //Si existe y no falla
+                if (findById(cuenta.id) == null){
+                    var cuentaDTO = cuenta.toCuentaDto()
+                    val timeStamp = LocalDateTime.now()
+                    dataBaseManager.use { db ->
+                        val sql =
+                            "INSERT INTO CuentaEntity (id, isDeleted, createdAt, updatedAt) VALUES (?, ?, ?, ?)"
+                        val statement = db.connection?.prepareStatement(sql)!!
+                        statement.setString(1, cuentaDTO.id)
+                        statement.setInt(2, cuentaDTO.isDeleted)
+                        statement.setString(3, cuentaDTO.createdAt)
+                        statement.setString(4, timeStamp.toString())
+                        statement.executeUpdate()
+                    }
+                    return cuenta //Si no existe y no falla
+                }else return null //Si ya existe en la base de datos
             } catch (e: Exception) {
                 logger.error { "Error al actualizar la cuenta con id: $id" }
                 return null //Si falla
@@ -119,22 +117,21 @@ class CuentaRepositorioImpl(
     override fun delete(id: String): Cuenta? {
         logger.debug { "Borrando la cuenta con id $id" }
         findById(id)?.let {
-            var cuentaNueva = it.toCuentaDto()
-            val timeStamp = LocalDateTime.now()
             try {
+                var cuentaDTO = it.toCuentaDto()
+                val timeStamp = LocalDateTime.now()
                 dataBaseManager.use { db ->
-                    val sql = "UPDATE CuentaEntity SET isDeleted = ?, updatedAt = ? WHERE id = ?"
+                    val sql =
+                        "INSERT INTO CuentaEntity (id, isDeleted, createdAt, updatedAt) VALUES (?, ?, ?, ?)"
                     val statement = db.connection?.prepareStatement(sql)!!
-                    statement.setInt(1,1)
-                    statement.setString(2, timeStamp.toString())
-                    statement.setString(3,id)
+                    statement.setString(1, cuentaDTO.id)
+                    statement.setInt(2, 1)
+                    statement.setString(3, cuentaDTO.createdAt)
+                    statement.setString(4, timeStamp.toString())
                     statement.executeUpdate()
-                    cuentaNueva= it.copy(
-                        isDeleted = true
-                    ).toCuentaDto()
                 }
-                return cuentaNueva.toCuenta() //Si si existe y no falla
-            }catch (e : Exception){
+                return it //Si existe y no ha fallado
+            } catch (e: Exception) {
                 logger.error { "Error al borrar la cuenta con id: $id" }
                 return null //Si falla
             }

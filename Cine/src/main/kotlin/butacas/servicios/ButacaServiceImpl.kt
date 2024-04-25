@@ -3,6 +3,7 @@ package org.example.butacas.servicios
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
+import com.github.michaelbull.result.onSuccess
 import org.example.butacas.errors.ButacaError
 import org.example.butacas.models.Butaca
 import org.example.butacas.repositorio.ButacaRepositorio

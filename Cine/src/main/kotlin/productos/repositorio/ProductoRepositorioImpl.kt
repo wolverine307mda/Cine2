@@ -32,9 +32,9 @@ class ProductoRepositorioImpl(
         return null
     }
 
-    override fun save(producto: Producto): Producto? {
+    override fun save(producto: Producto, ignoreKey : Boolean) : Producto? {
         logger.debug { "Añadiendo el producto: '${producto.nombre}' al inventario" }
-        if (findById(producto.id) == null){
+        if (ignoreKey || findById(producto.id) == null){
             db.insertComplemento(
                 id = producto.id,
                 nombre = producto.nombre,
@@ -52,36 +52,31 @@ class ProductoRepositorioImpl(
 
     override fun update(id: String, producto: Producto): Producto? {
         logger.debug { "Actualizando el producto con id: $id"}
-        findById(id)?.let {
-            db.updateComplemento(
-                nombre = producto.nombre,
-                precio = producto.precio,
-                stock = producto.stock.toLong(),
-                tipo = producto.tipo!!.name,
-                updatedAt = LocalDateTime.now().toString(),
-                isDeleted = producto.isDeleted.toLong(),
-                id = id
-            )
-            return it.copy(
-                nombre = producto.nombre,
-                precio = producto.precio,
-                stock = producto.stock,
-                tipo = producto.tipo!!,
-                updatedAt = LocalDateTime.now(),
-                isDeleted = producto.isDeleted,
-            )
-        }
+        val nuevoProducto = producto.copy(
+            nombre = producto.nombre,
+            precio = producto.precio,
+            stock = producto.stock,
+            tipo = producto.tipo!!,
+            updatedAt = LocalDateTime.now(),
+            isDeleted = producto.isDeleted,
+        )
+        save(nuevoProducto, true)?.let { return producto }
         return null
     }
 
     override fun delete(id: String): Producto? {
         logger.debug { "Borrando Producto con id: $id" }
         findById(id)?.let {
-            db.deleteProducto(id)
-            return it.copy(
+            val nuevoProducto = it.copy(
+                nombre = it.nombre,
+                precio = it.precio,
+                stock = it.stock,
+                tipo = it.tipo!!,
+                updatedAt = LocalDateTime.now(),
                 isDeleted = true,
-                updatedAt = LocalDateTime.now()
             )
+            save(nuevoProducto,true)?.let { return it }
+            return null
         }
         return null
     }

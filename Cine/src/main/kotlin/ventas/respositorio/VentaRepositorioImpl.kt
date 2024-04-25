@@ -70,7 +70,7 @@ class VentaRepositorioImpl(
                 id = venta.id,
                 id_socio = venta.cliente.id,
                 id_butaca = venta.butaca.id,
-                updatedAt = venta.updatedAt.toString(),
+                updatedAt = LocalDateTime.now().toString(),
                 createdAt = venta.createdAt.toString(),
                 isDeleted = venta.isDeleted.toLong()
             )
@@ -82,7 +82,7 @@ class VentaRepositorioImpl(
                     precio = it.precio,
                     cantidad = it.cantidad.toLong(),
                     createdAt = it.createdAt.toString(),
-                    updatedAt = it.updatedAt.toString(),
+                    updatedAt = LocalDateTime.now().toString(),
                     isDeleted = it.isDeleted.toLong()
                 )
             }
@@ -94,56 +94,35 @@ class VentaRepositorioImpl(
     override fun update(id: String, venta: Venta): Venta? {
         logger.debug { "Actualizando venta con id: $id" }
         findById(id)?.let { //Si existe
-            db.updateVenta(
-                id_butaca = venta.butaca.id,
-                id_socio = venta.cliente.id,
-                isDeleted = venta.isDeleted.toLong(),
-                updatedAt = LocalDateTime.now().toString(),
-                id = id
-            )
-            venta.lineasVenta.forEach {
-                updateLineasVenta(id, it)
-            }
-            return Venta(
-                updatedAt = LocalDateTime.now(),
-                createdAt = it.createdAt,
+            val nuevaVenta = Venta(
                 butaca = venta.butaca,
+                cliente = venta.cliente,
                 isDeleted = venta.isDeleted,
+                createdAt = venta.createdAt,
+                updatedAt = LocalDateTime.now(),
                 id = id,
-                cliente = it.cliente,
-                lineasVenta = it.lineasVenta
+                lineasVenta = venta.lineasVenta
             )
+            save(nuevaVenta)?.let { return nuevaVenta }
+            return null
         }
         return null
-    }
-
-    private fun updateLineasVenta(id : String, lineaVenta: LineaVenta){
-        db.updateLineaVenta(
-            id_complemento = lineaVenta.id,
-            isDeleted = lineaVenta.isDeleted.toLong(),
-            cantidad = lineaVenta.cantidad.toLong(),
-            precio = lineaVenta.precio,
-            updatedAt = LocalDateTime.now().toString(),
-            id = id
-        )
     }
 
     override fun delete(id: String): Venta? {
         logger.debug { "Borrando venta con id: $id" }
         findById(id)?.let { //Si existe
-            db.deleteVenta(id)
-            it.lineasVenta.forEach {
-                db.deleteLineaVenta(it.id)
-            }
-            return Venta(
-                updatedAt = LocalDateTime.now(),
-                createdAt = it.createdAt,
+            val nuevaVenta = Venta(
                 butaca = it.butaca,
-                isDeleted = true,
-                id = id,
                 cliente = it.cliente,
+                isDeleted = true,
+                createdAt = it.createdAt,
+                updatedAt = LocalDateTime.now(),
+                id = id,
                 lineasVenta = it.lineasVenta
             )
+            save(nuevaVenta)?.let { return nuevaVenta }
+            return null
         }
         return null
     }

@@ -61,9 +61,13 @@ CREATE TABLE IF NOT EXISTS CuentaEntity (
 );
 
 getButacaById:
-SELECT * FROM ButacaEntity WHERE ? = id AND MAX(SUBSTR(updatedAt, 1, 10));
+SELECT * FROM ButacaEntity WHERE (id,updatedAt) IN
+( SELECT id, MAX(updatedAt)
+  FROM ButacaEntity
+  GROUP BY id
+) AND id = ?;
 
-getAllButacas:
+getAllButacas: --Buatacas
 SELECT *
 FROM ButacaEntity WHERE (id,updatedAt) IN
 ( SELECT id, MAX(updatedAt)
@@ -72,7 +76,12 @@ FROM ButacaEntity WHERE (id,updatedAt) IN
 );
 
 countButacas:
-SELECT COUNT(*) FROM ButacaEntity;
+SELECT COUNT(*) FROM ButacaEntity
+WHERE (id,updatedAt) IN
+( SELECT id, MAX(updatedAt)
+  FROM ButacaEntity
+  GROUP BY id
+);
 
 butacaExists:
 SELECT COUNT(*) > 0 FROM ButacaEntity WHERE id = ?;
@@ -91,19 +100,28 @@ deleteProducto:
 UPDATE ButacaEntity SET isDeleted = 1 WHERE id = ?;
 
 getButacaBasedOnDate:
-SELECT * FROM ButacaEntity WHERE SUBSTR(createdAt, 1, 10) < SUBSTR(?, 1, 10);
+SELECT b1.*
+FROM ButacaEntity b1
+WHERE b1.updatedAt = (
+    SELECT MAX(b2.updatedAt)
+    FROM ButacaEntity b2
+    WHERE b1.id = b2.id
+)
+AND b1.updatedAt < ?;
 
 countButacaBasedOnDate:
-SELECT COUNT(*) FROM ButacaEntity WHERE SUBSTR(createdAt, 1, 10) < SUBSTR(?, 1, 10);
+SELECT COUNT(*)
+FROM ButacaEntity b1
+WHERE b1.updatedAt = (
+    SELECT MAX(b2.updatedAt)
+    FROM ButacaEntity b2
+    WHERE b1.id = b2.id
+)
+AND b1.updatedAt < ?;
 
 insertComplemento:
 INSERT INTO ComplementoEntity (id, nombre, precio, stock, tipo, createdAt, updatedAt, isDeleted)
 VALUES (?, ?, ?, ?, ?, ?,?, ?);
-
-updateComplemento:
-UPDATE ComplementoEntity
-SET nombre = ?, precio = ?, stock = ?, tipo = ?, updatedAt = ?, isDeleted = ?
-WHERE id = ?;
 
 removeAllButacas:
 DELETE FROM ButacaEntity;
@@ -117,27 +135,49 @@ DELETE FROM ComplementoEntity;
 countProductos:
 SELECT COUNT(*) FROM ComplementoEntity;
 
-getAllProductos:
-SELECT * FROM ComplementoEntity;
+getAllProductos: --Productos
+SELECT *
+FROM ComplementoEntity WHERE (id,updatedAt) IN
+( SELECT id, MAX(updatedAt)
+  FROM ComplementoEntity
+  GROUP BY id
+);
 
 productoExists:
-SELECT COUNT(*) > 0 FROM ComplementoEntity WHERE id = ? LIMIT 1;
+SELECT COUNT(*) > 0 FROM ComplementoEntity WHERE id = ?;
 
 getProductoById:
-SELECT * FROM ComplementoEntity WHERE id = ?;
+SELECT * FROM ComplementoEntity WHERE (id,updatedAt) IN
+( SELECT id, MAX(updatedAt)
+ FROM ComplementoEntity
+ GROUP BY id
+) AND id = ?;
 
 removeAllVentas:
 DELETE FROM VentaEntity;
 DELETE FROM LineaVentaEntity;
 
 getAllVentas:
-SELECT * FROM VentaEntity;
+SELECT *
+FROM VentaEntity WHERE (id,updatedAt) IN
+( SELECT id, MAX(updatedAt)
+  FROM VentaEntity
+  GROUP BY id
+);
 
 getLineaVentaByVentaId:
-SELECT * FROM LineaVentaEntity WHERE ? = id_venta;
+SELECT * FROM LineaVentaEntity WHERE
+( SELECT id, MAX(updatedAt)
+  FROM LineaVentaEntity
+  GROUP BY id
+) AND ? = id;
 
 getVentaById:
-SELECT * FROM VentaEntity WHERE ? = id;
+SELECT * FROM VentaEntity WHERE
+( SELECT id, MAX(updatedAt)
+  FROM VentaEntity
+  GROUP BY id
+) AND ? = id;
 
 insertVenta:
 INSERT INTO VentaEntity (id,id_butaca,id_socio,updatedAt,createdAt,isDeleted)
@@ -155,19 +195,3 @@ SELECT COUNT(*) FROM VentaEntity;
 
 countLineasVenta:
 SELECT COUNT(*) FROM LineaVentaEntity WHERE id = ?;
-
-updateVenta:
-UPDATE VentaEntity
-SET id_butaca = ?, id_socio = ?, isDeleted = ?, updatedAt = ? WHERE id = ?;
-
-updateLineaVenta:
-UPDATE LineaVentaEntity
-SET id_complemento = ?, isDeleted = ?, cantidad = ?, updatedAt = ?, precio = ? WHERE id = ?;
-
-deleteVenta:
-UPDATE VentaEntity
-SET isDeleted = 1 WHERE id = ?;
-
-deleteLineaVenta:
-UPDATE LineaVentaEntity
-SET isDeleted = 1 WHERE id = ?;

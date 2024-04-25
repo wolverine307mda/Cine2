@@ -1,4 +1,5 @@
 
-€kotlin:S1144R"6Remove this unused private "menuIniciarSesion" method.(™‚æÿùÿÿÿÿ8´µ¹«ñ1J$0f77b05c-3e00-4bd5-8584-764728c42cda
-ƒkotlin:S1144À"8Remove this unused private "actualizarProductos" method.(ô÷ñ¹úÿÿÿÿ8¶µ¹«ñ1J$c11f075a-71d5-4d1e-a113-67cceffd392d
-lkotlin:S1125~"'Remove the unnecessary Boolean literal.(ï…Ë°8îÓÍ«ñ1J$784fe6cc-1355-4da2-92b8-651cf27f5846
+Xkotlin:S1172›"8Use "_" instead of this unused lambda parameter "error".(ˆàëµ8ääÛ¸ñ1
+Dkotlin:S6615o" Remove this useless initializer.(Ì‡êÜþÿÿÿÿ8ôäÛ¸ñ1
+]kotlin:S1144è"8Remove this unused private "actualizarProductos" method.(ô÷ñ¹úÿÿÿÿ8„åÛ¸ñ1
+Fkotlin:S1125j"'Remove the unnecessary Boolean literal.(ï…Ë°8“åÛ¸ñ1

@@ -42,15 +42,15 @@ class ButacaRepositorioImpl (
         return null
     }
 
-    override fun save(butaca: Butaca): Butaca? {
+    override fun save(butaca: Butaca, ignoreKey : Boolean): Butaca? {
         logger.debug { "Buscado la butaca con id: ${butaca.id}" }
-        if (findById(butaca.id) == null){
+        if (ignoreKey || findById(butaca.id) == null){
             db.insertButaca(
                 id = butaca.id.uppercase(),
                 tipo = butaca.tipo!!.name,
                 estado = butaca.estado!!.name,
                 ocupamiento = butaca.ocupamiento!!.name,
-                createdAt = LocalDateTime.now().toString(),
+                createdAt = butaca.createdAt.toString(),
                 updatedAt = LocalDateTime.now().toString(),
                 isDeleted = butaca.isDeleted.toLong()
             )
@@ -62,21 +62,15 @@ class ButacaRepositorioImpl (
     override fun update(id: String, butaca: Butaca): Butaca? {
         logger.debug { "Actualizando la butaca con id: $id"}
         findById(id)?.let {
-            db.updateButaca(
-                ocupamiento = butaca.ocupamiento!!.name,
-                tipo = butaca.tipo!!.name,
-                estado = butaca.estado!!.name,
-                updatedAt = LocalDateTime.now().toString(),
-                isDeleted = butaca.isDeleted.toLong(),
-                id = id
-            )
-            return butaca.copy(
+            val nuevaButaca = butaca.copy(
                 id = id,
                 estado = butaca.estado,
                 ocupamiento = butaca.ocupamiento,
                 updatedAt = LocalDateTime.now(),
                 isDeleted = butaca.isDeleted
             )
+            save(nuevaButaca, true)?.let { return nuevaButaca }
+            return null
         }
         return null
     }
@@ -84,11 +78,15 @@ class ButacaRepositorioImpl (
     override fun delete(id: String): Butaca? {
         logger.debug { "Borrando butaca con id: $id" }
         findById(id)?.let {
-            db.deleteButaca(id)
-            return it.copy(
-                isDeleted = true,
-                updatedAt = LocalDateTime.now()
+            val nuevaButaca = it.copy(
+                id = id,
+                estado = it.estado,
+                ocupamiento = it.ocupamiento,
+                updatedAt = LocalDateTime.now(),
+                isDeleted = true
             )
+            save(nuevaButaca, true)?.let { return nuevaButaca }
+            return null
         }
         return null
     }

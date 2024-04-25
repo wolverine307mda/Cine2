@@ -1,3 +1,4 @@
 
-xkotlin:S1481G".Remove this unused "timeStamp" local variable.(ÓùùÂúÿÿÿÿ8¯¹§üğ1J$e54750af-f305-4c24-a924-c214ead2f64c
-‹kotlin:S6510E"AMove "return" statements from all branches before "if" statement.(‰¿çÈøÿÿÿÿ8´¹§üğ1J$07a549b1-eab2-4faa-8db1-28f85210cb02
+Ùkotlin:S1192J"“Define a constant instead of duplicating this literal "INSERT INTO CuentaEntity (id, isDeleted, createdAt, updatedAt) VALUES (?, ?, ?, ?)" 3 times.(å€˜“8œı·ñ1J$a1e8a7c6-0888-49da-9716-47e1a97ae928
+‹kotlin:S6510E"AMove "return" statements from all branches before "if" statement.(‰¿çÈøÿÿÿÿ8 ı·ñ1J$8f67c37b-1e7a-456e-b65b-1a6ffaa54ad5
+‹kotlin:S6510^"AMove "return" statements from all branches before "if" statement.(‰¿çÈøÿÿÿÿ8 ı·ñ1J$83377e93-4982-4122-90cc-a0d1406a4059

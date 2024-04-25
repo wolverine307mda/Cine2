@@ -3,10 +3,12 @@ package org.example.cuenta.servicio
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
-import org.example.butacas.errors.CuentaError
+import cuenta.errors.CuentaError
 import org.example.cuenta.models.Cuenta
 import org.example.cuenta.repositorio.CuentaRepositorio
+import org.koin.core.annotation.Singleton
 
+@Singleton
 class CuentaServicioImpl(
     private var cuentaRepositorio: CuentaRepositorio,
 ): CuentaServicio {

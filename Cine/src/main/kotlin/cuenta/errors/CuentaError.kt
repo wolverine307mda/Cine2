@@ -1,4 +1,4 @@
-package org.example.butacas.errors
+package cuenta.errors
 
 sealed class CuentaError (val message : String) {
     class CuentaInvalida(message: String) : CuentaError(message)
