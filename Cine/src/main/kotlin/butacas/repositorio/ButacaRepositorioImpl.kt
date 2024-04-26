@@ -91,4 +91,12 @@ class ButacaRepositorioImpl (
         return null
     }
 
+    override fun findByIdAndDate(id: String, date: LocalDateTime): Butaca? {
+        logger.debug { "Encontrando la butaca con id= $id en ${date.dayOfMonth}/${date.monthValue}/${date.year} ${date.hour}:${date.minute}:${date.second}" }
+        if(db.butacaExists(id).executeAsOne()){
+
+        }
+        return null
+    }
+
 }

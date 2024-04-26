@@ -1,5 +1,8 @@
 
-Xkotlin:S1172›"8Use "_" instead of this unused lambda parameter "error".(ˆàëµ8ääÛ¸ñ1
-Dkotlin:S6615o" Remove this useless initializer.(Ì‡êÜþÿÿÿÿ8ôäÛ¸ñ1
-]kotlin:S1144è"8Remove this unused private "actualizarProductos" method.(ô÷ñ¹úÿÿÿÿ8„åÛ¸ñ1
-Fkotlin:S1125j"'Remove the unnecessary Boolean literal.(ï…Ë°8“åÛ¸ñ1
+~kotlin:S1172ž"8Use "_" instead of this unused lambda parameter "error".(ˆàëµ8¥¥ëÕñ1J$085ff81f-5335-4082-b4bd-86ebb4ed2876
+jkotlin:S6615r" Remove this useless initializer.(Ì‡êÜþÿÿÿÿ8¨¥ëÕñ1J$7655c11d-964e-47b3-9737-c1023a4649be
+ƒkotlin:S1144ë"8Remove this unused private "actualizarProductos" method.(ô÷ñ¹úÿÿÿÿ8µ¥ëÕñ1J$53ff999b-707f-4e7c-81be-4836ba3b3ae8
+lkotlin:S1125m"'Remove the unnecessary Boolean literal.(ï…Ë°8Æ¥ëÕñ1J$5de24006-750f-44fe-aa4a-dbb47cdeda82
+9kotlin:S1128	"Remove this unused import.(Ž§ÀÁ8Ë»ïÕñ1
+>kotlin:S1128"Remove this unused import.(¼Ê¬Æüÿÿÿÿ8Ì»ïÕñ1
+>kotlin:S1128"Remove this unused import.(¶µÀ»úÿÿÿÿ8Ì»ïÕñ1

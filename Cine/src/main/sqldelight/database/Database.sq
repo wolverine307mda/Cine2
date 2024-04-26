@@ -179,6 +179,48 @@ SELECT * FROM VentaEntity WHERE
   GROUP BY id
 ) AND ? = id;
 
+countVentasByDate:
+SELECT COUNT(*)
+FROM VentaEntity b1
+WHERE b1.updatedAt = (
+    SELECT MAX(b2.updatedAt)
+    FROM VentaEntity b2
+    WHERE b1.id = b2.id
+)
+AND b1.updatedAt < ?;
+
+getVentasByDate:
+SELECT *
+FROM VentaEntity b1
+WHERE b1.updatedAt = (
+    SELECT MAX(b2.updatedAt)
+    FROM VentaEntity b2
+    WHERE b1.id = b2.id
+)
+AND b1.updatedAt < ?;
+
+countLineaVentaByIdAndDate:
+SELECT COUNT(*)
+FROM LineaVentaEntity b1
+WHERE b1.updatedAt = (
+    SELECT MAX(b2.updatedAt)
+    FROM LineaVentaEntity b2
+    WHERE b1.id = b2.id
+)
+AND b1.updatedAt < ?
+AND b1.id = ?;
+
+getLineaVentaByIdAndDate:
+SELECT *
+FROM LineaVentaEntity b1
+WHERE b1.updatedAt = (
+    SELECT MAX(b2.updatedAt)
+    FROM LineaVentaEntity b2
+    WHERE b1.id = b2.id
+)
+AND b1.updatedAt < ?
+AND b1.id = ?;
+
 insertVenta:
 INSERT INTO VentaEntity (id,id_butaca,id_socio,updatedAt,createdAt,isDeleted)
 VALUES (?,?,?,?,?,?);

@@ -63,9 +63,9 @@ class VentaRepositorioImpl(
         return null
     }
 
-    override fun save(venta: Venta): Venta? {
+    override fun save(venta: Venta, ignoreKey : Boolean): Venta? {
         logger.debug { "Guardando venta con id: ${venta.id}" }
-        if (findById(venta.id) == null){
+        if (ignoreKey || findById(venta.id) == null){
             db.insertVenta(
                 id = venta.id,
                 id_socio = venta.cliente.id,
@@ -103,7 +103,7 @@ class VentaRepositorioImpl(
                 id = id,
                 lineasVenta = venta.lineasVenta
             )
-            save(nuevaVenta)?.let { return nuevaVenta }
+            save(nuevaVenta, true)?.let { return nuevaVenta }
             return null
         }
         return null
@@ -121,9 +121,37 @@ class VentaRepositorioImpl(
                 id = id,
                 lineasVenta = it.lineasVenta
             )
-            save(nuevaVenta)?.let { return nuevaVenta }
+            save(nuevaVenta, true)?.let { return nuevaVenta }
             return null
         }
         return null
+    }
+
+    override fun findAllByDate(date: LocalDateTime): List<Venta> {
+        logger.debug { "Buscando las ventas en: ${date.dayOfMonth}/${date.monthValue}/${date.year} ${date.hour}:${date.minute}:${date.second}" }
+        if (db.countVentasByDate(date.toString()).executeAsOne() > 0){
+            return db
+                .getVentasByDate(date.toString())
+                .executeAsList()
+                .map {
+                    val lineas = getAllLineasByVentaIdAndDate(it.id,date)
+                    val butaca = butacaRepositorio.findById(it.id_butaca)
+                    val cliente = clienteRepositorio.findById(it.id_socio)
+                    it.toVenta(lineas = lineas, butaca = butaca!!, cliente = cliente!!)
+                }
+        }
+        return emptyList()
+    }
+
+    private fun getAllLineasByVentaIdAndDate(id : String, date: LocalDateTime) : List<LineaVenta>{
+        if (db.countLineaVentaByIdAndDate(id,date.toString()).executeAsOne() > 0){
+            db.getLineaVentaByIdAndDate(id,date.toString())
+                .executeAsList()
+                .map {
+                    val producto = productosRepositorio.findById(it.id_complemento)
+                    it.toLineaVenta(producto!!)
+                }
+        }
+        return emptyList()
     }
 }

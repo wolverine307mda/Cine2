@@ -6,19 +6,16 @@ import com.github.michaelbull.result.onSuccess
 import database.DatabaseQueries
 import org.cine.database.AppDatabase
 import org.example.butacas.storage.ButacaStorage
-import org.example.butacas.storage.ButacaStorageCSVImpl
 import org.example.butacas.validator.ButacaValidator
 import org.example.config.Config
 import org.example.cuenta.mappers.toLong
-import org.koin.core.annotation.Singleton
 import org.lighthousegames.logging.logging
 import java.io.File
 
 val logger = logging()
 
-@Singleton
 class SqlDelightManager(
-    private val butacaStorageCSVImpl: ButacaStorageCSVImpl,
+    private val butacaStorage: ButacaStorage,
     private val butacaValidator: ButacaValidator,
     private val config : Config
 ) {
@@ -81,7 +78,7 @@ class SqlDelightManager(
         logger.debug { "Importando datos de butacas" }
         val url = ClassLoader.getSystemResource(config.butacaSampleFile)
         if (url != null){
-            butacaStorageCSVImpl
+            butacaStorage
                 .cargar(File(url.toURI()))
                 .onSuccess {
                     it.forEach {

@@ -2,7 +2,6 @@ package org.example.butacas.storage
 
 import com.github.michaelbull.result.Result
 import org.example.butacas.errors.ProductoError
-import org.example.butacas.models.Butaca
 import org.example.productos.models.Producto
 import java.io.File
 

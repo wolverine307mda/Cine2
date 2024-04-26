@@ -10,4 +10,5 @@ interface ButacaRepositorio {
     fun save(butaca: Butaca, ignoreKey : Boolean = false): Butaca?
     fun update(id: String, butaca: Butaca): Butaca?
     fun delete(id: String): Butaca?
+    fun findByIdAndDate(id : String, date: LocalDateTime) : Butaca?
 }

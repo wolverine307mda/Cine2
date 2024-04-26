@@ -10,7 +10,6 @@ import org.example.ventas.errors.VentaError
 import org.example.ventas.models.Venta
 import org.koin.core.annotation.Singleton
 import java.io.File
-import kotlin.math.E
 
 @Singleton
 class VentaStorageHTMLImpl : VentaStorage {
