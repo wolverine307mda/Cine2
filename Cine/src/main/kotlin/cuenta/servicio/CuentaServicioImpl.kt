@@ -13,9 +13,7 @@ class CuentaServicioImpl(
     private var cuentaRepositorio: CuentaRepositorio,
 ): CuentaServicio {
     override fun findAll(): Result<List<Cuenta>, CuentaError> {
-        val result = cuentaRepositorio.findAll()
-        if (result.isNotEmpty()) return Ok(result)
-        else return Err(CuentaError.CuentaStorageError("No hay ninguna butaca en la base de datos"))
+        return Ok(cuentaRepositorio.findAll())
     }
 
     override fun findById(id: String): Result<Cuenta, CuentaError> {
@@ -23,7 +21,16 @@ class CuentaServicioImpl(
         return if (cuenta != null) {
             Ok(cuenta)
         } else {
-            Err(CuentaError.CuentaNotFoundError("La butaca con ID $id no existe"))
+            Err(CuentaError.CuentaNotFoundError("La cuenta con ID $id no existe"))
         }
     }
+
+    override fun save(cuenta: Cuenta): Result<Cuenta, CuentaError> {
+        cuentaRepositorio.save(cuenta)?.let {
+            return Ok(it)
+        }
+        return Err(CuentaError.CuentaStorageError("La cuenta con id: ${cuenta.id} no se pudo guardar"))
+    }
+
+
 }

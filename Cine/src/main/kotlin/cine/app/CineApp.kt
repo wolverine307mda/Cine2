@@ -6,13 +6,17 @@ import com.github.michaelbull.result.onSuccess
 import org.example.butacas.models.Butaca
 import org.example.butacas.models.Ocupamiento
 import org.example.butacas.servicios.ButacaService
+import org.example.cuenta.models.Cuenta
 import org.example.cuenta.servicio.CuentaServicio
 import org.example.productos.models.Producto
 import org.example.productos.servicio.ProductoServicio
+import org.example.ventas.models.LineaVenta
+import org.example.ventas.models.Venta
 import org.example.ventas.servicio.VentaServicio
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.time.LocalDateTime
+import java.util.UUID
 import java.util.regex.Pattern
 
 class CineApp : KoinComponent {
@@ -167,7 +171,24 @@ class CineApp : KoinComponent {
     }
 
     private fun registrarse() {
-        TODO("Not yet implemented")
+        print("Ingrese su ID (formato: LLLNNN): ")
+        var input = readln().uppercase()
+        val regex = "[A-Za-z]{3}\\d{3}".toRegex()
+        var success = false
+        do {
+            if (!input.matches(regex)){
+                println("Ese ID no es válido, vuelva a intentarlo:")
+                input = readln().uppercase()
+            }else{
+                cuentaServicio.save(Cuenta(input)).onSuccess {
+                    println("Su cuenta se ha creado ")
+                    success = true
+                }.onFailure {
+                    println("Ya existe una cuenta con ese nombre, vuelva a intentarlo:")
+                    input = readln().uppercase()
+                }
+            }
+        }while (!input.matches(regex) && !success)
     }
 
 

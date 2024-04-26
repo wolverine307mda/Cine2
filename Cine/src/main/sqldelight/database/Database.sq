@@ -166,18 +166,24 @@ FROM VentaEntity WHERE (id,updatedAt) IN
 );
 
 getLineaVentaByVentaId:
-SELECT * FROM LineaVentaEntity WHERE
-( SELECT id, MAX(updatedAt)
-  FROM LineaVentaEntity
-  GROUP BY id
-) AND ? = id;
+SELECT *
+FROM LineaVentaEntity
+WHERE updatedAt = (
+    SELECT MAX(updatedAt)
+    FROM LineaVentaEntity AS b2
+    WHERE b2.id_venta = LineaVentaEntity.id_venta
+)
+AND id_venta = ?;
 
 getVentaById:
-SELECT * FROM VentaEntity WHERE
-( SELECT id, MAX(updatedAt)
-  FROM VentaEntity
-  GROUP BY id
-) AND ? = id;
+SELECT *
+FROM VentaEntity
+WHERE updatedAt = (
+    SELECT MAX(updatedAt)
+    FROM VentaEntity AS b2
+    WHERE b2.id = VentaEntity.id
+)
+AND id = ?;
 
 countVentasByDate:
 SELECT COUNT(*)
@@ -221,6 +227,16 @@ WHERE b1.updatedAt = (
 AND b1.updatedAt < ?
 AND b1.id = ?;
 
+deleteLineaVenta:
+UPDATE LineaVentaEntity
+SET isDeleted = 1
+WHERE id = ?
+AND updatedAt = (
+    SELECT MAX(updatedAt)
+    FROM LineaVentaEntity
+    WHERE id = ?
+);
+
 insertVenta:
 INSERT INTO VentaEntity (id,id_butaca,id_socio,updatedAt,createdAt,isDeleted)
 VALUES (?,?,?,?,?,?);
@@ -235,5 +251,5 @@ SELECT COUNT(*) > 0 FROM VentaEntity WHERE id = ?;
 countVentas:
 SELECT COUNT(*) FROM VentaEntity;
 
-countLineasVenta:
-SELECT COUNT(*) FROM LineaVentaEntity WHERE id = ?;
+countLineasVentaByVentaId:
+SELECT COUNT(*) FROM LineaVentaEntity WHERE id_venta = ?;

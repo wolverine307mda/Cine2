@@ -15,7 +15,7 @@ fun CuentaDTO.toCuenta() : Cuenta {
 
 fun Cuenta.toCuentaDto() : CuentaDTO{
     return CuentaDTO(
-        id = id,
+        id = this.id,
         createdAt = this.toString(),
         updatedAt = this.toString(),
         isDeleted = this.isDeleted.toLong().toInt()

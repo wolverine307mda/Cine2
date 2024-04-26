@@ -43,7 +43,7 @@ class CuentaRepositorioImpl(
         try {
             var cuenta: Cuenta? = null
             dataBaseManager.use { db ->
-                val sql = "SELECT * FROM CuentaEntity WHERE (id,updatedAt) IN ( SELECT id, MAX(updatedAt)FROM CuentaEntity GROUP BY id) AND id = ?";
+                val sql = "SELECT * FROM CuentaEntity WHERE updatedAt = (SELECT MAX(updatedAt) FROM CuentaEntity AS b2 WHERE b2.id = CuentaEntity.id) AND id = ?";
                 val statement = db.connection?.prepareStatement(sql)!!
                 statement.setString(1, id)
                 val result = statement.executeQuery()
@@ -75,7 +75,7 @@ class CuentaRepositorioImpl(
                     val statement = db.connection?.prepareStatement(sql)!!
                     statement.setString(1, cuentaDTO.id)
                     statement.setInt(2, cuentaDTO.isDeleted)
-                    statement.setString(3, cuentaDTO.createdAt)
+                    statement.setString(3, timeStamp.toString())
                     statement.setString(4, timeStamp.toString())
                     statement.executeUpdate()
                 }

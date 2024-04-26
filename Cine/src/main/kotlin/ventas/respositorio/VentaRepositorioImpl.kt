@@ -40,8 +40,8 @@ class VentaRepositorioImpl(
     }
 
     private fun getAllLineasByVentaId(id : String) : List<LineaVenta>{
-        if (db.countLineasVenta(id).executeAsOne() > 0){
-            db.getLineaVentaByVentaId(id)
+        if (db.countLineasVentaByVentaId(id).executeAsOne() > 0){
+            return db.getLineaVentaByVentaId(id)
                 .executeAsList()
                 .map {
                     val producto = productosRepositorio.findById(it.id_complemento)
@@ -55,8 +55,8 @@ class VentaRepositorioImpl(
         logger.debug { "Buscando la venta con id : $id" }
         if (db.existsVenta(id).executeAsOne()){
             val ventaEntity = db.getVentaById(id).executeAsOne()
-            val lineas = getAllLineasByVentaId(ventaEntity.id)
-            val butaca = butacaRepositorio.findById(ventaEntity.id)
+            val lineas = getAllLineasByVentaId(ventaEntity.id).filter { !it.isDeleted }
+            val butaca = butacaRepositorio.findById(ventaEntity.id_butaca)
             val cliente = clienteRepositorio.findById(ventaEntity.id_socio)
             return ventaEntity.toVenta(lineas,butaca!!, cliente!!)
         }
@@ -103,6 +103,9 @@ class VentaRepositorioImpl(
                 id = id,
                 lineasVenta = venta.lineasVenta
             )
+            it.lineasVenta.forEach {
+                deleteLineaVenta(it)
+            }
             save(nuevaVenta, true)?.let { return nuevaVenta }
             return null
         }
@@ -121,7 +124,13 @@ class VentaRepositorioImpl(
                 id = id,
                 lineasVenta = it.lineasVenta
             )
-            save(nuevaVenta, true)?.let { return nuevaVenta }
+            save(nuevaVenta, true)
+                ?.let {
+                    it.lineasVenta.forEach {
+                        deleteLineaVenta(it)
+                    }
+                    return nuevaVenta
+                }
             return null
         }
         return null
@@ -141,6 +150,11 @@ class VentaRepositorioImpl(
                 }
         }
         return emptyList()
+    }
+
+    override fun deleteLineaVenta(lineaVenta: LineaVenta): LineaVenta {
+        db.deleteLineaVenta(lineaVenta.id,lineaVenta.id)
+        return lineaVenta
     }
 
     private fun getAllLineasByVentaIdAndDate(id : String, date: LocalDateTime) : List<LineaVenta>{

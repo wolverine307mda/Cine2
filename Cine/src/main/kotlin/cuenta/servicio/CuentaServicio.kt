@@ -7,4 +7,5 @@ import org.example.cuenta.models.Cuenta
 interface CuentaServicio {
     fun findAll() : Result<List<Cuenta>, CuentaError>
     fun findById(id : String) : Result<Cuenta, CuentaError>
+    fun save(cuenta: Cuenta) : Result<Cuenta,CuentaError>
 }

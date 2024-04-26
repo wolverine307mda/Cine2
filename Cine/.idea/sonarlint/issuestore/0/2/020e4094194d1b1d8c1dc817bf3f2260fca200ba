@@ -1,4 +1,4 @@
 
-Ùkotlin:S1192J"“Define a constant instead of duplicating this literal "INSERT INTO CuentaEntity (id, isDeleted, createdAt, updatedAt) VALUES (?, ?, ?, ?)" 3 times.(å€˜“8¾³òÌñ1J$db840390-f1de-4d9c-8cba-05abec62c5dc
-‹kotlin:S6510E"AMove "return" statements from all branches before "if" statement.(‰¿çÈøÿÿÿÿ8Î³òÌñ1J$0ad40180-3f1c-466f-bc8e-badca166ec8a
-‹kotlin:S6510^"AMove "return" statements from all branches before "if" statement.(‰¿çÈøÿÿÿÿ8Î³òÌñ1J$6f9cab52-8296-4875-96b4-b4d336f4cae4
+Ùkotlin:S1192J"“Define a constant instead of duplicating this literal "INSERT INTO CuentaEntity (id, isDeleted, createdAt, updatedAt) VALUES (?, ?, ?, ?)" 3 times.(å€˜“8ÜôÚñ1J$fed1bc9a-248c-4f0a-b53b-4bd866e7a2d8
+‹kotlin:S6510E"AMove "return" statements from all branches before "if" statement.(‰¿çÈøÿÿÿÿ8àôÚñ1J$d4c6586f-70c8-4490-85d3-10c9c87a904f
+‹kotlin:S6510^"AMove "return" statements from all branches before "if" statement.(‰¿çÈøÿÿÿÿ8áôÚñ1J$adfa4ca5-5b5b-482d-8f41-4def8b1efce3
