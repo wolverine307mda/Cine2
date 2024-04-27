@@ -111,3 +111,29 @@ X
 (src/main/kotlin/butacas/dto/ButacaDto.kt,d\6\d6edc1d369438d8ce32e9c1d91fedadfdeac2e08
 W
 'src/main/kotlin/module/StorageModule.kt,e\1\e17d6eea5d05288b179f41107458d65cc6584a02
+[
++data/butacas/butacas26-4-2024 20_55_55.json,7\a\7a176d3653c14b356530a70e0e505064c24afe3b
+d
+4data/ventas/entrada_A1_ggg555_27-4-2024 10_37_8.html,0\6\06ca6b2f3ac34849992260c13c15241169870ace
+e
+5data/ventas/entrada_A1_ggg555_27-4-2024 10_43_30.html,3\7\37ab276f0a6c4863683b73274e6a72a9ea313020
+d
+4data/ventas/entrada_A1_ggg555_27-4-2024 10_47_2.html,c\6\c6a3f1cdd1ddf0fdd38e9f73e57c4631af6a2ea4
+e
+5data/ventas/entrada_A1_ggg555_27-4-2024 10_49_16.html,2\1\2114fc997c50f1c47b8bd73f4c34c529dedd889c
+e
+5data/ventas/entrada_A1_ggg555_27-4-2024 10_50_29.html,3\a\3a50baaca297ad3ef1381e93158274b305eeceea
+[
++data/butacas/butacas27-4-2024 11_26_40.json,4\d\4d059d41495f7a1413087df943bafd0ee51bddb4
+e
+5data/ventas/entrada_A3_RRR555_27-4-2024 12_23_19.html,f\9\f91c3750277cf7cd5791f94d0f5ae4dfdd09490a
+e
+5data/ventas/entrada_A3_RRR555_27-4-2024 12_30_42.html,c\d\cd483f864ecfd91f667af680c1060e0cf2e632cd
+e
+5data/ventas/entrada_A3_RRR555_27-4-2024 12_30_43.html,e\4\e4aaa76613a94f0adeec2349899f7a96fb4459a8
+e
+5data/ventas/entrada_A7_RRR555_27-4-2024 12_49_12.html,7\e\7e8bd4a49981df407f97ce790ca15c829e907f17
+e
+5data/ventas/entrada_A3_EEE444_27-4-2024 13_22_57.html,a\7\a75d69af09abfde438da61c8c4e97f64ff494e88
+e
+5data/ventas/entrada_A3_FFF444_27-4-2024 13_34_26.html,7\7\7702b7761563f0de491c13a3eb504afa56aef06d

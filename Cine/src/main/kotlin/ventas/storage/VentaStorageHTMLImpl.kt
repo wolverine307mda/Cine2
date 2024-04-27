@@ -10,9 +10,16 @@ import org.example.ventas.errors.VentaError
 import org.example.ventas.models.Venta
 import org.koin.core.annotation.Singleton
 import java.io.File
+import java.nio.file.Files
+import java.nio.file.Paths
 
 @Singleton
 class VentaStorageHTMLImpl : VentaStorage {
+
+    init {
+        Files.createDirectories(Paths.get("data","ventas"))
+    }
+
     override fun cargar(file: File): Result<List<Venta>, ButacaError>{
         println("No está implementada")
         return Ok(emptyList())
@@ -20,18 +27,57 @@ class VentaStorageHTMLImpl : VentaStorage {
 
     override fun exportar(venta : Venta) : Result<Unit,VentaError>{
         try {
-            var output = "<!DOCTYPE html>\n" +
-                    "<html lang=\"en\">\n" +
-                    "<head>\n" +
-                    "    <meta charset=\"UTF-8\">\n" +
-                    "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
-                    "    <title>Document</title>\n" +
-                    "</head>\n" +
-                    "<body>\n" +
-                    ""
-            getTableRows(venta)
-            "</body>\n" +
-                    "</html>"
+            var output = """
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recibo</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .receipt {
+        max-width: 400px;
+        border: 1px solid #ccc;
+        padding: 20px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+      }
+      .receipt h2 {
+        text-align: center;
+      }
+      .receipt p {
+        margin: 5px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="receipt">
+      <h2>Recibo</h2>
+      <p><strong>Cliente:</strong> ${venta.cliente.id}</p>
+      <p><strong>Butaca:</strong> ${venta.butaca.id}</p>
+      <p><strong>Complementos:</strong></p>
+      <ul>
+           ${getProductList(venta)}
+      </ul>
+      <p><strong>Precio Total:</strong> ${getPrice(venta)}€</p>
+    </div>
+  </body>
+</html>
+"""
+
+            val date = venta.updatedAt
+            val file = File("data${File.separator}ventas","entrada_${venta.butaca.id}_${venta.cliente.id}_${date.dayOfMonth}-${date.monthValue}-${date.year} ${date.hour}_${date.minute}_${date.second}.html")
+            file.createNewFile()
+            file.writeText(output)
             return Ok(Unit)
         }catch (e : Exception){
             logger.error { "Hubo un fallo al generar su recibo" }
@@ -39,8 +85,22 @@ class VentaStorageHTMLImpl : VentaStorage {
         }
     }
 
-    private fun getTableRows(venta: Venta) : String{
-        TODO()
+    private fun getPrice(venta: Venta): String {
+        var price = 0.0
+        venta.lineasVenta.forEach {
+            price += (it.precio * it.cantidad)
+        }
+        price  += venta.butaca.tipo!!.precio
+        return price.toString()
+    }
+
+    private fun getProductList(venta: Venta) : String{
+        var output = ""
+        venta.lineasVenta.forEach {
+            output += "      <li>${it.producto.nombre} \$ ${it.producto.precio} x ${it.cantidad} </li>"
+        }
+        if (output.isBlank()) return "<li>No se compraron complementos</li>"
+        else return output
     }
 
 }

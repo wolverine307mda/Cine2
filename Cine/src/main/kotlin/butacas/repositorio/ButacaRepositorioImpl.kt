@@ -26,8 +26,8 @@ class ButacaRepositorioImpl (
 
     override fun findAllBasedOnDate(date: LocalDateTime): List<Butaca> {
         logger.debug { "Buscando todas las butacas en la base de datos antes de ${date.dayOfMonth}/${date.monthValue}/${date.year}" }
-        if (db.countButacaBasedOnDate(date.toString()).executeAsOne() > 0){
-            return db.getButacaBasedOnDate(date.toString()).executeAsList().map {
+        if (db.countButacasBasedOnDate(date.toString()).executeAsOne() > 0){
+            return db.getButacasBasedOnDate(date.toString()).executeAsList().map {
                 it.toButaca()
             }
         }
@@ -93,8 +93,8 @@ class ButacaRepositorioImpl (
 
     override fun findByIdAndDate(id: String, date: LocalDateTime): Butaca? {
         logger.debug { "Encontrando la butaca con id= $id en ${date.dayOfMonth}/${date.monthValue}/${date.year} ${date.hour}:${date.minute}:${date.second}" }
-        if(db.butacaExists(id).executeAsOne()){
-
+        if(db.butacaExistsOnACertainDate(id,date.toString()).executeAsOne()){
+            return db.getButacaBasedOnIdAndDate(id,date.toString()).executeAsOne().toButaca()
         }
         return null
     }

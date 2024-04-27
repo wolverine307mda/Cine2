@@ -1,8 +1,4 @@
 
-~kotlin:S1172Ÿ"8Use "_" instead of this unused lambda parameter "error".(ˆàëµ8³şñÜñ1J$30b82e6b-a23c-465e-9d79-de4db57a20f1
-jkotlin:S6615s" Remove this useless initializer.(Ì‡êÜşÿÿÿÿ8µşñÜñ1J$29a7e6f7-3a2b-4ac1-8dbf-1ad443306223
-ƒkotlin:S1144ı"8Remove this unused private "actualizarProductos" method.(ô÷ñ¹úÿÿÿÿ8é¾õÜñ1J$ea21693a-08a1-4625-8a18-76c9865b49c5
-lkotlin:S1125n"'Remove the unnecessary Boolean literal.(ï…Ë°8ÌşñÜñ1J$db0d417b-b1a8-4787-9495-c6c723a91d3b
-^kotlin:S1128"Remove this unused import.(¿Ûş.8ÍşñÜñ1J$6e351a16-57ca-467a-a164-c9d808494ebe
-dkotlin:S1128"Remove this unused import.(¼Ê¬Æüÿÿÿÿ8ÍşñÜñ1J$f2a0f2db-f277-446c-a434-70b5c585285e
-dkotlin:S1128"Remove this unused import.(¶µÀ»úÿÿÿÿ8ÎşñÜñ1J$6e1b33cc-e5d1-4992-b3f1-222a1585c4d4
+~kotlin:S1172¤"8Use "_" instead of this unused lambda parameter "error".(ˆàëµ8è–§úñ1J$5723a077-ddd3-48a6-bb9c-bea04301808a
+lkotlin:S1125s"'Remove the unnecessary Boolean literal.(ï…Ë°8—§úñ1J$cf5080bd-62f7-4e4c-a65b-dc3718de8de7
+—kotlin:S1192V"RDefine a constant instead of duplicating this literal "OpciÃ³n invÃ¡lida" 3 times.(„¥–À8„—§úñ1J$b64ef118-343d-4936-90d9-3c48018a8ff0

@@ -1,8 +1,6 @@
 package org.example.ventas.servicio
 
-import com.github.michaelbull.result.Err
-import com.github.michaelbull.result.Ok
-import com.github.michaelbull.result.Result
+import com.github.michaelbull.result.*
 import org.example.butacas.servicios.ButacaService
 import org.example.butacas.storage.VentaStorage
 import org.example.cuenta.servicio.CuentaServicio
@@ -51,7 +49,15 @@ class VentaServicioImpl (
     }
 
     override fun exportVenta(venta: Venta): Result<Unit, VentaError>{
-        TODO("Not yet implemented")
+        ventaStorage.exportar(venta).onFailure {
+            return Err(it)
+        }
+        return Ok(Unit)
     }
+
+    override fun getAllVentasByDate(date : LocalDateTime): Result<List<Venta>, VentaError> {
+        return Ok(ventaRepositorio.findAllByDate(date))
+    }
+
 
 }

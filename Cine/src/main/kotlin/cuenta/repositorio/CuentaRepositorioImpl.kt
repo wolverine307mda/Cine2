@@ -19,7 +19,7 @@ class CuentaRepositorioImpl(
         try {
             val personas = mutableListOf<Cuenta>()
             dataBaseManager.use { db ->
-                val sql = "SELECT FROM CuentaEntity WHERE (CuentaEntity id,updatedAt) IN ( SELECT id, MAX(updatedAt) FROM CuentaEntity GROUP BY id)"
+                val sql = "SELECT * FROM CuentaEntity WHERE updatedAt = (SELECT MAX(updatedAt) FROM CuentaEntity AS b2 WHERE b2.id = CuentaEntity.id)"
                 val result = db.connection?.prepareStatement(sql)!!.executeQuery()
                 while (result.next()) {
                     val persona = CuentaDTO(

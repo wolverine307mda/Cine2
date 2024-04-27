@@ -8,13 +8,11 @@ import org.example.butacas.models.Ocupamiento
 import org.example.butacas.servicios.ButacaService
 import org.example.cuenta.models.Cuenta
 import org.example.cuenta.servicio.CuentaServicio
-import org.example.database.manager.logger
 import org.example.productos.models.Producto
 import org.example.productos.servicio.ProductoServicio
 import org.example.ventas.models.LineaVenta
 import org.example.ventas.models.Venta
 import org.example.ventas.servicio.VentaServicio
-import org.example.ventas.storage.VentaStorageHTMLImpl
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.time.LocalDateTime
@@ -32,7 +30,7 @@ class CineApp : KoinComponent {
 
     private lateinit var butacaTiket: Butaca
     private lateinit var cuentaTiket: Cuenta
-    private var ProductoTiket: List<Producto>? = null
+    private var lineas: MutableList<LineaVenta> = mutableListOf()
     private var productosReservados = 0
 
 
@@ -119,7 +117,7 @@ class CineApp : KoinComponent {
     }
 
     private fun menuIniciarSesion() {
-        var opcion: String? = null
+        var opcion: String?
         println("""¿Qué desea hacer? 
         |1. Iniciar sesión
         |2. Registrarse
@@ -139,7 +137,7 @@ class CineApp : KoinComponent {
         } while (opcion !in listOf("1", "2", "3"))
     }
 
-    fun iniciarSesion() {
+    private fun iniciarSesion() {
         // Patrón de expresión regular para el formato especificado
         val regex = Pattern.compile("[A-Za-z]{3}\\d{3}")
 
@@ -190,6 +188,7 @@ class CineApp : KoinComponent {
                 cuentaServicio.save(Cuenta(input)).onSuccess {
                     println("Su cuenta se ha creado ")
                     success = true
+                    cuentaTiket = it
                 }.onFailure {
                     println("Ya existe una cuenta con ese nombre, vuelva a intentarlo:")
                     input = readln().uppercase()
@@ -229,6 +228,7 @@ class CineApp : KoinComponent {
                         } while (inicioSesion)
                         reservarButaca(numeroButaca)
                         menuReservaProductos()
+                        crearVenta()
                     }
                     else -> {
                         println("La butaca $numeroButaca no está disponible para reservar.")
@@ -271,18 +271,25 @@ class CineApp : KoinComponent {
         val productoSeleccionado = productos!![opcion - 1]
         println("Ha seleccionado: ${productoSeleccionado.nombre}")
 
-        productoServicio.findById(productoSeleccionado.id).onSuccess { producto ->
-            val productoReservado = producto.copy(stock = producto.stock - 1)
-            productoServicio.update(productoSeleccionado.id, productoReservado).onSuccess { _ ->
-                println("El producto ${productoSeleccionado.nombre} ha sido reservado con éxito.")
-                ProductoTiket = ProductoTiket.orEmpty() + productoReservado // Agregar el producto reservado a ProductoTiket
-                productosReservados++
-            }.onFailure { error ->
-                println("Error al reservar el producto ${productoSeleccionado.nombre}: ${error.message}")
-            }
-        }.onFailure {
-            println("El producto ${productoSeleccionado.nombre} no existe.")
-        }
+        productoServicio
+            .findById(productoSeleccionado.id)
+                .onSuccess { producto ->
+                    val productoReservado = producto.copy(stock = producto.stock - 1)
+                    productoServicio.update(productoSeleccionado.id, productoReservado)
+                        .onSuccess { _ ->
+                            println("El producto ${productoSeleccionado.nombre} ha sido reservado con éxito.")
+                            val productoExiste = lineas.firstOrNull(){ it.producto.id == producto.id }
+                            if (productoExiste == null) lineas = lineas.plus(LineaVenta(producto = producto, cantidad = 1, precio = producto.precio )).toMutableList()
+                            else lineas.forEach {
+                                if (it.producto.id == producto.id) it.cantidad++
+                            }
+                            productosReservados++
+                        }.onFailure { error ->
+                            println("Error al reservar el producto ${productoSeleccionado.nombre}: ${error.message}")
+                        }
+                }.onFailure {
+                    println("El producto ${productoSeleccionado.nombre} no existe.")
+                }
 
         if (productosReservados < 3) {
             println("Aun puede seleccionar ${3 - productosReservados}")
@@ -294,37 +301,35 @@ class CineApp : KoinComponent {
                     "S" -> menuReservaProductos()
                     "N" -> {
                         println("Gracias por su compra")
-                        crearVenta()
                     }
                     else -> println("Respuesta inválida, por favor ingrese S o N")
                 }
             } while (respuesta != "S" && respuesta != "N")
         }
-
     }
 
     private fun crearVenta() {
         val cliente = cuentaTiket
         val butaca = butacaTiket
 
-        // Crear las líneas de venta
-        val lineasVenta = ProductoTiket!!.map { producto ->
-            LineaVenta(producto = producto, cantidad = 1, precio = producto.precio)
-        }
+        // Si la linea de venta para este producto ya existe cambia la cantidad sino
+        // crea las línea de venta
+        val lineasVenta = lineas
 
         // Crear la venta
-        val venta = Venta(cliente = cliente, butaca = butaca!!, lineasVenta = lineasVenta)
+        val venta = Venta(cliente = cliente, butaca = butaca, lineasVenta = lineasVenta)
 
         // Guardar la venta utilizando el repositorio de ventas
-        ventaServicio.save(venta)?.let {
+        ventaServicio.save(venta).onSuccess {
             println("Venta creada con éxito.")
 
             // Exportar la venta a HTML
-            val ventaStorage = VentaStorageHTMLImpl()
-            ventaStorage.exportar(venta).fold(
+            ventaServicio.exportVenta(venta).fold(
                 success = { println("Venta exportada a HTML con éxito.") },
                 failure = { error -> println("Error al exportar la venta a HTML: ${error.message}") }
             )
+        }.onFailure {
+            println("No se ha podido procesar su compra: ${it.message}")
         }
     }
 
@@ -348,7 +353,7 @@ class CineApp : KoinComponent {
     private fun actualizarProductos() {
         val findAllResult = productoServicio.findAll()
         findAllResult.onSuccess { productosEncontrados ->
-            productos = productosEncontrados
+            productos = productosEncontrados.filter { it.stock > 0 && !it.isDeleted }
         }.onFailure { error ->
             println("Error al obtener los Productos: ${error.message}")
         }
@@ -362,6 +367,7 @@ class CineApp : KoinComponent {
             println("Error al obtener las butacas: ${error.message}")
         }
     }
+
     private fun verEstadoDelCine() {
         actualizarButacas()
         if (butacas != null) butacas = sortButacas()

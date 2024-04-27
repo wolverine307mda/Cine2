@@ -86,6 +86,28 @@ WHERE (id,updatedAt) IN
 butacaExists:
 SELECT COUNT(*) > 0 FROM ButacaEntity WHERE id = ?;
 
+getButacaBasedOnIdAndDate:
+SELECT *
+FROM ButacaEntity b1
+WHERE b1.updatedAt = (
+    SELECT MAX(b2.updatedAt)
+    FROM ButacaEntity b2
+    WHERE b1.id = b2.id
+)
+AND b1.updatedAt < ?
+AND b1.id = ?;
+
+butacaExistsOnACertainDate:
+SELECT COUNT(*) > 0
+FROM ButacaEntity b1
+WHERE b1.updatedAt = (
+    SELECT MAX(b2.updatedAt)
+    FROM ButacaEntity b2
+    WHERE b1.id = b2.id
+)
+AND b1.updatedAt < ?
+AND b1.id = ?;
+
 insertButaca:
 INSERT INTO ButacaEntity (id, tipo, estado, ocupamiento,isDeleted, createdAt, updatedAt)
 VALUES (?, ?, ?, ?, ?, ?,?);
@@ -99,7 +121,7 @@ UPDATE ButacaEntity SET isDeleted = 1 WHERE id = ?;
 deleteProducto:
 UPDATE ButacaEntity SET isDeleted = 1 WHERE id = ?;
 
-getButacaBasedOnDate:
+getButacasBasedOnDate:
 SELECT b1.*
 FROM ButacaEntity b1
 WHERE b1.updatedAt = (
@@ -109,7 +131,7 @@ WHERE b1.updatedAt = (
 )
 AND b1.updatedAt < ?;
 
-countButacaBasedOnDate:
+countButacasBasedOnDate:
 SELECT COUNT(*)
 FROM ButacaEntity b1
 WHERE b1.updatedAt = (

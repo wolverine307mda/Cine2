@@ -12,4 +12,5 @@ interface VentaServicio {
     fun update(id: String, venta : Venta): Result<Venta, VentaError>
     fun findAllByDate(date : LocalDateTime) : Result<List<Venta>, VentaError>
     fun exportVenta(venta: Venta) : Result<Unit,VentaError>
+    fun getAllVentasByDate(date : LocalDateTime) : Result<List<Venta>,VentaError>
 }

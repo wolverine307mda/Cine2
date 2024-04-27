@@ -144,7 +144,7 @@ class VentaRepositorioImpl(
                 .executeAsList()
                 .map {
                     val lineas = getAllLineasByVentaIdAndDate(it.id,date)
-                    val butaca = butacaRepositorio.findById(it.id_butaca)
+                    val butaca = butacaRepositorio.findByIdAndDate(it.id_butaca,date)
                     val cliente = clienteRepositorio.findById(it.id_socio)
                     it.toVenta(lineas = lineas, butaca = butaca!!, cliente = cliente!!)
                 }
