@@ -142,8 +142,7 @@ class CineApp : KoinComponent {
         do {
             // Solicitar al usuario que ingrese el ID
             print("Ingrese su ID (formato: LLLNNN): ")
-            idIngresado = readlnOrNull() ?: ""
-
+            idIngresado = readlnOrNull()?.uppercase().toString()
             // Comprobar si el ID ingresado coincide con el patrón
             if (!regex.matcher(idIngresado).matches()) {
                 println("El formato del ID no es válido.")
@@ -221,7 +220,7 @@ class CineApp : KoinComponent {
                             menuIniciarSesion()
                         } while (inicioSesion)
                         reservarButaca(numeroButaca)
-                        menuInicio() // Llama a menuInicio() solo si la reserva tiene éxito
+                        menuReservaProductos()
                     }
                     else -> {
                         println("La butaca $numeroButaca no está disponible para reservar.")
@@ -235,6 +234,58 @@ class CineApp : KoinComponent {
             }
         menuInicio()
     }
+
+    private fun menuReservaProductos() {
+        actualizarProductos()
+        var productosReservados = 0
+
+        println("0. Volver al menú principal")
+        println("Seleccione los productos que desea Comprar:")
+        productos?.forEachIndexed { index, producto ->
+            println("${index + 1}. ${producto.nombre} - ${producto.precio}€")
+        }
+        println("${productos?.size?.plus(1)}. Continuar sin Comprar productos")
+
+        var opcion: Int
+        do {
+            print("Ingrese el número correspondiente al producto que desea reservar o 0 para volver al menú principal: ")
+            opcion = readLine()?.toIntOrNull() ?: -1
+            when {
+                opcion == 0 -> menuInicio()
+                opcion in 1..productos!!.size -> {
+                    reservaProducto(opcion)
+                    productosReservados++
+                }
+                else -> println("Opción inválida")
+            }
+        } while (opcion !in 0..productos!!.size + 1 && productosReservados < 3)
+
+        if (productosReservados < 3) {
+            println("Aun puede seleccionar ${3 - productosReservados}")
+            var respuesta: String?
+            do {
+                print("Desea seleccionar más productos? (S/N): ")
+                respuesta = readLine()?.uppercase()
+                when (respuesta) {
+                    "S" -> menuReservaProductos()
+                    "N" -> devolverEntradas()
+                    else -> println("Respuesta inválida, por favor ingrese S o N")
+                }
+            } while (respuesta != "S" && respuesta != "N")
+        }
+    }
+
+
+    private fun reservaProducto(opcion: Int) {
+        val productoSeleccionado = productos!![opcion - 1]
+        println("Ha seleccionado: ${productoSeleccionado.nombre}")
+
+    }
+
+    private fun devolverEntradas(){
+
+    }
+
     private fun reservarButaca(numeroButaca: String) {
         actualizarButacas()
         butacaServicio.findById(numeroButaca).onSuccess { butaca ->
