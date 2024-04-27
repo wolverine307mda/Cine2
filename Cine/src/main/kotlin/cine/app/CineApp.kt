@@ -10,13 +10,10 @@ import org.example.cuenta.models.Cuenta
 import org.example.cuenta.servicio.CuentaServicio
 import org.example.productos.models.Producto
 import org.example.productos.servicio.ProductoServicio
-import org.example.ventas.models.LineaVenta
-import org.example.ventas.models.Venta
 import org.example.ventas.servicio.VentaServicio
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.time.LocalDateTime
-import java.util.UUID
 import java.util.regex.Pattern
 
 class CineApp : KoinComponent {
@@ -28,6 +25,10 @@ class CineApp : KoinComponent {
     var butacas: List<Butaca>? = null
     var productos: List<Producto>? = null
     private var inicioSesion:Boolean = false
+
+    private lateinit var butacaTiket: String
+    private lateinit var cuentaTiket: Cuenta
+    var ProductoTiket: List<Producto>? = null
 
 
     private fun sortButacas(): List<Butaca> {
@@ -153,6 +154,7 @@ class CineApp : KoinComponent {
             cuentaServicio.findById(idIngresado).fold(
                 { cuenta ->
                     println("Inicio de sesión exitoso. ¡Bienvenido, User con ID=${cuenta.id}!")
+                    cuentaTiket = cuenta
                     inicioSesionExitoso = true // Marcar que se ha iniciado sesión con éxito
                 },
                 { error ->
@@ -237,8 +239,6 @@ class CineApp : KoinComponent {
 
     private fun menuReservaProductos() {
         actualizarProductos()
-        var productosReservados = 0
-
         println("0. Volver al menú principal")
         println("Seleccione los productos que desea Comprar:")
         productos?.forEachIndexed { index, producto ->
@@ -254,11 +254,33 @@ class CineApp : KoinComponent {
                 opcion == 0 -> menuInicio()
                 opcion in 1..productos!!.size -> {
                     reservaProducto(opcion)
-                    productosReservados++
                 }
                 else -> println("Opción inválida")
             }
-        } while (opcion !in 0..productos!!.size + 1 && productosReservados < 3)
+        } while (opcion !in 0..productos!!.size + 1)
+
+
+    }
+
+
+    private fun reservaProducto(opcion: Int) {
+        var productosReservados = 0
+
+        val productoSeleccionado = productos!![opcion - 1]
+        println("Ha seleccionado: ${productoSeleccionado.nombre}")
+
+        productoServicio.findById(productoSeleccionado.id).onSuccess { producto ->
+            val productoReservado = producto.copy(stock = producto.stock - 1)
+            productoServicio.update(productoSeleccionado.id, productoReservado).onSuccess { _ ->
+                println("El producto ${productoSeleccionado.nombre} ha sido reservado con éxito.")
+                ProductoTiket = ProductoTiket.orEmpty() + productoReservado // Agregar el producto reservado a ProductoTiket
+                productosReservados++
+            }.onFailure { error ->
+                println("Error al reservar el producto ${productoSeleccionado.nombre}: ${error.message}")
+            }
+        }.onFailure {
+            println("El producto ${productoSeleccionado.nombre} no existe.")
+        }
 
         if (productosReservados < 3) {
             println("Aun puede seleccionar ${3 - productosReservados}")
@@ -273,14 +295,9 @@ class CineApp : KoinComponent {
                 }
             } while (respuesta != "S" && respuesta != "N")
         }
-    }
-
-
-    private fun reservaProducto(opcion: Int) {
-        val productoSeleccionado = productos!![opcion - 1]
-        println("Ha seleccionado: ${productoSeleccionado.nombre}")
 
     }
+
 
     private fun devolverEntradas(){
 
@@ -292,6 +309,7 @@ class CineApp : KoinComponent {
             val butacaReservada = butaca.copy(ocupamiento = Ocupamiento.OCUPADA)
             butacaServicio.update(numeroButaca, butacaReservada).onSuccess { _ ->
                 println("La butaca $numeroButaca ha sido reservada con éxito.")
+                butacaTiket = numeroButaca
             }.onFailure { error ->
                 println("Error al reservar la butaca $numeroButaca: ${error.message}")
             }
