@@ -1,0 +1,282 @@
+[
+    {
+        "id": "A1",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "NORMAL",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "B1",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "NORMAL",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "C1",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "NORMAL",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "D1",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "NORMAL",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "E1",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "NORMAL",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "A2",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "NORMAL",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "B2",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "VIP",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "C2",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "VIP",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "D2",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "VIP",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "E2",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "NORMAL",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "A3",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "NORMAL",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "B3",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "VIP",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "C3",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "VIP",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "D3",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "VIP",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "E3",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "NORMAL",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "A4",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "NORMAL",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "B4",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "VIP",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "C4",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "VIP",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "D4",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "VIP",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "E4",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "NORMAL",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "A5",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "NORMAL",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "B5",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "VIP",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "C5",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "VIP",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "D5",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "VIP",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "E5",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "NORMAL",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "A6",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "NORMAL",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "B6",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "VIP",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "C6",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "VIP",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "D6",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "VIP",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "E6",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "NORMAL",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "A7",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "NORMAL",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "B7",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "NORMAL",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "C7",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "NORMAL",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "D7",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "NORMAL",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    },
+    {
+        "id": "E7",
+        "estado": "ACTIVA",
+        "ocupamiento": "LIBRE",
+        "tipo": "NORMAL",
+        "createdAt": "27/4/2024 17:43:29",
+        "updatedAt": "27/4/2024 17:43:29"
+    }
+]

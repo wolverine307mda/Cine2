@@ -13,6 +13,7 @@ import org.example.productos.servicio.ProductoServicio
 import org.example.ventas.models.LineaVenta
 import org.example.ventas.models.Venta
 import org.example.ventas.servicio.VentaServicio
+import org.jetbrains.dokka.model.doc.Li
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.time.LocalDateTime
@@ -51,6 +52,57 @@ class CineApp : KoinComponent {
         }
         return sorted
 
+    }
+
+    fun devolverEntrada(){
+        menuIniciarSesion()
+        ventaServicio.findAll().onSuccess {
+            if (it.isEmpty()) println("No tiene ventas")
+            else{
+                println("Estas son sus ventas:")
+                it.forEach {
+                    var counter = 1
+                    println("-$counter.${it.butaca.id} ${it.updatedAt.dayOfMonth}-${it.updatedAt.monthValue}-${it.updatedAt.year} ${it.updatedAt.hour}_${it.updatedAt.minute}_${it.updatedAt.second}} ")
+                    counter++
+                }
+                elegitVentaDevolucion(it)
+            }
+
+        }
+        menuInicio()
+    }
+
+    private fun elegitVentaDevolucion(ventas: List<Venta>) {
+        println("¿Cual quiere devolver?")
+        var input = (readln().toIntOrNull() ?: -1) -1
+        var success = false
+        do {
+            if (input > ventas.size || input < 0){
+                println("Esa opción no es válida, vuelva intentarlo:")
+                input = (readln().toIntOrNull() ?: -1) -1
+            }else{
+                success = true
+            }
+        }while (!success)
+        borrarVenta(ventas[input])
+    }
+
+    private fun borrarVenta(venta: Venta) {
+        val nuevaVenta = Venta(
+            id = venta.id,
+            butaca = venta.butaca,
+            cliente = venta.cliente,
+            lineasVenta = venta.lineasVenta,
+            createdAt = venta.createdAt,
+            isDeleted = true
+        )
+        ventaServicio.delete(id = venta.id)
+        val butaca = venta.butaca.copy(ocupamiento = Ocupamiento.LIBRE)
+        butacaServicio.update(butaca = butaca, id = butaca.id)
+        venta.lineasVenta.forEach {
+            val producto = it.producto.copy(stock =it.producto.stock + it.cantidad)
+            productoServicio.update(producto = producto, id = it.producto.id)
+        }
     }
 
     private fun importarProductos(){
@@ -92,7 +144,8 @@ class CineApp : KoinComponent {
         |2. Exportar las butacas
         |3. Importar las butacas
         |4. Importar los productos
-        |5. Salir""".trimMargin())
+        |5. Devolver venta
+        |6. Salir""".trimMargin())
 
         do {
             print("Ingrese una opción:")
@@ -102,10 +155,11 @@ class CineApp : KoinComponent {
                 "2" -> exportarButacas() //Exportar las butacas en un fichero JSON
                 "3" -> importarButacas()
                 "4" -> importarProductos()
-                "5" -> salir()
+                "5" -> devolverEntrada()
+                "6" -> salir()
                 else -> println("Opción inválida")
             }
-        } while (opcion !in listOf("1", "2", "3", "4", "5"))
+        } while (opcion !in listOf("1", "2", "3", "4", "5", "6"))
     }
 
 

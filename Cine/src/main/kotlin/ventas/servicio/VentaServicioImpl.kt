@@ -1,10 +1,7 @@
 package org.example.ventas.servicio
 
 import com.github.michaelbull.result.*
-import org.example.butacas.servicios.ButacaService
 import org.example.butacas.storage.VentaStorage
-import org.example.cuenta.servicio.CuentaServicio
-import org.example.productos.servicio.ProductoServicio
 import org.example.ventas.errors.VentaError
 import org.example.ventas.models.Venta
 import org.example.ventas.respositorio.VentaRepositorio
@@ -13,9 +10,6 @@ import java.time.LocalDateTime
 
 @Singleton
 class VentaServicioImpl (
-    var butacaService: ButacaService,
-    var clienteService : CuentaServicio,
-    var productoServicio: ProductoServicio,
     var ventaRepositorio: VentaRepositorio,
     var ventaStorage: VentaStorage
 ) : VentaServicio {
@@ -27,7 +21,7 @@ class VentaServicioImpl (
     }
 
     override fun findAll(): Result<List<Venta>, VentaError> {
-        return Ok(ventaRepositorio.findAll())
+        return Ok(ventaRepositorio.findAll().filter { !it.isDeleted })
     }
 
     override fun findById(id: String): Result<Venta, VentaError> {
@@ -57,6 +51,13 @@ class VentaServicioImpl (
 
     override fun getAllVentasByDate(date : LocalDateTime): Result<List<Venta>, VentaError> {
         return Ok(ventaRepositorio.findAllByDate(date))
+    }
+
+    override fun delete(id: String): Result<Venta, VentaError> {
+        ventaRepositorio.delete(id)?.let {
+            return Ok(it)
+        }
+        return Err(VentaError.VentaStorageError("La venta que está intentando borrar no existe"))
     }
 
 

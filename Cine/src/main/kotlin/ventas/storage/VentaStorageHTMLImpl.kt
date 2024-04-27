@@ -45,7 +45,7 @@ class VentaStorageHTMLImpl : VentaStorage {
         height: 100vh;
       }
       .receipt {
-        max-width: 400px;
+        max-width: 600px;
         border: 1px solid #ccc;
         padding: 20px;
         border-radius: 5px;
@@ -73,7 +73,6 @@ class VentaStorageHTMLImpl : VentaStorage {
   </body>
 </html>
 """
-
             val date = venta.updatedAt
             val file = File("data${File.separator}ventas","entrada_${venta.butaca.id}_${venta.cliente.id}_${date.dayOfMonth}-${date.monthValue}-${date.year} ${date.hour}_${date.minute}_${date.second}.html")
             file.createNewFile()

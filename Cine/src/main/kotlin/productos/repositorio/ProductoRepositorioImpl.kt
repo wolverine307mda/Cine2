@@ -60,7 +60,7 @@ class ProductoRepositorioImpl(
             updatedAt = LocalDateTime.now(),
             isDeleted = producto.isDeleted,
         )
-        save(nuevoProducto, true)?.let { return producto }
+        save(nuevoProducto, true)?.let { return nuevoProducto }
         return null
     }
 
