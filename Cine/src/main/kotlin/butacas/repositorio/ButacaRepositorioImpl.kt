@@ -93,8 +93,8 @@ class ButacaRepositorioImpl (
 
     override fun findByIdAndDate(id: String, date: LocalDateTime): Butaca? {
         logger.debug { "Encontrando la butaca con id= $id en ${date.dayOfMonth}/${date.monthValue}/${date.year} ${date.hour}:${date.minute}:${date.second}" }
-        if(db.butacaExistsOnACertainDate(id,date.toString()).executeAsOne()){
-            return db.getButacaBasedOnIdAndDate(id,date.toString()).executeAsOne().toButaca()
+        if(db.butacaExistsOnACertainDate(id = id, updatedAt = date.toString()).executeAsOne()){
+            return db.getButacaBasedOnIdAndDate(id = id, updatedAt = date.toString()).executeAsOne().toButaca()
         }
         return null
     }

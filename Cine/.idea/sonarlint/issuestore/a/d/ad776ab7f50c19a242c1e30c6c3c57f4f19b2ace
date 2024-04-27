@@ -1,14 +1,13 @@
 
-~kotlin:S1172î"8Use "_" instead of this unused lambda parameter "error".(ˆàëµ8ß¢É‚ò1J$f382e87f-fa94-46ae-a82f-fc08ce3b143e
-jkotlin:S6615B"%The value changed here is never used.(üÏı…8ã¢É‚ò1J$f5f771c0-00b3-4b2c-8258-af93b7426330
-‡kotlin:S6619É"<Remove this useless null-safe access ?., it always succeeds.(³Õ•şÿÿÿÿ8æ¢É‚ò1J$8630bb6c-c59f-42b3-9581-1fcfdfd0bd33
-„kotlin:S6619Ş">Remove this useless non-null assertion !!, it always succeeds.(ñ˜Îõ8æ¢É‚ò1J$c3e55870-dd89-496c-a272-ddd0aac3747e
-‡kotlin:S6619Ì"<Remove this useless null-safe access ?., it always succeeds.(üú¥ÿÿÿÿÿ8æ¢É‚ò1J$f4d8e4bb-45d8-4b05-a5ca-d11bc0292936
-‰kotlin:S6619Ù">Remove this useless non-null assertion !!, it always succeeds.(ÜğÑÀûÿÿÿÿ8æ¢É‚ò1J$46af037a-b4a7-402d-97c6-55062a4c5909
-‰kotlin:S6619Ô">Remove this useless non-null assertion !!, it always succeeds.(üù¤õûÿÿÿÿ8æ¢É‚ò1J$93599bc6-6b87-4dcc-87eb-174f384a5f07
-ykotlin:S1481["/Remove this unused "nuevaVenta" local variable.(æï¾ƒûÿÿÿÿ8ÇéÉ‚ò1J$3a72d4aa-8a76-4a70-8ec9-a4548402d330
-rkotlin:S1125½"'Remove the unnecessary Boolean literal.(‹¬ËÛÿÿÿÿÿ8…£É‚ò1J$978092bf-1546-4d08-87a2-2cb4fa61c4c4
-_kotlin:S1128"Remove this unused import.(›ÎÂñ8†£É‚ò1J$3d397931-75a2-4be5-b178-12535d040d15
-˜kotlin:S1192 "RDefine a constant instead of duplicating this literal "OpciÃ³n invÃ¡lida" 3 times.(„¥–À8‰£É‚ò1J$bd6ec736-9b11-4286-85fb-0ac51930b25f
-kotlin:S3776Â"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(ªàÕ‘ÿÿÿÿÿ8£É‚ò1J$f382954e-4855-4189-a347-4d4f5c6f9b02
-Œkotlin:S6510Ä"AMove "return" statements from all branches before "if" statement.(»ë¡äÿÿÿÿÿ8“£É‚ò1J$3cfb3370-0e36-4984-b7e8-dfc289257d37
+Xkotlin:S1172„"8Use "_" instead of this unused lambda parameter "error".(ˆàëµ8°‚—…ò1
+Dkotlin:S6615A"%The value changed here is never used.(üÏı…8´‚—…ò1
+akotlin:S6619ß"<Remove this useless null-safe access ?., it always succeeds.(³Õ•şÿÿÿÿ8¸‚—…ò1
+^kotlin:S6619ú">Remove this useless non-null assertion !!, it always succeeds.(ñ˜Îõ8¹‚—…ò1
+akotlin:S6619â"<Remove this useless null-safe access ?., it always succeeds.(üú¥ÿÿÿÿÿ8¹‚—…ò1
+ckotlin:S6619õ">Remove this useless non-null assertion !!, it always succeeds.(ÜğÑÀûÿÿÿÿ8¹‚—…ò1
+ckotlin:S6619ğ">Remove this useless non-null assertion !!, it always succeeds.(üù¤õûÿÿÿÿ8¹‚—…ò1
+Skotlin:S1481Z"/Remove this unused "nuevaVenta" local variable.(æï¾ƒûÿÿÿÿ8â‚—…ò1
+Lkotlin:S1125Ó"'Remove the unnecessary Boolean literal.(‹¬ËÛÿÿÿÿÿ8é‚—…ò1
+rkotlin:S1192¡"RDefine a constant instead of duplicating this literal "OpciÃ³n invÃ¡lida" 3 times.(„¥–À8í‚—…ò1
+wkotlin:S3776Ş"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(ªàÕ‘ÿÿÿÿÿ8ô‚—…ò1
+fkotlin:S6510à"AMove "return" statements from all branches before "if" statement.(»ë¡äÿÿÿÿÿ8ı‚—…ò1

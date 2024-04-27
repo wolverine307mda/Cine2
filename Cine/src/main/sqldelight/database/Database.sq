@@ -89,24 +89,20 @@ SELECT COUNT(*) > 0 FROM ButacaEntity WHERE id = ?;
 getButacaBasedOnIdAndDate:
 SELECT *
 FROM ButacaEntity b1
-WHERE b1.updatedAt = (
-    SELECT MAX(b2.updatedAt)
-    FROM ButacaEntity b2
-    WHERE b1.id = b2.id
-)
-AND b1.updatedAt < ?
-AND b1.id = ?;
+WHERE b1.updatedAt < ?
+AND b1.id = ?
+ORDER BY b1.updatedAt DESC
+LIMIT 1;
+
 
 butacaExistsOnACertainDate:
 SELECT COUNT(*) > 0
 FROM ButacaEntity b1
-WHERE b1.updatedAt = (
-    SELECT MAX(b2.updatedAt)
-    FROM ButacaEntity b2
-    WHERE b1.id = b2.id
-)
-AND b1.updatedAt < ?
-AND b1.id = ?;
+WHERE b1.updatedAt < ?
+AND b1.id = ?
+ORDER BY b1.updatedAt DESC
+LIMIT 1;
+
 
 insertButaca:
 INSERT INTO ButacaEntity (id, tipo, estado, ocupamiento,isDeleted, createdAt, updatedAt)
@@ -122,24 +118,30 @@ deleteProducto:
 UPDATE ButacaEntity SET isDeleted = 1 WHERE id = ?;
 
 getButacasBasedOnDate:
-SELECT b1.*
-FROM ButacaEntity b1
-WHERE b1.updatedAt = (
-    SELECT MAX(b2.updatedAt)
-    FROM ButacaEntity b2
-    WHERE b1.id = b2.id
-)
-AND b1.updatedAt < ?;
+SELECT *
+FROM ButacaEntity
+WHERE (id, updatedAt) IN (
+    SELECT g.id, MAX(g.updatedAt)
+    FROM (
+        SELECT id, updatedAt AS updatedAt
+        FROM ButacaEntity
+        WHERE updatedAt < ?
+    ) AS g
+    GROUP BY g.id
+);
 
 countButacasBasedOnDate:
 SELECT COUNT(*)
-FROM ButacaEntity b1
-WHERE b1.updatedAt = (
-    SELECT MAX(b2.updatedAt)
-    FROM ButacaEntity b2
-    WHERE b1.id = b2.id
-)
-AND b1.updatedAt < ?;
+FROM ButacaEntity
+WHERE (id, updatedAt) IN (
+    SELECT g.id, MAX(g.updatedAt)
+    FROM (
+        SELECT id, updatedAt AS updatedAt
+        FROM ButacaEntity
+        WHERE updatedAt < ?
+    ) AS g
+    GROUP BY g.id
+);
 
 insertComplemento:
 INSERT INTO ComplementoEntity (id, nombre, precio, stock, tipo, createdAt, updatedAt, isDeleted)
@@ -209,45 +211,51 @@ AND id = ?;
 
 countVentasByDate:
 SELECT COUNT(*)
-FROM VentaEntity b1
-WHERE b1.updatedAt = (
-    SELECT MAX(b2.updatedAt)
-    FROM VentaEntity b2
-    WHERE b1.id = b2.id
-)
-AND b1.updatedAt < ?;
+FROM VentaEntity
+WHERE (id, updatedAt) IN (
+    SELECT g.id, MAX(g.updatedAt)
+    FROM (
+        SELECT id, updatedAt AS updatedAt
+        FROM VentaEntity
+        WHERE updatedAt < ?
+    ) AS g
+    GROUP BY g.id
+);
 
 getVentasByDate:
 SELECT *
-FROM VentaEntity b1
-WHERE b1.updatedAt = (
-    SELECT MAX(b2.updatedAt)
-    FROM VentaEntity b2
-    WHERE b1.id = b2.id
-)
-AND b1.updatedAt < ?;
+FROM VentaEntity
+WHERE (id, updatedAt) IN (
+    SELECT g.id, MAX(g.updatedAt)
+    FROM (
+        SELECT id, updatedAt AS updatedAt
+        FROM VentaEntity
+        WHERE updatedAt < ?
+    ) AS g
+    GROUP BY g.id
+);
 
-countLineaVentaByIdAndDate:
+countLineaVentaByVentaIdAndDate:
 SELECT COUNT(*)
-FROM LineaVentaEntity b1
-WHERE b1.updatedAt = (
-    SELECT MAX(b2.updatedAt)
-    FROM LineaVentaEntity b2
-    WHERE b1.id = b2.id
+FROM LineaVentaEntity
+WHERE (id_venta, updatedAt,id) IN (
+    SELECT id_venta, MAX(updatedAt),id
+    FROM LineaVentaEntity
+    WHERE updatedAt < ?
+    GROUP BY id
 )
-AND b1.updatedAt < ?
-AND b1.id = ?;
+AND id_venta = ?;
 
-getLineaVentaByIdAndDate:
+getLineaVentaByVentaIdAndDate:
 SELECT *
-FROM LineaVentaEntity b1
-WHERE b1.updatedAt = (
-    SELECT MAX(b2.updatedAt)
-    FROM LineaVentaEntity b2
-    WHERE b1.id = b2.id
+FROM LineaVentaEntity
+WHERE (id_venta, updatedAt,id) IN (
+    SELECT id_venta, MAX(updatedAt),id
+    FROM LineaVentaEntity
+    WHERE updatedAt < ?
+    GROUP BY id
 )
-AND b1.updatedAt < ?
-AND b1.id = ?;
+AND id_venta = ?;
 
 deleteLineaVenta:
 UPDATE LineaVentaEntity

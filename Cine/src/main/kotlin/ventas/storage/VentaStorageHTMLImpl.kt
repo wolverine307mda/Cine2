@@ -27,7 +27,7 @@ class VentaStorageHTMLImpl : VentaStorage {
 
     override fun exportar(venta : Venta) : Result<Unit,VentaError>{
         try {
-            var output = """
+            val output = """
 <!DOCTYPE html>
 <html lang="es">
 <head>

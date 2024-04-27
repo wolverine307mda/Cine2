@@ -13,7 +13,6 @@ import org.example.productos.servicio.ProductoServicio
 import org.example.ventas.models.LineaVenta
 import org.example.ventas.models.Venta
 import org.example.ventas.servicio.VentaServicio
-import org.jetbrains.dokka.model.doc.Li
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.time.LocalDateTime
@@ -65,14 +64,14 @@ class CineApp : KoinComponent {
                     println("-$counter.${it.butaca.id} ${it.updatedAt.dayOfMonth}-${it.updatedAt.monthValue}-${it.updatedAt.year} ${it.updatedAt.hour}_${it.updatedAt.minute}_${it.updatedAt.second}} ")
                     counter++
                 }
-                elegitVentaDevolucion(it)
+                elegirVentaDevolucion(it)
             }
 
         }
         menuInicio()
     }
 
-    private fun elegitVentaDevolucion(ventas: List<Venta>) {
+    private fun elegirVentaDevolucion(ventas: List<Venta>) {
         println("¿Cual quiere devolver?")
         var input = (readln().toIntOrNull() ?: -1) -1
         var success = false
@@ -145,7 +144,8 @@ class CineApp : KoinComponent {
         |3. Importar las butacas
         |4. Importar los productos
         |5. Devolver venta
-        |6. Salir""".trimMargin())
+        |6. Ver recaudación
+        |7. Salir""".trimMargin())
 
         do {
             print("Ingrese una opción:")
@@ -156,14 +156,42 @@ class CineApp : KoinComponent {
                 "3" -> importarButacas()
                 "4" -> importarProductos()
                 "5" -> devolverEntrada()
-                "6" -> salir()
+                "6" -> obtenerRecaudacion()
+                "7" -> salir()
                 else -> println("Opción inválida")
             }
-        } while (opcion !in listOf("1", "2", "3", "4", "5", "6"))
+        } while (opcion !in listOf("1", "2", "3", "4", "5", "6", "7"))
+    }
+
+    private fun obtenerRecaudacion() {
+        var money = 0.0
+        val fecha = getDateFromUser()
+        ventaServicio.getAllVentasByDate(fecha).onSuccess {
+            it.forEach {  ventas ->
+                ventas.lineasVenta.forEach { lineas ->
+                    money += (lineas.precio * lineas.cantidad)
+                }
+                money += ventas.butaca.tipo!!.precio
+            }
+            println("La recaudación a día ${fecha.dayOfMonth}:${fecha.monthValue}:${fecha.year} es: $money")
+        }.onFailure {
+            println("No se ha podido obtener la recaudación: ${it.message}")
+        }
+        menuInicio()
     }
 
 
     private fun exportarButacas() {
+        val fecha = getDateFromUser()
+        butacaServicio.exportAllToFile(date = fecha).onSuccess {
+            println("Exportadas con éxito")
+        }.onFailure {
+            println("No se han podido exportar: ${it.message}")
+        }
+        menuInicio()
+    }
+
+    private fun getDateFromUser(): LocalDateTime {
         val fechaRegex = "^\\d{4}/\\d{2}/\\d{2}\$".toRegex()
         var input : String
         println("Pon que fecha quieres consultar")
@@ -175,13 +203,7 @@ class CineApp : KoinComponent {
             }
         }while (!(input.matches(fechaRegex) && checkDateValidity(input)))
         val fechaCorrecta = input.split('/').map { it.toInt() }
-        val fecha = LocalDateTime.of(fechaCorrecta[0],fechaCorrecta[1],fechaCorrecta[2],0,0,0)
-        butacaServicio.exportAllToFile(date = fecha).onSuccess {
-            println("Exportadas con éxito")
-        }.onFailure {
-            println("No se han podido exportar: ${it.message}")
-        }
-        menuInicio()
+        return LocalDateTime.of(fechaCorrecta[0],fechaCorrecta[1],fechaCorrecta[2],0,0,0)
     }
 
     private fun checkDateValidity(input: String): Boolean {
@@ -336,7 +358,13 @@ class CineApp : KoinComponent {
             print("Ingrese el número correspondiente al producto que desea reservar o 0 para volver al menú principal: ")
             opcion = readLine()?.toIntOrNull() ?: -1
             when {
-                opcion == 0 -> menuInicio()
+                opcion == 0 -> {
+                    menuInicio()
+                    lineas = emptyList<LineaVenta>().toMutableList()
+                    cuentaTiket = null
+                    butacaTiket = null
+                    productosReservados = 0
+                }
                 opcion in 1..productos!!.size -> {
                     reservaProducto(opcion)
                 }

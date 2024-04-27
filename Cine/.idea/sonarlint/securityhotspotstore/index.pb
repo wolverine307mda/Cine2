@@ -153,3 +153,19 @@ e
 5data/ventas/entrada_A5_RRR555_27-4-2024 17_23_26.html,f\0\f0b88ac8ebd80fe1328b1fa374bf49b776fcbe5e
 c
 3data/ventas/entrada_D7_DDD555_27-4-2024 18_1_2.html,4\0\401b2667523924ea96a260c660621d7153eb275f
+e
+5data/ventas/entrada_A7_RRR555_27-4-2024 19_34_29.html,9\e\9e052e54a7695f3348e9a94408eeca07e1e63bf0
+d
+4data/ventas/entrada_A5_RRR555_27-4-2024 19_27_2.html,1\9\19221966a388a4a15b2dbe91a3e1fd0277df7775
+e
+5data/ventas/entrada_A5_III666_27-4-2024 19_40_15.html,b\b\bb10d72977c872293682513bcf82b323a9aacd12
+d
+4data/ventas/entrada_A5_RRR555_27-4-2024 20_0_32.html,6\2\62339ae8304252a78f54f0ebb3dadf930520f114
+d
+4data/ventas/entrada_D7_FFF666_27-4-2024 20_2_24.html,9\8\98c28b924e26f2576381259bc4b2c1ad1b938f4a
+e
+5data/ventas/entrada_E6_GGG777_27-4-2024 20_51_17.html,e\1\e141ece81cfc6c90ccdb5a86cc20e145b591570e
+e
+5data/ventas/entrada_D7_GGG555_27-4-2024 20_52_50.html,b\2\b220de39b36deb0021cc2b3383d36f1a05efc946
+d
+4data/ventas/entrada_A6_UUU888_27-4-2024 20_56_4.html,a\b\ab7017b38a035016be37d04d7b2f5b69b9ab944d

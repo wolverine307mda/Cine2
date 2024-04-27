@@ -158,8 +158,8 @@ class VentaRepositorioImpl(
     }
 
     private fun getAllLineasByVentaIdAndDate(id : String, date: LocalDateTime) : List<LineaVenta>{
-        if (db.countLineaVentaByIdAndDate(id,date.toString()).executeAsOne() > 0){
-            db.getLineaVentaByIdAndDate(id,date.toString())
+        if (db.countLineaVentaByVentaIdAndDate(id_venta = id, updatedAt = date.toString()).executeAsOne() > 0){
+            return db.getLineaVentaByVentaIdAndDate(id_venta = id, updatedAt = date.toString())
                 .executeAsList()
                 .map {
                     val producto = productosRepositorio.findById(it.id_complemento)
