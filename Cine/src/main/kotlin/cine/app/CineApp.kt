@@ -8,15 +8,16 @@ import org.example.butacas.models.Ocupamiento
 import org.example.butacas.servicios.ButacaService
 import org.example.cuenta.models.Cuenta
 import org.example.cuenta.servicio.CuentaServicio
+import org.example.database.manager.logger
 import org.example.productos.models.Producto
 import org.example.productos.servicio.ProductoServicio
 import org.example.ventas.models.LineaVenta
 import org.example.ventas.models.Venta
 import org.example.ventas.servicio.VentaServicio
+import org.example.ventas.storage.VentaStorageHTMLImpl
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.time.LocalDateTime
-import java.util.UUID
 import java.util.regex.Pattern
 
 class CineApp : KoinComponent {
@@ -28,6 +29,12 @@ class CineApp : KoinComponent {
     var butacas: List<Butaca>? = null
     var productos: List<Producto>? = null
     private var inicioSesion:Boolean = false
+
+    private lateinit var butacaTiket: Butaca
+    private lateinit var cuentaTiket: Cuenta
+    private var ProductoTiket: List<Producto>? = null
+    private var productosReservados = 0
+
 
 
     private fun sortButacas(): List<Butaca> {
@@ -142,8 +149,7 @@ class CineApp : KoinComponent {
         do {
             // Solicitar al usuario que ingrese el ID
             print("Ingrese su ID (formato: LLLNNN): ")
-            idIngresado = readlnOrNull() ?: ""
-
+            idIngresado = readlnOrNull()?.uppercase().toString()
             // Comprobar si el ID ingresado coincide con el patrón
             if (!regex.matcher(idIngresado).matches()) {
                 println("El formato del ID no es válido.")
@@ -154,6 +160,7 @@ class CineApp : KoinComponent {
             cuentaServicio.findById(idIngresado).fold(
                 { cuenta ->
                     println("Inicio de sesión exitoso. ¡Bienvenido, User con ID=${cuenta.id}!")
+                    cuentaTiket = cuenta
                     inicioSesionExitoso = true // Marcar que se ha iniciado sesión con éxito
                 },
                 { error ->
@@ -221,7 +228,7 @@ class CineApp : KoinComponent {
                             menuIniciarSesion()
                         } while (inicioSesion)
                         reservarButaca(numeroButaca)
-                        menuInicio() // Llama a menuInicio() solo si la reserva tiene éxito
+                        menuReservaProductos()
                     }
                     else -> {
                         println("La butaca $numeroButaca no está disponible para reservar.")
@@ -235,12 +242,100 @@ class CineApp : KoinComponent {
             }
         menuInicio()
     }
+
+    private fun menuReservaProductos() {
+        actualizarProductos()
+        println("0. Volver al menú principal")
+        println("Seleccione los productos que desea Comprar:")
+        productos?.forEachIndexed { index, producto ->
+            println("${index + 1}. ${producto.nombre} - ${producto.precio}€")
+        }
+        println("${productos?.size?.plus(1)}. Continuar sin Comprar productos")
+
+        var opcion: Int
+        do {
+            print("Ingrese el número correspondiente al producto que desea reservar o 0 para volver al menú principal: ")
+            opcion = readLine()?.toIntOrNull() ?: -1
+            when {
+                opcion == 0 -> menuInicio()
+                opcion in 1..productos!!.size -> {
+                    reservaProducto(opcion)
+                }
+                else -> println("Opción inválida")
+            }
+        } while (opcion !in 0..productos!!.size + 1)
+    }
+
+
+    private fun reservaProducto(opcion: Int) {
+        val productoSeleccionado = productos!![opcion - 1]
+        println("Ha seleccionado: ${productoSeleccionado.nombre}")
+
+        productoServicio.findById(productoSeleccionado.id).onSuccess { producto ->
+            val productoReservado = producto.copy(stock = producto.stock - 1)
+            productoServicio.update(productoSeleccionado.id, productoReservado).onSuccess { _ ->
+                println("El producto ${productoSeleccionado.nombre} ha sido reservado con éxito.")
+                ProductoTiket = ProductoTiket.orEmpty() + productoReservado // Agregar el producto reservado a ProductoTiket
+                productosReservados++
+            }.onFailure { error ->
+                println("Error al reservar el producto ${productoSeleccionado.nombre}: ${error.message}")
+            }
+        }.onFailure {
+            println("El producto ${productoSeleccionado.nombre} no existe.")
+        }
+
+        if (productosReservados < 3) {
+            println("Aun puede seleccionar ${3 - productosReservados}")
+            var respuesta: String?
+            do {
+                print("Desea seleccionar más productos? (S/N): ")
+                respuesta = readLine()?.uppercase()
+                when (respuesta) {
+                    "S" -> menuReservaProductos()
+                    "N" -> {
+                        println("Gracias por su compra")
+                        crearVenta()
+                    }
+                    else -> println("Respuesta inválida, por favor ingrese S o N")
+                }
+            } while (respuesta != "S" && respuesta != "N")
+        }
+
+    }
+
+    private fun crearVenta() {
+        val cliente = cuentaTiket
+        val butaca = butacaTiket
+
+        // Crear las líneas de venta
+        val lineasVenta = ProductoTiket!!.map { producto ->
+            LineaVenta(producto = producto, cantidad = 1, precio = producto.precio)
+        }
+
+        // Crear la venta
+        val venta = Venta(cliente = cliente, butaca = butaca!!, lineasVenta = lineasVenta)
+
+        // Guardar la venta utilizando el repositorio de ventas
+        ventaServicio.save(venta)?.let {
+            println("Venta creada con éxito.")
+
+            // Exportar la venta a HTML
+            val ventaStorage = VentaStorageHTMLImpl()
+            ventaStorage.exportar(venta).fold(
+                success = { println("Venta exportada a HTML con éxito.") },
+                failure = { error -> println("Error al exportar la venta a HTML: ${error.message}") }
+            )
+        }
+    }
+
+
     private fun reservarButaca(numeroButaca: String) {
         actualizarButacas()
         butacaServicio.findById(numeroButaca).onSuccess { butaca ->
             val butacaReservada = butaca.copy(ocupamiento = Ocupamiento.OCUPADA)
             butacaServicio.update(numeroButaca, butacaReservada).onSuccess { _ ->
                 println("La butaca $numeroButaca ha sido reservada con éxito.")
+                butacaTiket = butacaReservada
             }.onFailure { error ->
                 println("Error al reservar la butaca $numeroButaca: ${error.message}")
             }
