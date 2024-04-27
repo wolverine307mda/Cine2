@@ -18,6 +18,7 @@ class ProductoServicioImpl(
     private var productoStorage: ProductoStorage,
     private var config: Config
 ) : ProductoServicio {
+
     override fun save(producto: Producto) : Result<Producto, ProductoError> {
         productoValidador.validate(producto) //Para esegurarse que es un producto válido
             .onSuccess {

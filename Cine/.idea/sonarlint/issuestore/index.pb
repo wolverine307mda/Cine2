@@ -141,3 +141,9 @@ d
 4data/ventas/entrada_C4_LLL444_27-4-2024 14_1_41.html,a\4\a4cfc0941d0766b2013535e32357b39c70beb078
 c
 3data/ventas/entrada_A6_LLL444_27-4-2024 14_1_7.html,e\7\e7bf8be6db5703e9ab63ac474f86c604aa236cfe
+d
+4data/ventas/entrada_D3_RRR444_27-4-2024 14_4_59.html,8\2\824b18892a7949ea4832c6d55c76ef4a4e3e98d8
+d
+4data/ventas/entrada_B4_RRR444_27-4-2024 14_5_38.html,6\3\639c9cca2c8d2d92c4690fa9828d36e79f557094
+d
+4data/ventas/entrada_A5_DDD444_27-4-2024 15_54_1.html,b\0\b04a45c0f828945729755a2d1c0e3d7d8aa17904

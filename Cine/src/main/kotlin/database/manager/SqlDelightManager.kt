@@ -1,22 +1,16 @@
 package org.example.database.manager
 
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
-import com.github.michaelbull.result.onFailure
-import com.github.michaelbull.result.onSuccess
 import database.DatabaseQueries
 import org.cine.database.AppDatabase
-import org.example.butacas.storage.ButacaStorage
-import org.example.butacas.validator.ButacaValidator
 import org.example.config.Config
-import org.example.cuenta.mappers.toLong
+import org.koin.core.annotation.Singleton
 import org.lighthousegames.logging.logging
-import java.io.File
 
 val logger = logging()
 
+@Singleton
 class SqlDelightManager(
-    private val butacaStorage: ButacaStorage,
-    private val butacaValidator: ButacaValidator,
     private val config : Config
 ) {
     private val databaseUrl: String = config.databaseUrl
@@ -55,49 +49,11 @@ class SqlDelightManager(
     /**
      * Borra todos los datos existentes en la base datos y carga los de ejemplo
      * @see removeAllData
-     * @see demoButacas
      */
     fun initialize() {
         if (databaseInitData) {
             removeAllData()
-            demoButacas()
         }
-    }
-    /**
-     * Es una funcion que lee un archivo que está en la carpeta resources.
-     * Con la ayuda de ButacaStorage lo transforma en una lista de butacas válidas y las
-     * mete en la base de datos.
-     * Dependiendo de que tipo de fichero querramos leer
-     * también cambiará la implementacion de ButacaStorage que se inyecta a SqlDelightManager.
-     * El nombre del archivo se encuentra en config.properties y se guarda
-     * en la clase Config con el nombre butacaSampleFile
-     * @see ButacaStorage
-     * @see Config
-     */
-    private fun demoButacas() {
-        logger.debug { "Importando datos de butacas" }
-        val url = ClassLoader.getSystemResource(config.butacaSampleFile)
-        if (url != null){
-            butacaStorage
-                .cargar(File(url.toURI()))
-                .onSuccess {
-                    it.forEach {
-                        butacaValidator.validate(it)
-                            .onSuccess {  databaseQueries.insertButaca(
-                                id = it.id.uppercase(),
-                                tipo = it.tipo!!.name,
-                                estado = it.estado!!.name,
-                                ocupamiento = it.ocupamiento!!.name,
-                                createdAt = it.updatedAt.toString(),
-                                updatedAt = it.updatedAt.toString(),
-                                isDeleted = it.isDeleted.toLong()
-                            )
-                                logger.debug { "Añadida la butaca con id: ${it.id}" }
-                            }
-                            .onFailure { logger.debug { it.message } }
-                    }
-                }
-        }else logger.debug { "No se ha encontrado el fichero ${config.butacaSampleFile}" }
     }
 
 

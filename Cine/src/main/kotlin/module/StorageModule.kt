@@ -6,7 +6,6 @@ import org.example.butacas.storage.ButacaStorageCSVImpl
 import org.example.butacas.storage.ButacaStorageJSONImpl
 import org.example.butacas.validator.ButacaValidator
 import org.example.config.Config
-import org.example.database.manager.SqlDelightManager
 import org.example.productos.repositorio.ProductoRepositorioImpl
 import org.example.productos.servicio.ProductoServicioImpl
 import org.example.productos.storage.ProductoStorageCSVImpl
@@ -16,8 +15,7 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 public val storageModule : Module = module {
-    single() { ButacaServiceImpl(butacaRepositorio=get(ButacaRepositorioImpl::class),butacaStorage=get(ButacaStorageJSONImpl::class),butacaValidator=get(ButacaValidator::class)) } bind(org.example.butacas.servicios.ButacaService::class)
-    single() { SqlDelightManager(butacaStorage=get(ButacaStorageCSVImpl::class),butacaValidator=get(ButacaValidator::class),config=get(Config::class)) }
+    single() { ButacaServiceImpl(butacaRepositorio=get(ButacaRepositorioImpl::class), butacaStorageOut =get(ButacaStorageJSONImpl::class),config=get(Config::class), butacaStorageIn = get(ButacaStorageCSVImpl::class), butacaValidator=get(ButacaValidator::class)) } bind(org.example.butacas.servicios.ButacaService::class)
     single() { ProductoServicioImpl(productosRepositorio=get(ProductoRepositorioImpl::class),productoValidador=get(ProductoValidador::class),productoStorage=get(ProductoStorageCSVImpl::class),config=get(Config::class)) } bind(org.example.productos.servicio.ProductoServicio::class)
 }
 

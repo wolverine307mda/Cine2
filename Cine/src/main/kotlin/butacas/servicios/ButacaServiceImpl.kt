@@ -1,25 +1,23 @@
 package org.example.butacas.servicios
 
-import com.github.michaelbull.result.Err
-import com.github.michaelbull.result.Ok
-import com.github.michaelbull.result.Result
+import com.github.michaelbull.result.*
 import org.example.butacas.errors.ButacaError
 import org.example.butacas.models.Butaca
 import org.example.butacas.repositorio.ButacaRepositorio
 import org.example.butacas.storage.ButacaStorage
 import org.example.butacas.validator.ButacaValidator
-import org.koin.core.annotation.Singleton
+import org.example.config.Config
+import org.example.database.manager.logger
 import java.io.File
 import java.time.LocalDateTime
 
 class ButacaServiceImpl(
     var butacaRepositorio: ButacaRepositorio,
-    var butacaStorage: ButacaStorage,
-    var butacaValidator: ButacaValidator
+    var butacaStorageOut: ButacaStorage,
+    var butacaStorageIn: ButacaStorage,
+    var butacaValidator: ButacaValidator,
+    val config : Config
 ) : ButacaService {
-    override fun getFromFile(file : File): Result<List<Butaca>, ButacaError> {
-        return butacaStorage.cargar(file)
-    }
 
     override fun findAll(): Result<List<Butaca>, ButacaError> {
         val result = butacaRepositorio.findAll()
@@ -62,7 +60,25 @@ class ButacaServiceImpl(
         val list = butacaRepositorio.findAllBasedOnDate(date)
         if (list.isEmpty()) return Err(
             ButacaError.ButacaStorageError("No hay butacas creadas antes de ${date.dayOfMonth}/${date.monthValue}/${date.year}")
-        )else return butacaStorage.exportar(list)
+        )else return butacaStorageOut.exportar(list)
+    }
+
+    override fun cargarButacas(): Result<Unit, ButacaError> {
+        logger.debug { "Importando datos de butacas" }
+        val url = ClassLoader.getSystemResource(config.butacaSampleFile)
+        if (url != null){
+            butacaStorageIn
+                .cargar(File(url.toURI()))
+                .onSuccess {
+                    it.forEach {
+                        butacaValidator.validate(it).onSuccess {
+                            butacaRepositorio.save(it)
+                            logger.debug { "Añadida la butaca con id: ${it.id}" }
+                        }.onFailure { logger.debug { it.message } }
+                    }
+                }
+        }else return Err(ButacaError.ButacaStorageError("No se pudo leer el fichero correctamente"))
+        return Ok(Unit)
     }
 
 }

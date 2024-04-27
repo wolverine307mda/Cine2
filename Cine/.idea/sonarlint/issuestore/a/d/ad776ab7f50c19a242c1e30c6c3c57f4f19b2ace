@@ -1,4 +1,11 @@
 
-~kotlin:S1172¤"8Use "_" instead of this unused lambda parameter "error".(ˆàëµ8ÁÜ¢ûñ1J$c21f3c2c-fb6b-4204-bdcd-733b512de109
-qkotlin:S1125s"'Remove the unnecessary Boolean literal.(‹¬ËÛÿÿÿÿÿ8æÜ¢ûñ1J$60ed0fa8-2e69-44d1-a0b8-30a5d2ad552f
-—kotlin:S1192V"RDefine a constant instead of duplicating this literal "OpciÃ³n invÃ¡lida" 3 times.(„¥–À8ëÜ¢ûñ1J$3efaf67d-c5a5-488b-9b33-8690e03369bc
+~kotlin:S1172¸"8Use "_" instead of this unused lambda parameter "error".(ˆàëµ8°¶ïıñ1J$cab99e6f-1574-4132-a222-18d322c1b054
+akotlin:S6619“"<Remove this useless null-safe access ?., it always succeeds.(³Õ•şÿÿÿÿ8ô¶Ôşñ1
+^kotlin:S6619¨">Remove this useless non-null assertion !!, it always succeeds.(ñ˜Îõ8õ¶Ôşñ1
+akotlin:S6619–"<Remove this useless null-safe access ?., it always succeeds.(üú¥ÿÿÿÿÿ8õ¶Ôşñ1
+ckotlin:S6619£">Remove this useless non-null assertion !!, it always succeeds.(ÜğÑÀûÿÿÿÿ8õ¶Ôşñ1
+ckotlin:S6619">Remove this useless non-null assertion !!, it always succeeds.(üù¤õûÿÿÿÿ8õ¶Ôşñ1
+rkotlin:S1125‡"'Remove the unnecessary Boolean literal.(‹¬ËÛÿÿÿÿÿ8ß¶ïıñ1J$1076ad77-d00f-42d4-b27f-ae261fdc0824
+—kotlin:S1192j"RDefine a constant instead of duplicating this literal "OpciÃ³n invÃ¡lida" 3 times.(„¥–À8ß¶ïıñ1J$1d934314-47b8-4f26-bce0-44c075b2139f
+kotlin:S3776Œ"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(ªàÕ‘ÿÿÿÿÿ8ß¶ïıñ1J$f0d9564a-8e79-4437-ad2a-273a2807c6a3
+Œkotlin:S6510"AMove "return" statements from all branches before "if" statement.(»ë¡äÿÿÿÿÿ8ß¶ïıñ1J$72e32a5c-8cf8-4de3-bf7e-e7f058a4395f
