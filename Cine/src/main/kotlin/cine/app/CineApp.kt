@@ -8,9 +8,13 @@ import org.example.butacas.models.Ocupamiento
 import org.example.butacas.servicios.ButacaService
 import org.example.cuenta.models.Cuenta
 import org.example.cuenta.servicio.CuentaServicio
+import org.example.database.manager.logger
 import org.example.productos.models.Producto
 import org.example.productos.servicio.ProductoServicio
+import org.example.ventas.models.LineaVenta
+import org.example.ventas.models.Venta
 import org.example.ventas.servicio.VentaServicio
+import org.example.ventas.storage.VentaStorageHTMLImpl
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.time.LocalDateTime
@@ -26,9 +30,11 @@ class CineApp : KoinComponent {
     var productos: List<Producto>? = null
     private var inicioSesion:Boolean = false
 
-    private lateinit var butacaTiket: String
+    private lateinit var butacaTiket: Butaca
     private lateinit var cuentaTiket: Cuenta
-    var ProductoTiket: List<Producto>? = null
+    private var ProductoTiket: List<Producto>? = null
+    private var productosReservados = 0
+
 
 
     private fun sortButacas(): List<Butaca> {
@@ -258,14 +264,10 @@ class CineApp : KoinComponent {
                 else -> println("Opción inválida")
             }
         } while (opcion !in 0..productos!!.size + 1)
-
-
     }
 
 
     private fun reservaProducto(opcion: Int) {
-        var productosReservados = 0
-
         val productoSeleccionado = productos!![opcion - 1]
         println("Ha seleccionado: ${productoSeleccionado.nombre}")
 
@@ -290,7 +292,10 @@ class CineApp : KoinComponent {
                 respuesta = readLine()?.uppercase()
                 when (respuesta) {
                     "S" -> menuReservaProductos()
-                    "N" -> devolverEntradas()
+                    "N" -> {
+                        println("Gracias por su compra")
+                        crearVenta()
+                    }
                     else -> println("Respuesta inválida, por favor ingrese S o N")
                 }
             } while (respuesta != "S" && respuesta != "N")
@@ -298,10 +303,31 @@ class CineApp : KoinComponent {
 
     }
 
+    private fun crearVenta() {
+        val cliente = cuentaTiket
+        val butaca = butacaTiket
 
-    private fun devolverEntradas(){
+        // Crear las líneas de venta
+        val lineasVenta = ProductoTiket!!.map { producto ->
+            LineaVenta(producto = producto, cantidad = 1, precio = producto.precio)
+        }
 
+        // Crear la venta
+        val venta = Venta(cliente = cliente, butaca = butaca!!, lineasVenta = lineasVenta)
+
+        // Guardar la venta utilizando el repositorio de ventas
+        ventaServicio.save(venta)?.let {
+            println("Venta creada con éxito.")
+
+            // Exportar la venta a HTML
+            val ventaStorage = VentaStorageHTMLImpl()
+            ventaStorage.exportar(venta).fold(
+                success = { println("Venta exportada a HTML con éxito.") },
+                failure = { error -> println("Error al exportar la venta a HTML: ${error.message}") }
+            )
+        }
     }
+
 
     private fun reservarButaca(numeroButaca: String) {
         actualizarButacas()
@@ -309,7 +335,7 @@ class CineApp : KoinComponent {
             val butacaReservada = butaca.copy(ocupamiento = Ocupamiento.OCUPADA)
             butacaServicio.update(numeroButaca, butacaReservada).onSuccess { _ ->
                 println("La butaca $numeroButaca ha sido reservada con éxito.")
-                butacaTiket = numeroButaca
+                butacaTiket = butacaReservada
             }.onFailure { error ->
                 println("Error al reservar la butaca $numeroButaca: ${error.message}")
             }

@@ -6,7 +6,6 @@ import com.github.michaelbull.result.Result
 import org.example.butacas.servicios.ButacaService
 import org.example.butacas.storage.VentaStorage
 import org.example.cuenta.servicio.CuentaServicio
-import org.example.database.manager.logger
 import org.example.productos.servicio.ProductoServicio
 import org.example.ventas.errors.VentaError
 import org.example.ventas.models.Venta
