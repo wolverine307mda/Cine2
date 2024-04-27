@@ -137,3 +137,7 @@ e
 5data/ventas/entrada_A3_EEE444_27-4-2024 13_22_57.html,a\7\a75d69af09abfde438da61c8c4e97f64ff494e88
 e
 5data/ventas/entrada_A3_FFF444_27-4-2024 13_34_26.html,7\7\7702b7761563f0de491c13a3eb504afa56aef06d
+d
+4data/ventas/entrada_C4_LLL444_27-4-2024 14_1_41.html,a\4\a4cfc0941d0766b2013535e32357b39c70beb078
+c
+3data/ventas/entrada_A6_LLL444_27-4-2024 14_1_7.html,e\7\e7bf8be6db5703e9ab63ac474f86c604aa236cfe

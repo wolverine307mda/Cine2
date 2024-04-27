@@ -28,8 +28,8 @@ class CineApp : KoinComponent {
     var productos: List<Producto>? = null
     private var inicioSesion:Boolean = false
 
-    private lateinit var butacaTiket: Butaca
-    private lateinit var cuentaTiket: Cuenta
+    private var butacaTiket: Butaca? = null
+    private var cuentaTiket: Cuenta? = null
     private var lineas: MutableList<LineaVenta> = mutableListOf()
     private var productosReservados = 0
 
@@ -112,7 +112,7 @@ class CineApp : KoinComponent {
 
     private fun checkDateValidity(input: String): Boolean {
         val fecha = input.split('/').map { it.toInt() }
-        return if (fecha[1] !in (1..12) || fecha[2] !in (1..31)) false
+        return if (!(fecha[1] in (1..12) || fecha[2] in (1..31))) false
         else true
     }
 
@@ -229,6 +229,10 @@ class CineApp : KoinComponent {
                         reservarButaca(numeroButaca)
                         menuReservaProductos()
                         crearVenta()
+                        lineas = emptyList<LineaVenta>().toMutableList()
+                        cuentaTiket = null
+                        butacaTiket = null
+                        productosReservados = 0
                     }
                     else -> {
                         println("La butaca $numeroButaca no está disponible para reservar.")
@@ -317,7 +321,7 @@ class CineApp : KoinComponent {
         val lineasVenta = lineas
 
         // Crear la venta
-        val venta = Venta(cliente = cliente, butaca = butaca, lineasVenta = lineasVenta)
+        val venta = Venta(cliente = cliente!!, butaca = butaca!!, lineasVenta = lineasVenta)
 
         // Guardar la venta utilizando el repositorio de ventas
         ventaServicio.save(venta).onSuccess {
