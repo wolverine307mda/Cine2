@@ -8,12 +8,20 @@ import org.example.productos.models.Producto
 import org.koin.core.annotation.Singleton
 import java.time.LocalDateTime
 
+/**
+ * Implementación del repositorio de productos que interactúa con la base de datos.
+ * @param sqlDelightManager El gestor de SQLDelight para acceder a la base de datos.
+ */
 @Singleton
 class ProductoRepositorioImpl(
     sqlDelightManager: SqlDelightManager
 ) : ProductosRepositorio {
     private val db = sqlDelightManager.databaseQueries
 
+    /**
+     * Obtiene todos los productos de la base de datos.
+     * @return Una lista de productos.
+     */
     override fun findAll(): List<Producto> {
         logger.debug { "Buscando todos los productos en la base de datos" }
         if (db.countProductos().executeAsOne() > 0){
@@ -24,6 +32,11 @@ class ProductoRepositorioImpl(
         return emptyList()
     }
 
+    /**
+     * Encuentra un producto por su ID.
+     * @param id El ID del producto a buscar.
+     * @return El producto encontrado o null si no se encontró ningún producto con el ID dado.
+     */
     override fun findById(id: String): Producto? {
         logger.debug { "Buscando un producto con id: $id" }
         if (db.productoExists(id).executeAsOne()){
@@ -32,6 +45,12 @@ class ProductoRepositorioImpl(
         return null
     }
 
+    /**
+     * Guarda un nuevo producto en la base de datos.
+     * @param producto El producto a guardar.
+     * @param ignoreKey Indica si se debe ignorar el ID del producto.
+     * @return El producto guardado o null si no se pudo guardar.
+     */
     override fun save(producto: Producto, ignoreKey : Boolean) : Producto? {
         logger.debug { "Añadiendo el producto: '${producto.nombre}' al inventario" }
         if (ignoreKey || findById(producto.id) == null){
@@ -50,6 +69,12 @@ class ProductoRepositorioImpl(
         return null
     }
 
+    /**
+     * Actualiza un producto existente en la base de datos.
+     * @param id El ID del producto a actualizar.
+     * @param producto El nuevo estado del producto.
+     * @return El producto actualizado o null si no se pudo actualizar.
+     */
     override fun update(id: String, producto: Producto): Producto? {
         logger.debug { "Actualizando el producto con id: $id"}
         val nuevoProducto = producto.copy(
@@ -64,6 +89,11 @@ class ProductoRepositorioImpl(
         return null
     }
 
+    /**
+     * Elimina un producto de la base de datos.
+     * @param id El ID del producto a eliminar.
+     * @return El producto eliminado o null si no se pudo eliminar.
+     */
     override fun delete(id: String): Producto? {
         logger.debug { "Borrando Producto con id: $id" }
         findById(id)?.let {

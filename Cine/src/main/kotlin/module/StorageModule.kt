@@ -14,8 +14,26 @@ import org.koin.core.module.Module
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
+/**
+ * Módulo de inyección de dependencias para la gestión del almacenamiento.
+ */
 public val storageModule : Module = module {
-    single() { ButacaServiceImpl(butacaRepositorio=get(ButacaRepositorioImpl::class), butacaStorageOut =get(ButacaStorageJSONImpl::class),config=get(Config::class), butacaStorageIn = get(ButacaStorageCSVImpl::class), butacaValidator=get(ButacaValidator::class)) } bind(org.example.butacas.servicios.ButacaService::class)
-    single() { ProductoServicioImpl(productosRepositorio=get(ProductoRepositorioImpl::class),productoValidador=get(ProductoValidador::class),productoStorage=get(ProductoStorageCSVImpl::class),config=get(Config::class)) } bind(org.example.productos.servicio.ProductoServicio::class)
-}
+    single() {
+        ButacaServiceImpl(
+            butacaRepositorio = get(ButacaRepositorioImpl::class),
+            butacaStorageOut = get(ButacaStorageJSONImpl::class),
+            config = get(Config::class),
+            butacaStorageIn = get(ButacaStorageCSVImpl::class),
+            butacaValidator = get(ButacaValidator::class)
+        )
+    } bind(org.example.butacas.servicios.ButacaService::class)
 
+    single() {
+        ProductoServicioImpl(
+            productosRepositorio = get(ProductoRepositorioImpl::class),
+            productoValidador = get(ProductoValidador::class),
+            productoStorage = get(ProductoStorageCSVImpl::class),
+            config = get(Config::class)
+        )
+    } bind(org.example.productos.servicio.ProductoServicio::class)
+}

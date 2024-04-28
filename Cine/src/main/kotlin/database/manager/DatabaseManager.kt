@@ -49,9 +49,9 @@ class DataBaseManager(
     }
 
     /**
-     * Función para usar la base de datos y cerrarla al finalizar la operación
+     * Ejecuta una función que utiliza la base de datos y la cierra al finalizar.
+     * @param block La función que utiliza la base de datos.
      */
-
     fun <T> use(block: (DataBaseManager) -> T) {
         try {
             initConexion()
@@ -64,9 +64,10 @@ class DataBaseManager(
     }
 
     /**
-     * Función para ejecutar un script SQL en la base de datos
+     * Ejecuta un script SQL en la base de datos.
+     * @param reader El lector que contiene el script SQL.
+     * @param logWriter Indica si se debe escribir el log de la ejecución del script.
      */
-
     private fun scriptRunner(reader: Reader, logWriter: Boolean = false) {
         logger.debug { "Ejecutando script SQL con log: $logWriter" }
         val sr = ScriptRunner(connection)

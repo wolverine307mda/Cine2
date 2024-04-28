@@ -13,6 +13,13 @@ import org.example.ventas.models.Venta
 import org.koin.core.annotation.Singleton
 import java.time.LocalDateTime
 
+/**
+ * Implementación del repositorio de ventas que interactúa con la base de datos.
+ * @property sqlDelightManager Gestor de SqlDelight para acceder a la base de datos.
+ * @property productosRepositorio Repositorio de productos para acceder a la información de los productos.
+ * @property clienteRepositorio Repositorio de cuentas de cliente para acceder a la información del cliente.
+ * @property butacaRepositorio Repositorio de butacas para acceder a la información de las butacas.
+ */
 @Singleton
 class VentaRepositorioImpl(
     private val sqlDelightManager: SqlDelightManager,
@@ -22,7 +29,10 @@ class VentaRepositorioImpl(
 ) : VentaRepositorio{
 
     private var db = sqlDelightManager.databaseQueries
-
+    /**
+     * Obtiene todas las ventas almacenadas en la base de datos.
+     * @return Lista de ventas encontradas.
+     */
     override fun findAll(): List<Venta> {
         logger.debug { "Buscando todas las ventas en la base de datos" }
         if (db.countVentas().executeAsOne() > 0){ //Para evitar que executeAsList te de una excepcion
@@ -39,6 +49,11 @@ class VentaRepositorioImpl(
         return emptyList()
     }
 
+    /**
+     * Obtiene una venta específica según su identificador.
+     * @param id Identificador único de la venta.
+     * @return La venta encontrada, o null si no se encuentra.
+     */
     private fun getAllLineasByVentaId(id : String) : List<LineaVenta>{
         if (db.countLineasVentaByVentaId(id).executeAsOne() > 0){
             return db.getLineaVentaByVentaId(id)
@@ -63,6 +78,12 @@ class VentaRepositorioImpl(
         return null
     }
 
+    /**
+     * Guarda una venta en la base de datos.
+     * @param venta La venta a guardar.
+     * @param ignoreKey Indica si se debe ignorar la clave única al guardar.
+     * @return La venta guardada, o null si ya existe una venta con la misma clave única y ignoreKey es false.
+     */
     override fun save(venta: Venta, ignoreKey : Boolean): Venta? {
         logger.debug { "Guardando venta con id: ${venta.id}" }
         if (ignoreKey || findById(venta.id) == null){
@@ -91,6 +112,12 @@ class VentaRepositorioImpl(
         return null
     }
 
+    /**
+     * Actualiza una venta existente en la base de datos.
+     * @param id Identificador único de la venta a actualizar.
+     * @param venta Nueva información de la venta.
+     * @return La venta actualizada, o null si la venta no existe.
+     */
     override fun update(id: String, venta: Venta): Venta? {
         logger.debug { "Actualizando venta con id: $id" }
         findById(id)?.let { //Si existe
@@ -112,6 +139,11 @@ class VentaRepositorioImpl(
         return null
     }
 
+    /**
+     * Elimina una venta de la base de datos.
+     * @param id Identificador único de la venta a eliminar.
+     * @return La venta eliminada, o null si la venta no existe.
+     */
     override fun delete(id: String): Venta? {
         logger.debug { "Borrando venta con id: $id" }
         findById(id)?.let { //Si existe
@@ -136,6 +168,11 @@ class VentaRepositorioImpl(
         return null
     }
 
+    /**
+     * Obtiene todas las ventas realizadas en una fecha específica.
+     * @param date Fecha para la cual buscar las ventas.
+     * @return Lista de ventas realizadas en la fecha especificada.
+     */
     override fun findAllByDate(date: LocalDateTime): List<Venta> {
         logger.debug { "Buscando las ventas en: ${date.dayOfMonth}/${date.monthValue}/${date.year} ${date.hour}:${date.minute}:${date.second}" }
         if (db.countVentasByDate(date.toString()).executeAsOne() > 0){
@@ -152,11 +189,22 @@ class VentaRepositorioImpl(
         return emptyList()
     }
 
+    /**
+     * Elimina una línea de venta de la base de datos.
+     * @param lineaVenta La línea de venta a eliminar.
+     * @return La línea de venta eliminada.
+     */
     override fun deleteLineaVenta(lineaVenta: LineaVenta): LineaVenta {
         db.deleteLineaVenta(lineaVenta.id,lineaVenta.id)
         return lineaVenta
     }
 
+    /**
+     * Obtiene todas las líneas de venta asociadas a una venta y a una fecha específica.
+     * @param id Identificador único de la venta.
+     * @param date Fecha para la cual buscar las líneas de venta.
+     * @return Lista de líneas de venta asociadas a la venta y fecha especificadas.
+     */
     private fun getAllLineasByVentaIdAndDate(id : String, date: LocalDateTime) : List<LineaVenta>{
         if (db.countLineaVentaByVentaIdAndDate(id_venta = id, updatedAt = date.toString()).executeAsOne() > 0){
             return db.getLineaVentaByVentaIdAndDate(id_venta = id, updatedAt = date.toString())

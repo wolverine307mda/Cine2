@@ -7,8 +7,16 @@ import org.example.butacas.errors.ProductoError
 import org.example.productos.models.Producto
 import org.koin.core.annotation.Singleton
 
+/**
+ * Clase encargada de validar la integridad de los objetos Producto.
+ */
 @Singleton
 class ProductoValidador (){
+    /**
+     * Valida un producto.
+     * @param producto El producto a validar.
+     * @return Un resultado que contiene el producto validado si pasa todas las validaciones, o un error si alguna validación falla.
+     */
     fun validate(producto: Producto) : Result<Producto, ProductoError>{
         return when{
             producto.tipo == null -> Err(ProductoError.ProductoInvalido("Categoria inválida"))
