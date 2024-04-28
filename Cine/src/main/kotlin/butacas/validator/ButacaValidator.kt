@@ -7,12 +7,7 @@ import org.example.butacas.errors.ButacaError
 import org.example.butacas.models.Butaca
 import org.koin.core.annotation.Singleton
 
-/**
- * Válida un objeto de Butaca.
- *
- * @param butaca El objeto de Butaca a ser validado.
- * @return Un Result que contiene la Butaca válida si es válida, o un Err que contiene un ButacaError si es inválida.
- */
+
 @Singleton
 class ButacaValidator {
     /**

@@ -34,8 +34,8 @@ enum class Ocupamiento{
 }
 
 /**
- * @property precio El precio asociado al tipo de butaca.
- */
+* @property precio El precio asociado al tipo de butaca.
+*/
 enum class Tipo(val precio : Int){
     VIP(8), NORMAL(5)
 }

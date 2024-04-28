@@ -3,7 +3,7 @@ package org.example.productos.storage
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
-import org.example.butacas.errors.ProductoError
+import org.example.productos.errors.ProductoError
 import org.example.butacas.storage.ProductoStorage
 import org.example.database.manager.logger
 import org.example.productos.mappers.elegirTipoProducto

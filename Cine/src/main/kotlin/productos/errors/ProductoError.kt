@@ -1,4 +1,4 @@
-package org.example.butacas.errors
+package org.example.productos.errors
 
 
 /**

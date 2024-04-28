@@ -25,12 +25,10 @@ import java.util.regex.Pattern
 class CineApp : KoinComponent {
 
     // Inyección de dependencia para los servicios necesarios
-
     private val cuentaServicio: CuentaServicio by inject()
     private val ventaServicio: VentaServicio by inject()
     private val productoServicio: ProductoServicio by inject()
     private val butacaServicio : ButacaService by inject()
-
 
     var butacas: List<Butaca>? = null // lista de butacas inicializada en null
     var productos: List<Producto> = emptyList() //lista de productos que se inicia vaciá
@@ -71,14 +69,14 @@ class CineApp : KoinComponent {
      * @see [ventaServicio]
      * @see [menuInicio]
      */
-    fun devolverEntrada(){
+    private fun devolverEntrada(){
         menuIniciarSesion()
-        ventaServicio.findAll().onSuccess {
+        ventaServicio.findVentasByClienteId(cuentaTiket!!.id).onSuccess {
+            var counter = 1
             if (it.isEmpty()) println("No tiene ventas")
             else{
                 println("Estas son sus ventas:")
                 it.forEach {
-                    var counter = 1
                     println("-$counter.${it.butaca.id} ${it.updatedAt.dayOfMonth}-${it.updatedAt.monthValue}-${it.updatedAt.year} ${it.updatedAt.hour}_${it.updatedAt.minute}_${it.updatedAt.second}} ")
                     counter++
                 }
@@ -86,6 +84,7 @@ class CineApp : KoinComponent {
             }
 
         }
+        cuentaTiket = null
         menuInicio()
     }
 
@@ -116,14 +115,6 @@ class CineApp : KoinComponent {
      * @param venta La [Venta] a borrar.
      */
     private fun borrarVenta(venta: Venta) {
-        val nuevaVenta = Venta(
-            id = venta.id,
-            butaca = venta.butaca,
-            cliente = venta.cliente,
-            lineasVenta = venta.lineasVenta,
-            createdAt = venta.createdAt,
-            isDeleted = true
-        )
         ventaServicio.delete(id = venta.id)
         val butaca = venta.butaca.copy(ocupamiento = Ocupamiento.LIBRE)
         butacaServicio.update(butaca = butaca, id = butaca.id)
@@ -136,7 +127,7 @@ class CineApp : KoinComponent {
     /**
      * Carga todos los productos desde un archivo CSV y los parsea en una lista de objetos Producto.
      *
-     * @return Un [Result] que contiene la lista de objetos Producto si la operación fue exitosa, de lo contrario, un [Result] que contiene el mensaje de error.
+     *  Si no consigue cargar los productos, enseña un mensaje de error
      */
     private fun importarProductos(){
         productoServicio
@@ -159,7 +150,7 @@ class CineApp : KoinComponent {
     }
 
     /**
-     * Importa las butacas desde un archivo CSV.
+     * Importa las butacas desde un archivo.
      */
     private fun importarButacas() {
         butacaServicio.cargarButacas().onSuccess {
@@ -205,8 +196,6 @@ class CineApp : KoinComponent {
 
     /**
      * Obtiene la recaudación a día de fecha especificada.
-     *
-     * @param fecha Fecha a la que se desea obtener la recaudación.
      */
     private fun obtenerRecaudacion() {
         var money = 0.0
@@ -218,7 +207,7 @@ class CineApp : KoinComponent {
                 }
                 money += ventas.butaca.tipo!!.precio
             }
-            println("La recaudación a día ${fecha.dayOfMonth}:${fecha.monthValue}:${fecha.year} es: $money")
+            println("La recaudación a día ${fecha.dayOfMonth}:${fecha.monthValue}:${fecha.year} es: $money€")
         }.onFailure {
             println("No se ha podido obtener la recaudación: ${it.message}")
         }
@@ -261,7 +250,7 @@ class CineApp : KoinComponent {
     }
 
     /**
-     * Solicita al usuario que ingrese una fecha para comprobar su validez.
+     * Mira si la fecha que se le pasa por parámetro es válida.
      */
     private fun checkDateValidity(input: String): Boolean {
         val fecha = input.split('/').map { it.toInt() }
@@ -297,7 +286,6 @@ class CineApp : KoinComponent {
 
     /**
      * Inicia sesión.
-     * @return true si se inició sesión correctamente, false en caso contrario.
      */
     private fun iniciarSesion() {
         // Patrón de expresión regular para el formato especificado
@@ -362,6 +350,7 @@ class CineApp : KoinComponent {
             }
         }while (!input.matches(regex) && !success)
     }
+
 
     /**
      * Busca una butaca para reservarla.
@@ -442,7 +431,7 @@ class CineApp : KoinComponent {
                     butacaTiket = null
                     productosReservados = 0
                 }
-                opcion in 1..productos!!.size -> {
+                opcion in 1..productos.size -> {
                     reservaProducto(opcion)
                 }
                 else -> println("Opción inválida")
@@ -461,23 +450,23 @@ class CineApp : KoinComponent {
 
         productoServicio
             .findById(productoSeleccionado.id)
-            .onSuccess { producto ->
-                val productoReservado = producto.copy(stock = producto.stock - 1)
-                productoServicio.update(productoSeleccionado.id, productoReservado)
-                    .onSuccess { _ ->
-                        println("El producto ${productoSeleccionado.nombre} ha sido reservado con éxito.")
-                        val productoExiste = lineas.firstOrNull(){ it.producto.id == producto.id }
-                        if (productoExiste == null) lineas = lineas.plus(LineaVenta(producto = producto, cantidad = 1, precio = producto.precio )).toMutableList()
-                        else lineas.forEach {
-                            if (it.producto.id == producto.id) it.cantidad++
+                .onSuccess { producto ->
+                    val productoReservado = producto.copy(stock = producto.stock - 1)
+                    productoServicio.update(productoSeleccionado.id, productoReservado)
+                        .onSuccess { _ ->
+                            println("El producto ${productoSeleccionado.nombre} ha sido reservado con éxito.")
+                            val productoExiste = lineas.firstOrNull(){ it.producto.id == producto.id }
+                            if (productoExiste == null) lineas = lineas.plus(LineaVenta(producto = producto, cantidad = 1, precio = producto.precio )).toMutableList()
+                            else lineas.forEach {
+                                if (it.producto.id == producto.id) it.cantidad++
+                            }
+                            productosReservados++
+                        }.onFailure { error ->
+                            println("Error al reservar el producto ${productoSeleccionado.nombre}: ${error.message}")
                         }
-                        productosReservados++
-                    }.onFailure { error ->
-                        println("Error al reservar el producto ${productoSeleccionado.nombre}: ${error.message}")
-                    }
-            }.onFailure {
-                println("El producto ${productoSeleccionado.nombre} no existe.")
-            }
+                }.onFailure {
+                    println("El producto ${productoSeleccionado.nombre} no existe.")
+                }
 
         if (productosReservados < 3) {
             println("Aun puede seleccionar ${3 - productosReservados}")

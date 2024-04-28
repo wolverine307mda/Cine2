@@ -37,3 +37,4 @@ public val storageModule : Module = module {
         )
     } bind(org.example.productos.servicio.ProductoServicio::class)
 }
+

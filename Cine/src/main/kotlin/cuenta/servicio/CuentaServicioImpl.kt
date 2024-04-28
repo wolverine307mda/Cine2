@@ -7,6 +7,7 @@ import cuenta.errors.CuentaError
 import org.example.cuenta.models.Cuenta
 import org.example.cuenta.repositorio.CuentaRepositorio
 import org.koin.core.annotation.Singleton
+
 /**
  * Implementación de [CuentaServicio] que interactúa con el repositorio de cuentas para realizar operaciones.
  * @property cuentaRepositorio El repositorio de cuentas utilizado para acceder y manipular datos de cuentas.

@@ -1,13 +1,10 @@
 
-Xkotlin:S1172„"8Use "_" instead of this unused lambda parameter "error".(ˆàëµ8°‚—…ò1
-Dkotlin:S6615A"%The value changed here is never used.(üÏı…8´‚—…ò1
-akotlin:S6619ß"<Remove this useless null-safe access ?., it always succeeds.(³Õ•şÿÿÿÿ8¸‚—…ò1
-^kotlin:S6619ú">Remove this useless non-null assertion !!, it always succeeds.(ñ˜Îõ8¹‚—…ò1
-akotlin:S6619â"<Remove this useless null-safe access ?., it always succeeds.(üú¥ÿÿÿÿÿ8¹‚—…ò1
-ckotlin:S6619õ">Remove this useless non-null assertion !!, it always succeeds.(ÜğÑÀûÿÿÿÿ8¹‚—…ò1
-ckotlin:S6619ğ">Remove this useless non-null assertion !!, it always succeeds.(üù¤õûÿÿÿÿ8¹‚—…ò1
-Skotlin:S1481Z"/Remove this unused "nuevaVenta" local variable.(æï¾ƒûÿÿÿÿ8â‚—…ò1
-Lkotlin:S1125Ó"'Remove the unnecessary Boolean literal.(‹¬ËÛÿÿÿÿÿ8é‚—…ò1
-rkotlin:S1192¡"RDefine a constant instead of duplicating this literal "OpciÃ³n invÃ¡lida" 3 times.(„¥–À8í‚—…ò1
-wkotlin:S3776Ş"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(ªàÕ‘ÿÿÿÿÿ8ô‚—…ò1
-fkotlin:S6510à"AMove "return" statements from all branches before "if" statement.(»ë¡äÿÿÿÿÿ8ı‚—…ò1
+~kotlin:S1172º"8Use "_" instead of this unused lambda parameter "error".(ˆàëµ8°‚—…ò1J$579188a9-1c5d-43ad-b6d9-a692a2830e06
+‡kotlin:S6619¡"<Remove this useless null-safe access ?., it always succeeds.(³Õ•şÿÿÿÿ8¸‚—…ò1J$ee27d3fc-8221-4dda-826a-b9a484354547
+„kotlin:S6619À">Remove this useless non-null assertion !!, it always succeeds.(ñ˜Îõ8¹‚—…ò1J$1e5fd30c-5e34-4589-8a5c-164802af5e52
+‡kotlin:S6619¤"<Remove this useless null-safe access ?., it always succeeds.(üú¥ÿÿÿÿÿ8¹‚—…ò1J$43762b50-16ca-467f-92e8-88b5043406d4
+‰kotlin:S6619·">Remove this useless non-null assertion !!, it always succeeds.(ÜğÑÀûÿÿÿÿ8¹‚—…ò1J$e0ead8ba-5764-49d4-916a-d971775ac275
+rkotlin:S1125"'Remove the unnecessary Boolean literal.(‹¬ËÛÿÿÿÿÿ8ß¨¬§ò1J$5a4b2477-6192-4d84-9cfa-8decbfc29778
+˜kotlin:S1192À"RDefine a constant instead of duplicating this literal "OpciÃ³n invÃ¡lida" 3 times.(„¥–À8î¨¬§ò1J$449a1776-6620-4221-95da-6a2a9f19726f
+kotlin:S3776È"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(ªàÕ‘ÿÿÿÿÿ8ıöÂ§ò1J$5e20c0eb-15e5-453f-a84b-e1a9b2610954
+Œkotlin:S6510Ê"AMove "return" statements from all branches before "if" statement.(»ë¡äÿÿÿÿÿ8÷Â§ò1J$20d61f3e-7b56-40ea-a115-19b03d529719

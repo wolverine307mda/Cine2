@@ -3,7 +3,7 @@ package org.example.productos.validador
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
-import org.example.butacas.errors.ProductoError
+import org.example.productos.errors.ProductoError
 import org.example.productos.models.Producto
 import org.koin.core.annotation.Singleton
 

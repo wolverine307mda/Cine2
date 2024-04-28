@@ -43,10 +43,10 @@ class CuentaRepositorioImpl(
     }
 
     /**
-    * Busca una cuenta de usuario por su identificador único.
-    * @param id El identificador único de la cuenta de usuario a buscar.
-    * @return la cuenta de usuario encontrada, o null si no se encontró ninguna cuenta con el identificador proporcionado o si ocurrió un error.
-    */
+     * Busca una cuenta de usuario por su identificador único.
+     * @param id El identificador único de la cuenta de usuario a buscar.
+     * @return la cuenta de usuario encontrada, o null si no se encontró ninguna cuenta con el identificador proporcionado o si ocurrió un error.
+     */
     override fun findById(id: String): Cuenta? {
         logger.debug { "Buscando cliente por id $id" }
         try {

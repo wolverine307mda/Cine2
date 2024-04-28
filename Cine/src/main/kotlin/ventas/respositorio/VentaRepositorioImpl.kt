@@ -29,6 +29,7 @@ class VentaRepositorioImpl(
 ) : VentaRepositorio{
 
     private var db = sqlDelightManager.databaseQueries
+
     /**
      * Obtiene todas las ventas almacenadas en la base de datos.
      * @return Lista de ventas encontradas.
@@ -50,9 +51,7 @@ class VentaRepositorioImpl(
     }
 
     /**
-     * Obtiene una venta específica según su identificador.
-     * @param id Identificador único de la venta.
-     * @return La venta encontrada, o null si no se encuentra.
+     * @param id el id de la linea de venta que está utilizando para buscar las lineas de venta
      */
     private fun getAllLineasByVentaId(id : String) : List<LineaVenta>{
         if (db.countLineasVentaByVentaId(id).executeAsOne() > 0){
@@ -66,6 +65,11 @@ class VentaRepositorioImpl(
         return emptyList()
     }
 
+    /**
+     * Obtiene una venta específica según su identificador.
+     * @param id Identificador único de la venta.
+     * @return La venta encontrada, o null si no se encuentra.
+     */
     override fun findById(id: String): Venta? {
         logger.debug { "Buscando la venta con id : $id" }
         if (db.existsVenta(id).executeAsOne()){
@@ -210,10 +214,12 @@ class VentaRepositorioImpl(
             return db.getLineaVentaByVentaIdAndDate(id_venta = id, updatedAt = date.toString())
                 .executeAsList()
                 .map {
-                    val producto = productosRepositorio.findById(it.id_complemento)
+                    val producto = productosRepositorio.findByIdAndDate(id = it.id_complemento, date = date)
                     it.toLineaVenta(producto!!)
                 }
         }
         return emptyList()
     }
+
+
 }

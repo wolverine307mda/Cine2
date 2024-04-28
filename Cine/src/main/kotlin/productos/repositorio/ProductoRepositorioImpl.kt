@@ -111,4 +111,18 @@ class ProductoRepositorioImpl(
         return null
     }
 
+    /**
+     * Encuentra un producto por su ID y fecha.
+     * @param id El ID del producto a buscar.
+     * @param date La fecha que queremos buscar
+     * @return El producto encontrado o null si no se encontró ningún producto con el ID dado.
+     */
+    override fun findByIdAndDate(date: LocalDateTime, id: String): Producto? {
+        logger.debug { "Borrando Producto con id: $id en ${date.dayOfMonth}:${date.monthValue}:${date.year} " }
+        if (db.productoExists(id).executeAsOne()){
+            return db.findProductByIdAndDate(id = id, updatedAt = date.toString()).executeAsOne().toProducto()
+        }
+        return null
+    }
+
 }

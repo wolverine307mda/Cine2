@@ -1,4 +1,4 @@
-package org.example.butacas.storage
+package org.example.ventas.storage
 
 import com.github.michaelbull.result.Result
 import org.example.butacas.errors.ButacaError

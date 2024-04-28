@@ -169,3 +169,25 @@ e
 5data/ventas/entrada_D7_GGG555_27-4-2024 20_52_50.html,b\2\b220de39b36deb0021cc2b3383d36f1a05efc946
 d
 4data/ventas/entrada_A6_UUU888_27-4-2024 20_56_4.html,a\b\ab7017b38a035016be37d04d7b2f5b69b9ab944d
+c
+3data/ventas/entrada_A6_DDD444_27-4-2024 21_1_9.html,f\1\f1c3b7638076607c609bb83f68e51cbd74b5f0f7
+e
+5data/ventas/entrada_A7_TTT777_27-4-2024 21_20_12.html,b\7\b79734d2921d59adb658e16fedbcd5cc511ae142
+e
+5data/ventas/entrada_A5_RRR555_27-4-2024 21_26_26.html,b\4\b46095d9343fc08a0bf201222d449e1ff4b2716a
+e
+5data/ventas/entrada_A7_RRR888_27-4-2024 21_23_44.html,8\7\872c8c57a7c087210a2358675c81b7968c491592
+e
+5data/ventas/entrada_A3_DDD444_28-4-2024 11_58_35.html,f\0\f026e240f2bfcf3999ee1fb3ae671885fba4248e
+e
+5data/ventas/entrada_A6_RRR444_28-4-2024 12_47_29.html,5\2\5278455e2909291f518088a5356fa6d5069892b5
+[
++data/butacas/butacas27-4-2024 17_43_50.json,6\5\657abdebdd62b0c2dfb1f92feffb020956900848
+e
+5data/ventas/entrada_B1_DDD444_28-4-2024 13_12_12.html,4\9\49b1f07a6d2558eeace40334567d99fff2d81427
+e
+5data/ventas/entrada_A5_DDD444_28-4-2024 13_10_47.html,4\a\4a0162cd4d126de450d5a048556ecc1cb4da6e3c
+d
+4data/ventas/entrada_A5_DDD444_28-4-2024 13_7_35.html,d\0\d0f9b819e7e6094efce37d28a6b87341660eadf6
+d
+4data/ventas/entrada_A2_DDD444_28-4-2024 13_6_37.html,e\b\ebaee45e925b9e0f5257b31b2a594f89bdea0e14

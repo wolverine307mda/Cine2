@@ -4,7 +4,6 @@ import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import org.example.butacas.errors.ButacaError
-import org.example.butacas.storage.VentaStorage
 import org.example.database.manager.logger
 import org.example.ventas.errors.VentaError
 import org.example.ventas.models.Venta
@@ -13,6 +12,9 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
 
+/**
+ * Implementación del almacenamiento de ventas desde y hacia archivos HTML.
+ */
 @Singleton
 class VentaStorageHTMLImpl : VentaStorage {
 
@@ -25,6 +27,11 @@ class VentaStorageHTMLImpl : VentaStorage {
         return Ok(emptyList())
     }
 
+    /**
+     * Carga productos desde un archivo CSV.
+     * @param venta la venta que quieres guardar.
+     * @return Un resultado que contiene un Unit si lo pudo hacer bien o un error si hubo algún problema durante el procesoa.
+     */
     override fun exportar(venta : Venta) : Result<Unit,VentaError>{
         try {
             val output = """

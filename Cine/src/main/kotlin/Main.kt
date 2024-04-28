@@ -53,13 +53,7 @@ fun main() {
         )
         modules(storageModule, defaultModule)
     }
-    val dummy = Dummy()
-    dummy.run()
+    val cine = CineApp()
+    cine.iniciarCine()
 }
 
-class Dummy : KoinComponent {
-    fun run(){
-        val cineApp = CineApp()
-        cineApp.iniciarCine()
-    }
-}

@@ -60,6 +60,17 @@ CREATE TABLE IF NOT EXISTS CuentaEntity (
     PRIMARY KEY(id,updatedAt)
 );
 
+findProductByIdAndDate:
+SELECT *
+FROM ComplementoEntity
+WHERE (id, updatedAt,id) IN (
+    SELECT id, MAX(updatedAt),id
+    FROM ComplementoEntity
+    WHERE updatedAt <= ?
+    GROUP BY id
+)
+AND id = ?;
+
 getButacaById:
 SELECT * FROM ButacaEntity WHERE (id,updatedAt) IN
 ( SELECT id, MAX(updatedAt)
@@ -125,7 +136,7 @@ WHERE (id, updatedAt) IN (
     FROM (
         SELECT id, updatedAt AS updatedAt
         FROM ButacaEntity
-        WHERE updatedAt < ?
+        WHERE updatedAt <= ?
     ) AS g
     GROUP BY g.id
 );
@@ -138,7 +149,7 @@ WHERE (id, updatedAt) IN (
     FROM (
         SELECT id, updatedAt AS updatedAt
         FROM ButacaEntity
-        WHERE updatedAt < ?
+        WHERE updatedAt <= ?
     ) AS g
     GROUP BY g.id
 );
@@ -192,12 +203,28 @@ FROM VentaEntity WHERE (id,updatedAt) IN
 getLineaVentaByVentaId:
 SELECT *
 FROM LineaVentaEntity
-WHERE updatedAt = (
-    SELECT MAX(updatedAt)
-    FROM LineaVentaEntity AS b2
-    WHERE b2.id_venta = LineaVentaEntity.id_venta
-)
-AND id_venta = ?;
+WHERE (id, updatedAt) IN (
+    SELECT g.id, MAX(g.updatedAt)
+    FROM (
+        SELECT id, updatedAt AS updatedAt
+        FROM LineaVentaEntity
+        WHERE id_venta = ?
+    ) AS g
+    GROUP BY g.id
+);
+
+countLineasVentaByVentaId:
+SELECT COUNT(*)
+FROM LineaVentaEntity
+WHERE (id, updatedAt) IN (
+    SELECT g.id, MAX(g.updatedAt)
+    FROM (
+        SELECT id, updatedAt AS updatedAt
+        FROM LineaVentaEntity
+        WHERE id_venta = ?
+    ) AS g
+    GROUP BY g.id
+);
 
 getVentaById:
 SELECT *
@@ -241,7 +268,7 @@ FROM LineaVentaEntity
 WHERE (id_venta, updatedAt,id) IN (
     SELECT id_venta, MAX(updatedAt),id
     FROM LineaVentaEntity
-    WHERE updatedAt < ?
+    WHERE updatedAt <= ?
     GROUP BY id
 )
 AND id_venta = ?;
@@ -252,7 +279,7 @@ FROM LineaVentaEntity
 WHERE (id_venta, updatedAt,id) IN (
     SELECT id_venta, MAX(updatedAt),id
     FROM LineaVentaEntity
-    WHERE updatedAt < ?
+    WHERE updatedAt <= ?
     GROUP BY id
 )
 AND id_venta = ?;
@@ -280,6 +307,3 @@ SELECT COUNT(*) > 0 FROM VentaEntity WHERE id = ?;
 
 countVentas:
 SELECT COUNT(*) FROM VentaEntity;
-
-countLineasVentaByVentaId:
-SELECT COUNT(*) FROM LineaVentaEntity WHERE id_venta = ?;

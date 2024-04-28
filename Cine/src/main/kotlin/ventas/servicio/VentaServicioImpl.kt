@@ -1,7 +1,7 @@
 package org.example.ventas.servicio
 
 import com.github.michaelbull.result.*
-import org.example.butacas.storage.VentaStorage
+import org.example.ventas.storage.VentaStorage
 import org.example.ventas.errors.VentaError
 import org.example.ventas.models.Venta
 import org.example.ventas.respositorio.VentaRepositorio
@@ -18,6 +18,7 @@ class VentaServicioImpl (
     var ventaRepositorio: VentaRepositorio,
     var ventaStorage: VentaStorage
 ) : VentaServicio {
+
 
     /**
      * Guarda una venta en el repositorio de ventas.
@@ -105,4 +106,15 @@ class VentaServicioImpl (
         }
         return Err(VentaError.VentaStorageError("La venta que está intentando borrar no existe"))
     }
+
+    /**
+     * Elimina una venta del repositorio.
+     * @param id Identificador del cliente
+     * @return [Result] que contiene las ventas de un cliente o un [VentaError] en caso de error.
+     */
+    override fun findVentasByClienteId(id: String): Result<List<Venta>, VentaError> {
+        return Ok(ventaRepositorio.findAll().filter { it.cliente.id == id && !it.isDeleted})
+    }
+
+
 }

@@ -40,6 +40,7 @@ class ButacaServiceImpl(
         else return Err(ButacaError.ButacaStorageError("No hay ninguna butaca en la base de datos"))
     }
 
+
     /**
      * Busca y devuelve una butaca en la base de datos.
      *
@@ -54,6 +55,7 @@ class ButacaServiceImpl(
             Err(ButacaError.ButacaNotFoundError("La butaca con ID $id no existe"))
         }
     }
+
 
     /**
      * Crea una butaca en la base de datos.
@@ -121,4 +123,5 @@ class ButacaServiceImpl(
         }else return Err(ButacaError.ButacaStorageError("No se pudo leer el fichero correctamente"))
         return Ok(Unit)
     }
+
 }

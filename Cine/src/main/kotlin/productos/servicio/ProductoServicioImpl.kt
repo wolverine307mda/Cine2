@@ -1,7 +1,7 @@
 package org.example.productos.servicio
 
 import com.github.michaelbull.result.*
-import org.example.butacas.errors.ProductoError
+import org.example.productos.errors.ProductoError
 import org.example.butacas.storage.ProductoStorage
 import org.example.config.Config
 import org.example.database.manager.logger
@@ -91,7 +91,7 @@ class ProductoServicioImpl(
      * Carga todos los productos desde un archivo.
      * @return Un resultado que contiene una lista de productos cargados o un error si hubo algún problema durante la carga.
      */
-    override fun cargarTodosProductos() : Result<List<Producto>,ProductoError>{
+    override fun cargarTodosProductos() : Result<List<Producto>, ProductoError>{
         logger.debug { "Importando datos de productos" }
         val url = ClassLoader.getSystemResource(config.productoImportFile)
         if (url != null){
