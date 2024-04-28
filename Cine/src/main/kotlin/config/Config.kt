@@ -6,6 +6,17 @@ import org.koin.core.annotation.Singleton
 import java.nio.file.Files
 import kotlin.io.path.Path
 
+/**
+ * Configura las opciones de la aplicación.
+ *
+ * @param _databaseUrl La URL de la base de datos a utilizar. Por defecto es "jdbc:sqlite:productos.db".
+ * @param _databaseInitTables Indica si se deben inicializar las tablas de la base de datos. Por defecto es "true".
+ * @param _databaseInitData Indica si se debe inicializar el contenido de la base de datos. Por defecto es "true".
+ * @param _databaseInMemory Indica si se debe utilizar una base de datos en memoria. Por defecto es "true".
+ * @param _storageData La carpeta donde se almacenará el contenido. Por defecto es "data".
+ * @param _butacaSampleFile El archivo de muestra de datos de butacas. Por defecto es "butacas.csv".
+ * @param _productoImportFile El archivo que contiene los datos de los productos a importar. Por defecto es "productos.csv".
+ */
 @Singleton
 class Config(
     @Property("database.url")

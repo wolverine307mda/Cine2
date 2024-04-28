@@ -8,6 +8,10 @@ import org.example.butacas.models.Ocupamiento
 import org.example.butacas.models.Tipo
 import java.time.LocalDateTime
 
+/**
+ * Convierte una entidad de butaca a un objeto butaca.
+ * @return Un objeto de modelo de butaca.
+ */
 fun ButacaEntity.toButaca() : Butaca{
     return Butaca(
         id = this.id,
@@ -20,6 +24,12 @@ fun ButacaEntity.toButaca() : Butaca{
     )
 }
 
+/**
+ * Convierte una cadena que representa el tipo de butaca.
+ *
+ * @param s La cadena que representa el tipo de butaca.
+ * @return El tipo de butaca correspondiente, o null.
+ */
 fun elegirTipo(s: String): Tipo? {
     return when(s){
         "NORMAL" -> Tipo.NORMAL
@@ -28,6 +38,12 @@ fun elegirTipo(s: String): Tipo? {
     }
 }
 
+/**
+ * Convierte una cadena que representa el estado de ocupación.
+ *
+ * @param s La cadena que representa el estado de ocupación.
+ * @return El estado de ocupación correspondiente, o null.
+ */
 fun elegirOcupamiento(s: String): Ocupamiento? {
     return when(s){
         "OCUPADA" -> Ocupamiento.OCUPADA
@@ -37,6 +53,12 @@ fun elegirOcupamiento(s: String): Ocupamiento? {
     }
 }
 
+/**
+ * Convierte una cadena que representa el estado de una butaca.
+ *
+ * @param s La cadena que representa el estado de la butaca.
+ * @return El estado de la butaca correspondiente, o null.
+ */
 fun elegirEstado(s: String): Estado? {
     return when(s){
         "ACTIVA" -> Estado.ACTIVA
@@ -46,6 +68,11 @@ fun elegirEstado(s: String): Estado? {
     }
 }
 
+/**
+ * Convierte un objeto de modelo de butaca a un objeto DTO de butaca.
+ *
+ * @return Un objeto DTO de butaca.
+ */
 fun Butaca.toButacaDTO() : ButacaDto{
     return ButacaDto(
         id = this.id,

@@ -1,0 +1,20 @@
+
+1800 horas
+21,300 euros anules
+duracion del proyecto 2 semanas
+​
+ 
+
+21,300/1800 = 11.83 euros/hora Para ambos desarrolladores
+
+11.83 * 2 = 23.66 euros/hora
+
+horas de trabajo para el proyecto:
+
+2 semanas * 40 horas/semanales * 2 desarrolladores
+160 * 23,66 euros/hora
+Entonces:
+
+Costo total del proyecto =
+
+23.66 euros/hora * 160 horas/totales = 3,785.60 euros

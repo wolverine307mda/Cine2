@@ -4,6 +4,10 @@ import org.example.cuenta.dto.CuentaDTO
 import org.example.cuenta.models.Cuenta
 import java.time.LocalDateTime
 
+/**
+ * Convierte un objeto [CuentaDTO] en un objeto [Cuenta].
+ * @return el objeto [Cuenta] resultante.
+ */
 fun CuentaDTO.toCuenta() : Cuenta {
     return Cuenta(
         id = this.id,
@@ -13,6 +17,10 @@ fun CuentaDTO.toCuenta() : Cuenta {
     )
 }
 
+/**
+ * Convierte un objeto [Cuenta] en un objeto [CuentaDTO].
+ * @return el objeto [CuentaDTO] resultante.
+ */
 fun Cuenta.toCuentaDto() : CuentaDTO{
     return CuentaDTO(
         id = this.id,
@@ -23,7 +31,8 @@ fun Cuenta.toCuentaDto() : CuentaDTO{
 }
 
 /**
- * Trasforma un boolean en un Long
+ * Convierte un valor booleano en un valor Long.
+ * @return 1 si el valor booleano es verdadero, 0 si es falso.
  */
 fun Boolean.toLong(): Long {
     if (this) return 1

@@ -13,8 +13,16 @@ import java.io.File
 import java.time.LocalDateTime
 import java.util.UUID
 
+/**
+ * Implementación del almacenamiento de productos desde y hacia archivos CSV.
+ */
 @Singleton
 class ProductoStorageCSVImpl : ProductoStorage {
+    /**
+     * Carga productos desde un archivo CSV.
+     * @param file El archivo CSV que contiene los productos.
+     * @return Un resultado que contiene una lista de productos cargados o un error si hubo algún problema durante la carga.
+     */
     override fun cargar(file: File): Result<List<Producto>, ProductoError> {
         try {
             return Ok(

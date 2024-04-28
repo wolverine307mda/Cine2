@@ -9,6 +9,11 @@ import org.example.ventas.models.LineaVenta
 import org.example.ventas.models.Venta
 import java.time.LocalDateTime
 
+/**
+ * Convierte una entidad de línea de venta a un objeto LineaVenta.
+ * @param producto El producto asociado con la línea de venta.
+ * @return Un objeto LineaVenta.
+ */
 fun LineaVentaEntity.toLineaVenta(producto: Producto) : LineaVenta{
     return LineaVenta(
         id = this.id,
@@ -21,6 +26,13 @@ fun LineaVentaEntity.toLineaVenta(producto: Producto) : LineaVenta{
     )
 }
 
+/**
+ * Convierte una entidad de venta a un objeto Venta.
+ * @param lineas La lista de líneas de venta asociadas con la venta.
+ * @param butaca La butaca asociada con la venta.
+ * @param cliente El cliente asociado con la venta.
+ * @return Un objeto Venta.
+ */
 fun VentaEntity.toVenta(
     lineas : List<LineaVenta>,
     butaca: Butaca,

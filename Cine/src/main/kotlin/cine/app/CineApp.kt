@@ -18,15 +18,23 @@ import org.koin.core.component.inject
 import java.time.LocalDateTime
 import java.util.regex.Pattern
 
+/**
+ * CineApp es una clase que representa una aplicación de cine.
+ * Gestiona las reservas de entradas, listados de productos y sesiones de usuario.
+ */
 class CineApp : KoinComponent {
+
     // Inyección de dependencia para los servicios necesarios
+
     private val cuentaServicio: CuentaServicio by inject()
     private val ventaServicio: VentaServicio by inject()
     private val productoServicio: ProductoServicio by inject()
     private val butacaServicio : ButacaService by inject()
-    var butacas: List<Butaca>? = null
-    var productos: List<Producto> = emptyList()
-    private var inicioSesion:Boolean = false
+
+
+    var butacas: List<Butaca>? = null // lista de butacas inicializada en null
+    var productos: List<Producto> = emptyList() //lista de productos que se inicia vaciá
+    private var inicioSesion:Boolean = false // valor de inicio de sesion inicializado en False
 
     private var butacaTiket: Butaca? = null
     private var cuentaTiket: Cuenta? = null
@@ -34,7 +42,11 @@ class CineApp : KoinComponent {
     private var productosReservados = 0
 
 
-
+    /**
+     * Se encarga en ordenar por ID para poder mostrar la matriz
+     *
+     * @return lista de butacas ordenada por fila y columna
+     */
     private fun sortButacas(): List<Butaca> {
         val sorted = mutableListOf<Butaca>()
         val letters = listOf('A','B','C','D','E')
@@ -53,6 +65,12 @@ class CineApp : KoinComponent {
 
     }
 
+    /**
+     * Esta función permite al usuario devolver una entrada.
+     * Si el usuario tiene ventas activas, muestra las ventas y pide al usuario que seleccione la venta que desea devolver.
+     * @see [ventaServicio]
+     * @see [menuInicio]
+     */
     fun devolverEntrada(){
         menuIniciarSesion()
         ventaServicio.findAll().onSuccess {
@@ -71,6 +89,12 @@ class CineApp : KoinComponent {
         menuInicio()
     }
 
+    /**
+     * Esta función solicita al usuario que ingrese el número de la [Venta] que desea confirmar o solicitar un reembolso.
+     *
+     * @param ventas La lista de todas las [Venta]s que se han realizado.
+     * @return El índice de la [Venta] seleccionada si el ingreso es válido, de lo contrario -1.
+     */
     private fun elegirVentaDevolucion(ventas: List<Venta>) {
         println("¿Cual quiere devolver?")
         var input = (readln().toIntOrNull() ?: -1) -1
@@ -86,6 +110,11 @@ class CineApp : KoinComponent {
         borrarVenta(ventas[input])
     }
 
+    /**
+     * Borra una específica [Venta] por su ID.
+     *
+     * @param venta La [Venta] a borrar.
+     */
     private fun borrarVenta(venta: Venta) {
         val nuevaVenta = Venta(
             id = venta.id,
@@ -104,6 +133,11 @@ class CineApp : KoinComponent {
         }
     }
 
+    /**
+     * Carga todos los productos desde un archivo CSV y los parsea en una lista de objetos Producto.
+     *
+     * @return Un [Result] que contiene la lista de objetos Producto si la operación fue exitosa, de lo contrario, un [Result] que contiene el mensaje de error.
+     */
     private fun importarProductos(){
         productoServicio
             .cargarTodosProductos()
@@ -124,6 +158,9 @@ class CineApp : KoinComponent {
         menuInicio()
     }
 
+    /**
+     * Importa las butacas desde un archivo CSV.
+     */
     private fun importarButacas() {
         butacaServicio.cargarButacas().onSuccess {
             println("Las butacas se cargaron correctamente.")
@@ -135,6 +172,9 @@ class CineApp : KoinComponent {
         menuInicio()
     }
 
+    /**
+     * Muestra un menu de opciones para que el usuario decida.
+     */
     private fun menuInicio() {
         var opcion: String?
 
@@ -163,6 +203,11 @@ class CineApp : KoinComponent {
         } while (opcion !in listOf("1", "2", "3", "4", "5", "6", "7"))
     }
 
+    /**
+     * Obtiene la recaudación a día de fecha especificada.
+     *
+     * @param fecha Fecha a la que se desea obtener la recaudación.
+     */
     private fun obtenerRecaudacion() {
         var money = 0.0
         val fecha = getDateFromUser()
@@ -180,7 +225,11 @@ class CineApp : KoinComponent {
         menuInicio()
     }
 
-
+    /**
+     * Exporta todas las butacas a un archivo.
+     *
+     * @param date La fecha para la cual se deben exportar las butacas.
+     */
     private fun exportarButacas() {
         val fecha = getDateFromUser()
         butacaServicio.exportAllToFile(date = fecha).onSuccess {
@@ -191,6 +240,11 @@ class CineApp : KoinComponent {
         menuInicio()
     }
 
+    /**
+     * Solicita al usuario que ingrese una fecha.
+     *
+     * @return La fecha ingresada por el usuario.
+     */
     private fun getDateFromUser(): LocalDateTime {
         val fechaRegex = "^\\d{4}/\\d{2}/\\d{2}\$".toRegex()
         var input : String
@@ -206,12 +260,20 @@ class CineApp : KoinComponent {
         return LocalDateTime.of(fechaCorrecta[0],fechaCorrecta[1],fechaCorrecta[2],0,0,0)
     }
 
+    /**
+     * Solicita al usuario que ingrese una fecha para comprobar su validez.
+     */
     private fun checkDateValidity(input: String): Boolean {
         val fecha = input.split('/').map { it.toInt() }
         return if (!(fecha[1] in (1..12) || fecha[2] in (1..31))) false
         else true
     }
 
+    /**
+     * Método para manejar la interacción inicial del usuario con la aplicación.
+     * Muestra un menú con opciones para iniciar una sesión, registrar un nuevo usuario o salir de la aplicación.
+     * @see [iniciarSesion], [registrarse], [salir]
+     */
     private fun menuIniciarSesion() {
         var opcion: String?
         println("""¿Qué desea hacer? 
@@ -233,6 +295,10 @@ class CineApp : KoinComponent {
         } while (opcion !in listOf("1", "2", "3"))
     }
 
+    /**
+     * Inicia sesión.
+     * @return true si se inició sesión correctamente, false en caso contrario.
+     */
     private fun iniciarSesion() {
         // Patrón de expresión regular para el formato especificado
         val regex = Pattern.compile("[A-Za-z]{3}\\d{3}")
@@ -271,6 +337,10 @@ class CineApp : KoinComponent {
         } while (!inicioSesionExitoso) // Continuar el bucle hasta que se inicie sesión con éxito
     }
 
+    /**
+     * Registra un nuevo usuario.
+     * @return true si se registró correctamente, false en caso contrario.
+     */
     private fun registrarse() {
         print("Ingrese su ID (formato: LLLNNN): ")
         var input = readln().uppercase()
@@ -293,7 +363,9 @@ class CineApp : KoinComponent {
         }while (!input.matches(regex) && !success)
     }
 
-
+    /**
+     * Busca una butaca para reservarla.
+     */
     private fun buscarButacaParaReservar() {
         actualizarButacas()
         if (verEstadoDelCine()){
@@ -344,6 +416,11 @@ class CineApp : KoinComponent {
         menuInicio()
     }
 
+    /**
+     * Esta función se utiliza para mostrar los productos disponibles para reservar.
+     * Esta función también mantiene el contador de la cantidad total de productos reservados.
+     * @see [CineApp.menuReservaProductos]
+     */
     private fun menuReservaProductos() {
         actualizarProductos()
         println("0. Volver al menú principal")
@@ -373,30 +450,34 @@ class CineApp : KoinComponent {
         } while (opcion !in 0..productos!!.size + 1)
     }
 
-
+    /**
+     * Esta función se utiliza para reservar un producto para la compra.
+     * También mantiene el contador del número total de productos reservados.
+     * @see [CineApp.menuReservaProductos]
+     */
     private fun reservaProducto(opcion: Int) {
         val productoSeleccionado = productos!![opcion - 1]
         println("Ha seleccionado: ${productoSeleccionado.nombre}")
 
         productoServicio
             .findById(productoSeleccionado.id)
-                .onSuccess { producto ->
-                    val productoReservado = producto.copy(stock = producto.stock - 1)
-                    productoServicio.update(productoSeleccionado.id, productoReservado)
-                        .onSuccess { _ ->
-                            println("El producto ${productoSeleccionado.nombre} ha sido reservado con éxito.")
-                            val productoExiste = lineas.firstOrNull(){ it.producto.id == producto.id }
-                            if (productoExiste == null) lineas = lineas.plus(LineaVenta(producto = producto, cantidad = 1, precio = producto.precio )).toMutableList()
-                            else lineas.forEach {
-                                if (it.producto.id == producto.id) it.cantidad++
-                            }
-                            productosReservados++
-                        }.onFailure { error ->
-                            println("Error al reservar el producto ${productoSeleccionado.nombre}: ${error.message}")
+            .onSuccess { producto ->
+                val productoReservado = producto.copy(stock = producto.stock - 1)
+                productoServicio.update(productoSeleccionado.id, productoReservado)
+                    .onSuccess { _ ->
+                        println("El producto ${productoSeleccionado.nombre} ha sido reservado con éxito.")
+                        val productoExiste = lineas.firstOrNull(){ it.producto.id == producto.id }
+                        if (productoExiste == null) lineas = lineas.plus(LineaVenta(producto = producto, cantidad = 1, precio = producto.precio )).toMutableList()
+                        else lineas.forEach {
+                            if (it.producto.id == producto.id) it.cantidad++
                         }
-                }.onFailure {
-                    println("El producto ${productoSeleccionado.nombre} no existe.")
-                }
+                        productosReservados++
+                    }.onFailure { error ->
+                        println("Error al reservar el producto ${productoSeleccionado.nombre}: ${error.message}")
+                    }
+            }.onFailure {
+                println("El producto ${productoSeleccionado.nombre} no existe.")
+            }
 
         if (productosReservados < 3) {
             println("Aun puede seleccionar ${3 - productosReservados}")
@@ -415,6 +496,14 @@ class CineApp : KoinComponent {
         }
     }
 
+    /**
+     * Esta función se utiliza para crear una nueva venta.
+     * Recibe al cliente, la butaca y la lista de productos como parámetros.
+     * Luego, crea una nueva venta con la información proporcionada y la guarda utilizando el repositorio de ventas [ventaServicio].
+     * Si la venta se crea correctamente, imprime un mensaje indicando que la venta se creó correctamente.
+     * Si ocurre un error al crear la venta, imprime un mensaje que indica el tipo de error que ocurrió.
+     * @see [ventaServicio.save]
+     */
     private fun crearVenta() {
         val cliente = cuentaTiket
         val butaca = butacaTiket
@@ -440,7 +529,11 @@ class CineApp : KoinComponent {
         }
     }
 
-
+    /**
+     * Esta función se utiliza para reservar una butaca en el cine.
+     *
+     * @param numeroButaca El número de la butaca que desea reservar.
+     */
     private fun reservarButaca(numeroButaca: String) {
         actualizarButacas()
         butacaServicio.findById(numeroButaca).onSuccess { butaca ->
@@ -456,7 +549,16 @@ class CineApp : KoinComponent {
         }
     }
 
-
+    /**
+     * Actualiza la lista de productos disponibles.
+     *
+     * Esta función se utiliza para obtener la lista de productos disponibles en el cine.
+     * La función utiliza el servicio [productoServicio] para obtener la lista de productos.
+     * Luego, filtra la lista de productos para incluir solo aquellos que tienen stock disponible y no están eliminados.
+     * La función guarda la lista de productos actualizada en el atributo [productos].
+     *
+     * @see [productoServicio.findAll]
+     */
     private fun actualizarProductos() {
         val findAllResult = productoServicio.findAll()
         findAllResult.onSuccess { productosEncontrados ->
@@ -465,6 +567,17 @@ class CineApp : KoinComponent {
             println("Error al obtener los Productos: ${error.message}")
         }
     }
+
+    /**
+     * Actualiza la lista de butacas disponibles.
+     *
+     * Esta función se utiliza para obtener la lista de butacas disponibles en el cine.
+     * La función utiliza el servicio [butacaServicio] para obtener la lista de butacas.
+     * Luego, filtra la lista de butacas para incluir solo aquellos que tienen stock disponible y no están eliminados.
+     * La función guarda la lista de butacas actualizada en el atributo [butacas].
+     *
+     * @see [butacaServicio.findAll]
+     */
     private fun actualizarButacas() {
         // Manejo del resultado del servicio findAll()
         val findAllResult = butacaServicio.findAll()
@@ -475,6 +588,10 @@ class CineApp : KoinComponent {
         }
     }
 
+    /**
+     * Esta función se utiliza para verificar el estado del cine.
+     * @return true si el cine está abierto, false en caso contrario.
+     */
     private fun verEstadoDelCine() : Boolean{
         actualizarButacas()
         if (butacas != null){
@@ -510,6 +627,10 @@ class CineApp : KoinComponent {
             return true
         }else return false
     }
+
+    /**
+     * Esta función se utiliza para cerrar el cine
+     */
     private fun salir() {
         println("Gracias por su visita")
         // Finaliza la aplicación

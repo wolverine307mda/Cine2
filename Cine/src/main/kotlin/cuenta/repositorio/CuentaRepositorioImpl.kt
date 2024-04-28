@@ -14,6 +14,10 @@ class CuentaRepositorioImpl(
     val dataBaseManager: DataBaseManager
 ) : CuentaRepositorio {
 
+    /**
+     * Recupera todas las cuentas de usuario almacenadas en la base de datos.
+     * @return una lista de todas las cuentas de usuario, o una lista vacía si no se encontraron cuentas o si ocurrió un error.
+     */
     override fun findAll(): List<Cuenta> {
         logger.debug { "Buscando todas las personas" }
         try {
@@ -38,6 +42,11 @@ class CuentaRepositorioImpl(
         }
     }
 
+    /**
+    * Busca una cuenta de usuario por su identificador único.
+    * @param id El identificador único de la cuenta de usuario a buscar.
+    * @return la cuenta de usuario encontrada, o null si no se encontró ninguna cuenta con el identificador proporcionado o si ocurrió un error.
+    */
     override fun findById(id: String): Cuenta? {
         logger.debug { "Buscando cliente por id $id" }
         try {
@@ -63,6 +72,11 @@ class CuentaRepositorioImpl(
         }
     }
 
+    /**
+     * Guarda una nueva cuenta de usuario en la base de datos.
+     * @param cuenta La cuenta de usuario a guardar.
+     * @return la cuenta de usuario guardada, o null si la cuenta ya existe en la base de datos o si ocurrió un error.
+     */
     override fun save(cuenta: Cuenta): Cuenta? {
         logger.debug { "Guardando cuenta con id: ${cuenta.id}" }
         try {
@@ -87,6 +101,12 @@ class CuentaRepositorioImpl(
         }
     }
 
+    /**
+     * Actualiza una cuenta de usuario existente en la base de datos.
+     * @param id El identificador único de la cuenta de usuario a actualizar.
+     * @param cuenta La nueva información de la cuenta de usuario.
+     * @return la cuenta de usuario actualizada, o null si la cuenta no existe en la base de datos o si ocurrió un error.
+     */
     override fun update(id: String, cuenta: Cuenta): Cuenta? {
         logger.debug { "Actualizando cuenta con id: $id" }
         findById(id)?.let {
@@ -114,6 +134,11 @@ class CuentaRepositorioImpl(
         return null //Si no existe
     }
 
+    /**
+     * Elimina una cuenta de usuario de la base de datos.
+     * @param id El identificador único de la cuenta de usuario a eliminar.
+     * @return la cuenta de usuario eliminada, o null si la cuenta no existe en la base de datos o si ocurrió un error.
+     */
     override fun delete(id: String): Cuenta? {
         logger.debug { "Borrando la cuenta con id $id" }
         findById(id)?.let {

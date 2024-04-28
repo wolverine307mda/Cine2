@@ -6,6 +6,10 @@ import org.example.productos.models.TipoProducto
 import org.example.ventas.mappers.toVenta
 import java.time.LocalDateTime
 
+/**
+ * Convierte un [ComplementoEntity] en un [Producto].
+ * @return El producto convertido.
+ */
 fun ComplementoEntity.toProducto(): Producto {
     return Producto(
         id = this.id,
@@ -19,6 +23,11 @@ fun ComplementoEntity.toProducto(): Producto {
     )
 }
 
+/**
+ * Determina el [TipoProducto] basado en una cadena.
+ * @param s La cadena que representa el tipo de producto.
+ * @return El tipo de producto correspondiente, o null si no se reconoce la cadena.
+ */
 fun elegirTipoProducto(s: String): TipoProducto? {
     return when (s) {
         "BEBIDA" -> TipoProducto.BEBIDA
